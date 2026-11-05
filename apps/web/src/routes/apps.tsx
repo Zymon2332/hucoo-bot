@@ -1,6 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { AppsPage } from "@/features/apps/apps-page";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { DEFAULT_BOT_ID } from "@/fixtures";
 
 export const Route = createFileRoute("/apps")({
-  component: AppsPage,
+  beforeLoad: () => {
+    throw redirect({ to: "/b/$botId", params: { botId: DEFAULT_BOT_ID } });
+  },
 });

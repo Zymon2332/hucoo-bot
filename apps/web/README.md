@@ -20,14 +20,12 @@ pnpm --filter @hucoo/web build
 | --- | --- |
 | `/` | 重定向到默认 bot |
 | `/b/$botId` | Bot 对话：即时确认、任务卡、结果、提问、失败 |
-| `/apps` | 外部应用（MCP）与 Agent（opencode / Claude Code / Codex） |
-| `/skills` | 技能目录 |
-| `/assets` | 所有 bot 的产物 |
 | `/memory` | 记忆中心 |
-| `/settings` | 全局设置：模型 / 记忆 / 用量 / 通用 / 外观 |
 | `/onboarding` | 新建 bot |
 | `/artifact/$artifactId` | 资产预览 |
 | `/dev/states` | 状态画廊（仅开发） |
+
+设置、技能、产物、应用不再有独立页面：从左下角用户头像菜单打开，统一用弹窗展示。旧地址 `/settings` `/skills` `/assets` `/apps` 会重定向回默认 bot。
 
 ## 核心模型
 
@@ -55,7 +53,7 @@ Task
 - 全局只有一个通知入口；每个 bot 只用一个小圆点提示。
 - 右侧面板默认收起，四个 Tab：任务 / 电脑 / 资产 / 设置。
 - 电脑 Tab 展示容器桌面、终端、文件与进程。
-- 头像菜单（右下角）：技能 / 产物 / 应用。
+- 左下角头像菜单：设置 / 技能 / 产物 / 应用，全部以弹窗打开。
 
 ## 结构
 
@@ -68,7 +66,8 @@ src/
 │   ├── apps/        # 外部应用与 Agent
 │   ├── skills/      # 技能
 │   ├── assets/      # 产物
-│   ├── menu/        # 右下角头像菜单
+│   ├── menu/        # 左下角用户菜单
+│   ├── modals/      # 设置 / 技能 / 产物 / 应用弹窗
 │   ├── memory/
 │   ├── settings/
 │   └── onboarding/

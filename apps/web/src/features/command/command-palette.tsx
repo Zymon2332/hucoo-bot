@@ -33,6 +33,7 @@ export function CommandPalette() {
   const open = useUiStore((state) => state.commandOpen);
   const setOpen = useUiStore((state) => state.setCommandOpen);
   const openTask = useUiStore((state) => state.openTask);
+  const setActiveModal = useUiStore((state) => state.setActiveModal);
   const memories = useDemoStore((state) => state.memories);
   const navigate = useNavigate();
 
@@ -66,21 +67,21 @@ export function CommandPalette() {
               </CommandItem>
               <CommandItem
                 value="应用 apps"
-                onSelect={() => run(() => void navigate({ to: "/apps" }))}
+                onSelect={() => run(() => setActiveModal("apps"))}
               >
                 <Robot size={15} />
                 应用与 Agent
               </CommandItem>
               <CommandItem
                 value="技能 skills"
-                onSelect={() => run(() => void navigate({ to: "/skills" }))}
+                onSelect={() => run(() => setActiveModal("skills"))}
               >
                 <Sparkle size={15} />
                 技能
               </CommandItem>
               <CommandItem
                 value="产物 assets"
-                onSelect={() => run(() => void navigate({ to: "/assets" }))}
+                onSelect={() => run(() => setActiveModal("assets"))}
               >
                 <Cube size={15} />
                 产物
@@ -94,7 +95,7 @@ export function CommandPalette() {
               </CommandItem>
               <CommandItem
                 value="设置 settings"
-                onSelect={() => run(() => void navigate({ to: "/settings" }))}
+                onSelect={() => run(() => setActiveModal("settings"))}
               >
                 <GearSix size={15} />
                 设置

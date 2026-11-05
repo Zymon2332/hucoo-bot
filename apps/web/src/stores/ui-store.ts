@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import type { PanelTab } from "@/fixtures/types";
 
+export type AppModal = "settings" | "skills" | "assets" | "apps";
+
 interface UiState {
   railCollapsed: boolean;
   panelOpen: boolean;
@@ -9,6 +11,7 @@ interface UiState {
   bellOpen: boolean;
   commandOpen: boolean;
   avatarMenuOpen: boolean;
+  activeModal: AppModal | null;
   mobileRailOpen: boolean;
   setRailCollapsed: (value: boolean) => void;
   toggleRail: () => void;
@@ -20,6 +23,8 @@ interface UiState {
   setBellOpen: (value: boolean) => void;
   setCommandOpen: (value: boolean) => void;
   setAvatarMenuOpen: (value: boolean) => void;
+  setActiveModal: (modal: AppModal | null) => void;
+  closeModal: () => void;
   setMobileRailOpen: (value: boolean) => void;
 }
 
@@ -31,6 +36,7 @@ export const useUiStore = create<UiState>((set) => ({
   bellOpen: false,
   commandOpen: false,
   avatarMenuOpen: false,
+  activeModal: null,
   mobileRailOpen: false,
   setRailCollapsed: (railCollapsed) => set({ railCollapsed }),
   toggleRail: () => set((state) => ({ railCollapsed: !state.railCollapsed })),
@@ -44,5 +50,7 @@ export const useUiStore = create<UiState>((set) => ({
   setBellOpen: (bellOpen) => set({ bellOpen }),
   setCommandOpen: (commandOpen) => set({ commandOpen }),
   setAvatarMenuOpen: (avatarMenuOpen) => set({ avatarMenuOpen }),
+  setActiveModal: (activeModal) => set({ activeModal }),
+  closeModal: () => set({ activeModal: null }),
   setMobileRailOpen: (mobileRailOpen) => set({ mobileRailOpen }),
 }));

@@ -6,8 +6,10 @@ import { APPS, BOTS } from "@/fixtures";
 import type { AppConnection } from "@/fixtures/types";
 import { BotAvatar } from "@/components/bot-avatar";
 import { SectionHeading } from "@/components/primitives";
+import { useUiStore } from "@/stores/ui-store";
 
-export function AppsPage() {
+export function AppsPage({ embedded = false }: { embedded?: boolean }) {
+  const closeModal = useUiStore((state) => state.closeModal);
   const [connected, setConnected] = useState<Record<string, boolean>>(
     Object.fromEntries(APPS.map((app) => [app.id, app.status === "connected"])),
   );
@@ -33,16 +35,24 @@ export function AppsPage() {
   ];
 
   return (
-    <div className="h-full overflow-y-auto">
-      <div className="mx-auto w-full max-w-[980px] px-4 pb-16 pt-6 sm:px-6">
-        <header>
-          <h1 className="text-[22px] font-semibold tracking-tight">应用</h1>
-          <p className="mt-1 text-[12px] text-muted-foreground">
-            连接外部应用与 Agent，再决定哪些 bot 可以使用。
-          </p>
-        </header>
+    <div className={embedded ? "" : "h-full overflow-y-auto"}>
+      <div
+        className={
+          embedded
+            ? ""
+            : "mx-auto w-full max-w-[980px] px-4 pb-16 pt-6 sm:px-6"
+        }
+      >
+        {!embedded && (
+          <header>
+            <h1 className="text-[22px] font-semibold tracking-tight">应用</h1>
+            <p className="mt-1 text-[12px] text-muted-foreground">
+              连接外部应用与 Agent，再决定哪些 bot 可以使用。
+            </p>
+          </header>
+        )}
 
-        <div className="mt-6 space-y-7">
+        <div className={embedded ? "space-y-7" : "mt-6 space-y-7"}>
           {groups.map((group) => {
             const apps = APPS.filter((app) => app.kind === group.kind);
             const Icon = group.icon;
@@ -107,6 +117,7 @@ export function AppsPage() {
                                   key={bot.id}
                                   to="/b/$botId"
                                   params={{ botId: bot.id }}
+                                  onClick={closeModal}
                                   className="inline-flex items-center gap-1 rounded-full border border-border px-1.5 py-0.5 text-[9.5px] text-muted-foreground hover:text-foreground"
                                 >
                                   <BotAvatar bot={bot} size="sm" />

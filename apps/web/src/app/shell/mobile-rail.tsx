@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { GearSix, MagnifyingGlass, Plus } from "@phosphor-icons/react";
+import { MagnifyingGlass, Plus } from "@phosphor-icons/react";
 import {
   Sheet,
   SheetContent,
@@ -12,6 +12,7 @@ import { useDemoStore } from "@/stores/demo-store";
 import { useUiStore } from "@/stores/ui-store";
 import { needsHuman, projectWorkItem } from "@/lib/work-state";
 import { BotAvatar } from "@/components/bot-avatar";
+import { UserMenu } from "@/features/menu/user-menu";
 
 export function MobileRail() {
   const open = useUiStore((state) => state.mobileRailOpen);
@@ -95,12 +96,7 @@ export function MobileRail() {
         </nav>
 
         <div className="border-t border-border/70 p-3">
-          <Button asChild variant="ghost" className="w-full justify-start gap-2 font-normal">
-            <Link to="/settings" onClick={() => setOpen(false)}>
-              <GearSix size={15} />
-              设置
-            </Link>
-          </Button>
+          <UserMenu />
         </div>
       </SheetContent>
     </Sheet>

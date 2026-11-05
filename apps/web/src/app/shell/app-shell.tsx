@@ -8,7 +8,7 @@ import { TopBar } from "./top-bar";
 import { MobileRail } from "./mobile-rail";
 import { BellDrawer } from "./bell-drawer";
 import { CommandPalette } from "@/features/command/command-palette";
-import { AvatarMenu } from "@/features/menu/avatar-menu";
+import { AppModals } from "@/features/modals/app-modals";
 import { RightPanel } from "@/features/panel/right-panel";
 import { ThemedToaster } from "@/components/themed-toaster";
 
@@ -28,6 +28,7 @@ export function AppShell() {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const setCommandOpen = useUiStore((state) => state.setCommandOpen);
+  const setActiveModal = useUiStore((state) => state.setActiveModal);
 
   const botId = pathname.startsWith("/b/") ? pathname.split("/")[2] : undefined;
   const bot = botId ? getBot(botId) : undefined;
@@ -45,12 +46,12 @@ export function AppShell() {
       }
       if (meta && event.key === ",") {
         event.preventDefault();
-        void navigate({ to: "/settings" });
+        setActiveModal("settings");
       }
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [navigate, setCommandOpen]);
+  }, [navigate, setCommandOpen, setActiveModal]);
 
   return (
     <TooltipProvider>
@@ -70,7 +71,7 @@ export function AppShell() {
       <MobileRail />
       <BellDrawer />
       <CommandPalette />
-      <AvatarMenu />
+      <AppModals />
       <ThemedToaster />
     </TooltipProvider>
   );

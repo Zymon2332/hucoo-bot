@@ -21,6 +21,7 @@ import {
 } from "@/display/labels";
 import { getStoredTheme, setTheme } from "@/lib/theme";
 import { useDemoStore } from "@/stores/demo-store";
+import { useUiStore } from "@/stores/ui-store";
 import { StageBadge } from "@/components/primitives";
 import { BotAvatar } from "@/components/bot-avatar";
 import { TextBlock } from "@/features/chat/blocks/text-block";
@@ -80,6 +81,7 @@ function Preview({
 
 export function StatesPage() {
   const reset = useDemoStore((state) => state.reset);
+  const setActiveModal = useUiStore((state) => state.setActiveModal);
   const [dark, setDark] = useState(getStoredTheme() === "dark");
   const bot = getBot("bot-work")!;
   const diff = EVIDENCE.find((entry) => entry.id === "ev-refactor-diff");
@@ -372,11 +374,7 @@ export function StatesPage() {
               ["工作 bot", "/b/bot-work"],
               ["生活 bot", "/b/bot-life"],
               ["编码 bot", "/b/bot-code"],
-              ["应用", "/apps"],
-              ["技能", "/skills"],
-              ["产物", "/assets"],
               ["记忆中心", "/memory"],
-              ["设置", "/settings"],
               ["Onboarding", "/onboarding"],
               ["产物 · 周报", "/artifact/a-weekly"],
             ].map(([label, href]) => (
@@ -388,6 +386,27 @@ export function StatesPage() {
                 {label}
                 <ArrowUpRight size={13} className="text-muted-foreground" />
               </a>
+            ))}
+          </div>
+
+          <div className="mt-3 flex flex-wrap gap-2">
+            {(
+              [
+                ["设置弹窗", "settings"],
+                ["技能弹窗", "skills"],
+                ["产物弹窗", "assets"],
+                ["应用弹窗", "apps"],
+              ] as const
+            ).map(([label, modal]) => (
+              <Button
+                key={modal}
+                type="button"
+                size="sm"
+                variant="outline"
+                onClick={() => setActiveModal(modal)}
+              >
+                {label}
+              </Button>
             ))}
           </div>
         </section>

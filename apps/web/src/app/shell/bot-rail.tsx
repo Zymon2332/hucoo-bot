@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
-  GearSix,
   MagnifyingGlass,
   Plus,
   SidebarSimple,
@@ -15,6 +14,7 @@ import { useUiStore } from "@/stores/ui-store";
 import { needsHuman, projectWorkItem } from "@/lib/work-state";
 import { BotAvatar } from "@/components/bot-avatar";
 import { Kbd } from "@/components/primitives";
+import { UserMenu } from "@/features/menu/user-menu";
 
 function hasNotifications(bot: Bot, overrides: Parameters<typeof projectWorkItem>[1]) {
   return workItemsForBot(bot.id)
@@ -93,17 +93,7 @@ export function BotRail() {
           >
             <SidebarSimple size={17} />
           </Button>
-          <Button
-            asChild
-            variant="ghost"
-            size="icon-lg"
-            aria-label="设置"
-            className="text-muted-foreground"
-          >
-            <Link to="/settings">
-              <GearSix size={17} />
-            </Link>
-          </Button>
+          <UserMenu collapsed />
         </div>
       </aside>
     );
@@ -194,16 +184,7 @@ export function BotRail() {
       </nav>
 
       <footer className="mt-2 border-t border-sidebar-border pt-2">
-        <Button
-          asChild
-          variant="ghost"
-          className="h-9 w-full justify-start gap-2 rounded-[9px] px-2 text-[12.5px] font-normal text-muted-foreground"
-        >
-          <Link to="/settings">
-            <GearSix size={15} />
-            设置
-          </Link>
-        </Button>
+        <UserMenu />
       </footer>
     </aside>
   );

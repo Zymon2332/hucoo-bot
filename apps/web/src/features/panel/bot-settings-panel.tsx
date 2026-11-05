@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { ArrowRight, GearSix, Plus, Robot, Sparkle } from "@phosphor-icons/react";
 import { Switch } from "@hucoo/ui/components/switch";
 import { Button } from "@hucoo/ui/components/button";
 import { appsForBot, skillsForBot } from "@/fixtures";
 import type { Bot } from "@/fixtures/types";
+import { useUiStore } from "@/stores/ui-store";
 
 export function BotSettingsPanel({ bot }: { bot: Bot }) {
+  const setActiveModal = useUiStore((state) => state.setActiveModal);
   const apps = appsForBot(bot.id);
   const skills = skillsForBot(bot.id);
   const external = apps.filter((app) => app.kind === "mcp");
@@ -38,11 +39,15 @@ export function BotSettingsPanel({ bot }: { bot: Bot }) {
           <p className="text-[9.5px] font-medium uppercase tracking-[0.14em] text-section-label">
             外部应用
           </p>
-          <Button asChild variant="link" size="xs" className="h-auto px-0">
-            <Link to="/apps">
-              管理
-              <ArrowRight size={10} />
-            </Link>
+          <Button
+            type="button"
+            variant="link"
+            size="xs"
+            onClick={() => setActiveModal("apps")}
+            className="h-auto px-0"
+          >
+            管理
+            <ArrowRight size={10} />
           </Button>
         </div>
         <div className="mt-1.5 space-y-1">
@@ -107,11 +112,15 @@ export function BotSettingsPanel({ bot }: { bot: Bot }) {
               {skill.name}
             </span>
           ))}
-          <Button asChild variant="ghost" size="xs" className="h-6 rounded-full text-[10px]">
-            <Link to="/skills">
-              <Plus size={9} />
-              添加
-            </Link>
+          <Button
+            type="button"
+            variant="ghost"
+            size="xs"
+            onClick={() => setActiveModal("skills")}
+            className="h-6 rounded-full text-[10px]"
+          >
+            <Plus size={9} />
+            添加
           </Button>
         </div>
       </section>
@@ -132,11 +141,15 @@ export function BotSettingsPanel({ bot }: { bot: Bot }) {
         />
       </section>
 
-      <Button asChild variant="outline" size="sm" className="w-full">
-        <Link to="/settings">
-          <GearSix size={12} />
-          打开全局设置
-        </Link>
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        onClick={() => setActiveModal("settings")}
+        className="w-full"
+      >
+        <GearSix size={12} />
+        打开全局设置
       </Button>
     </div>
   );

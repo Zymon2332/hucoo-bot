@@ -23,6 +23,7 @@ import {
 } from "@hucoo/ui/components/tabs";
 import { BOTS, USAGE } from "@/fixtures";
 import { useDemoStore } from "@/stores/demo-store";
+import { useUiStore } from "@/stores/ui-store";
 import { getStoredTheme, setTheme, type Theme } from "@/lib/theme";
 import { BotAvatar } from "@/components/bot-avatar";
 
@@ -34,7 +35,8 @@ const TABS = [
   { id: "appearance", label: "外观", icon: PaintBrush },
 ] as const;
 
-export function SettingsPage() {
+export function SettingsPage({ embedded = false }: { embedded?: boolean }) {
+  const closeModal = useUiStore((state) => state.closeModal);
   const memories = useDemoStore((state) => state.memories);
   const profile = useDemoStore((state) => state.profile);
   const updateProfile = useDemoStore((state) => state.updateProfile);
@@ -47,19 +49,31 @@ export function SettingsPage() {
   const totalCost = USAGE.reduce((sum, entry) => sum + entry.cost, 0);
 
   return (
-    <div className="h-full overflow-y-auto">
-      <div className="mx-auto w-full max-w-[980px] px-4 pb-16 pt-6 sm:px-6">
-        <header>
-          <h1 className="text-[22px] font-semibold tracking-tight">设置</h1>
-          <p className="mt-1 text-[12px] text-muted-foreground">
-            模型、记忆、用量与通用配置。bot 级设置在右侧面板。
-          </p>
-        </header>
+    <div className={embedded ? "" : "h-full overflow-y-auto"}>
+      <div
+        className={
+          embedded
+            ? ""
+            : "mx-auto w-full max-w-[980px] px-4 pb-16 pt-6 sm:px-6"
+        }
+      >
+        {!embedded && (
+          <header>
+            <h1 className="text-[22px] font-semibold tracking-tight">设置</h1>
+            <p className="mt-1 text-[12px] text-muted-foreground">
+              模型、记忆、用量与通用配置。bot 级设置在右侧面板。
+            </p>
+          </header>
+        )}
 
         <Tabs
           orientation="vertical"
           defaultValue="model"
-          className="mt-6 grid gap-6 lg:grid-cols-[160px_minmax(0,1fr)]"
+          className={
+            embedded
+              ? "grid gap-5 lg:grid-cols-[150px_minmax(0,1fr)]"
+              : "mt-6 grid gap-6 lg:grid-cols-[160px_minmax(0,1fr)]"
+          }
         >
           <TabsList className="h-fit flex-col items-stretch bg-transparent p-0">
             {TABS.map((item) => {
@@ -143,7 +157,7 @@ export function SettingsPage() {
                     </p>
                   </div>
                   <Button asChild size="xs" variant="outline">
-                    <Link to="/memory">
+                    <Link to="/memory" onClick={closeModal}>
                       查看
                       <ArrowSquareOut size={10} />
                     </Link>

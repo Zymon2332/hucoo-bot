@@ -5,23 +5,33 @@ import { Switch } from "@hucoo/ui/components/switch";
 import { BOTS, SKILLS } from "@/fixtures";
 import { BotAvatar } from "@/components/bot-avatar";
 import { SectionHeading } from "@/components/primitives";
+import { useUiStore } from "@/stores/ui-store";
 
-export function SkillsPage() {
+export function SkillsPage({ embedded = false }: { embedded?: boolean }) {
+  const closeModal = useUiStore((state) => state.closeModal);
   const [enabled, setEnabled] = useState<Record<string, boolean>>(
     Object.fromEntries(SKILLS.map((skill) => [skill.id, true])),
   );
 
   return (
-    <div className="h-full overflow-y-auto">
-      <div className="mx-auto w-full max-w-[900px] px-4 pb-16 pt-6 sm:px-6">
-        <header>
-          <h1 className="text-[22px] font-semibold tracking-tight">技能</h1>
-          <p className="mt-1 text-[12px] text-muted-foreground">
-            bot 可以按需加载的技能。技能只影响能力，不改变授权。
-          </p>
-        </header>
+    <div className={embedded ? "" : "h-full overflow-y-auto"}>
+      <div
+        className={
+          embedded
+            ? ""
+            : "mx-auto w-full max-w-[900px] px-4 pb-16 pt-6 sm:px-6"
+        }
+      >
+        {!embedded && (
+          <header>
+            <h1 className="text-[22px] font-semibold tracking-tight">技能</h1>
+            <p className="mt-1 text-[12px] text-muted-foreground">
+              bot 可以按需加载的技能。技能只影响能力，不改变授权。
+            </p>
+          </header>
+        )}
 
-        <div className="mt-6 space-y-2">
+        <div className={embedded ? "space-y-2" : "mt-6 space-y-2"}>
           {SKILLS.map((skill) => {
             const on = enabled[skill.id] ?? true;
             const bots = BOTS.filter((bot) => skill.assignedBotIds.includes(bot.id));
@@ -65,6 +75,7 @@ export function SkillsPage() {
               key={bot.id}
               to="/b/$botId"
               params={{ botId: bot.id }}
+              onClick={closeModal}
               className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground"
             >
               <BotAvatar bot={bot} size="sm" />
