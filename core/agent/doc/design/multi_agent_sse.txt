@@ -1,0 +1,185 @@
+HTTP/1.1 200 OK
+Content-Type: text/event-stream; charset=utf-8
+X-Run-Id: run_9Xk2
+X-Subscription-Id: sub_root_1
+
+retry: 3000
+
+: connected
+
+id: 1
+event: run.start
+data: {"seq":1,"type":"run.start","ts":1761700000000,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","data":{"v":1,"status":"running","model":"gpt-4.1","stream_policy":{"root":"full","depth1":"summary","depth2+":"off"},"event_log_ttl_ms":600000}}
+
+id: 2
+event: message.start
+data: {"seq":2,"type":"message.start","ts":1761700000020,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_1","data":{"role":"assistant","node":"supervisor","model":"gpt-4.1"}}
+
+id: 3
+event: block.start
+data: {"seq":3,"type":"block.start","ts":1761700000060,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_1","block_index":0,"data":{"kind":"text"}}
+
+id: 4
+event: block.delta
+data: {"seq":4,"type":"block.delta","ts":1761700000180,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_1","block_index":0,"data":{"kind":"text","text":"我拆成两条并行任务：比亚迪和蔚来各派一个研究员，回来后汇总。"}}
+
+id: 5
+event: block.end
+data: {"seq":5,"type":"block.end","ts":1761700000220,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_1","block_index":0,"data":{"kind":"text","block":{"type":"text","text":"我拆成两条并行任务：比亚迪和蔚来各派一个研究员，回来后汇总。"}}}
+
+id: 6
+event: block.start
+data: {"seq":6,"type":"block.start","ts":1761700000240,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_1","block_index":1,"tool_id":"t_1","data":{"kind":"tool_call","name":"task","provider_tool_call_id":"call_a1"}}
+
+id: 7
+event: block.delta
+data: {"seq":7,"type":"block.delta","ts":1761700000260,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_1","block_index":1,"tool_id":"t_1","data":{"kind":"args","args":"{\"agent\":\"resea"}}
+
+id: 8
+event: block.delta
+data: {"seq":8,"type":"block.delta","ts":1761700000300,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_1","block_index":1,"tool_id":"t_1","data":{"kind":"args","args":"rcher\",\"topic\":\"比亚迪出海\"}"}}
+
+id: 9
+event: block.end
+data: {"seq":9,"type":"block.end","ts":1761700000330,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_1","block_index":1,"tool_id":"t_1","data":{"kind":"tool_call","block":{"type":"tool_call","name":"task","args":{"agent":"researcher","topic":"比亚迪出海"}}}}
+
+id: 10
+event: block.start
+data: {"seq":10,"type":"block.start","ts":1761700000340,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_1","block_index":2,"tool_id":"t_2","data":{"kind":"tool_call","name":"task","provider_tool_call_id":"call_b2"}}
+
+id: 11
+event: block.delta
+data: {"seq":11,"type":"block.delta","ts":1761700000360,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_1","block_index":2,"tool_id":"t_2","data":{"kind":"args","args":"{\"agent\":\"researcher\",\"top"}}
+
+id: 12
+event: block.delta
+data: {"seq":12,"type":"block.delta","ts":1761700000400,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_1","block_index":2,"tool_id":"t_2","data":{"kind":"args","args":"ic\":\"蔚来出海\"}"}}
+
+id: 13
+event: block.end
+data: {"seq":13,"type":"block.end","ts":1761700000430,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_1","block_index":2,"tool_id":"t_2","data":{"kind":"tool_call","block":{"type":"tool_call","name":"task","args":{"agent":"researcher","topic":"蔚来出海"}}}}
+
+id: 14
+event: message.end
+data: {"seq":14,"type":"message.end","ts":1761700000470,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_1","data":{"finish_reason":"tool_calls","usage":{"input_tokens":520,"output_tokens":88},"tool_calls":[{"tool_id":"t_1","name":"task","args":{"agent":"researcher","topic":"比亚迪出海"}},{"tool_id":"t_2","name":"task","args":{"agent":"researcher","topic":"蔚来出海"}}]}}
+
+id: 15
+event: tool.start
+data: {"seq":15,"type":"tool.start","ts":1761700000500,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","tool_id":"t_1","data":{"name":"task","args":{"agent":"researcher","topic":"比亚迪出海"},"args_complete":true,"parallel":{"index":0,"total":2}}}
+
+id: 16
+event: tool.start
+data: {"seq":16,"type":"tool.start","ts":1761700000505,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","tool_id":"t_2","data":{"name":"task","args":{"agent":"researcher","topic":"蔚来出海"},"args_complete":true,"parallel":{"index":1,"total":2}}}
+
+id: 17
+event: scope.open
+data: {"seq":17,"type":"scope.open","ts":1761700000520,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s1","parent_scope_id":"s0","data":{"kind":"agent","agent":"researcher","display_name":"研究员 #1","model":"gpt-4.1-mini","depth":1,"detail":"summary","cause":{"type":"tool_call","tool_id":"t_1"}}}
+
+id: 18
+event: scope.open
+data: {"seq":18,"type":"scope.open","ts":1761700000526,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s2","parent_scope_id":"s0","data":{"kind":"agent","agent":"researcher","display_name":"研究员 #2","model":"gpt-4.1-mini","depth":1,"detail":"summary","cause":{"type":"tool_call","tool_id":"t_2"}}}
+
+id: 19
+event: fanout.progress
+data: {"seq":19,"type":"fanout.progress","ts":1761700000540,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","data":{"total":2,"done":0,"running":2,"failed":0}}
+
+id: 20
+event: message.start
+data: {"seq":20,"type":"message.start","ts":1761700000560,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s1","message_id":"m_2","data":{"role":"assistant","node":"researcher","model":"gpt-4.1-mini"}}
+
+id: 21
+event: message.start
+data: {"seq":21,"type":"message.start","ts":1761700000580,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s2","message_id":"m_3","data":{"role":"assistant","node":"researcher","model":"gpt-4.1-mini"}}
+
+id: 22
+event: tool.start
+data: {"seq":22,"type":"tool.start","ts":1761700000900,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s1","tool_id":"t_3","data":{"name":"verify_data","args":{"topic":"比亚迪出口数据口径核对"},"args_complete":true,"parallel":{"index":0,"total":1}}}
+
+id: 23
+event: scope.open
+data: {"seq":23,"type":"scope.open","ts":1761700000910,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s3","parent_scope_id":"s1","data":{"kind":"agent","agent":"analyst","display_name":"分析师","depth":2,"detail":"off","cause":{"type":"tool_call","tool_id":"t_3"}}}
+
+id: 24
+event: tool.start
+data: {"seq":24,"type":"tool.start","ts":1761700000980,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s2","tool_id":"t_4","data":{"name":"web_search","args":{"q":"蔚来 2025 海外交付量"},"args_complete":true}}
+
+id: 25
+event: tool.end
+data: {"seq":25,"type":"tool.end","ts":1761700002100,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s2","tool_id":"t_4","data":{"status":"ok","output":"蔚来 2025 海外交付 2.4 万辆，欧洲占比 61%","artifacts":[],"truncated":false,"duration_ms":1120}}
+
+id: 26
+event: message.end
+data: {"seq":26,"type":"message.end","ts":1761700002180,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s2","message_id":"m_3","data":{"finish_reason":"stop","usage":{"input_tokens":760,"output_tokens":140},"text":"蔚来 2025 年海外交付 2.4 万辆，欧洲占 61%，主要靠 ET5 旅行版；换电网络是差异化优势但扩张慢。"}}
+
+id: 27
+event: scope.close
+data: {"seq":27,"type":"scope.close","ts":1761700002200,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s2","data":{"status":"ok","usage":{"input_tokens":760,"output_tokens":140},"output":"蔚来 2025 年海外交付 2.4 万辆，欧洲占 61%，主要靠 ET5 旅行版；换电网络是差异化优势但扩张慢。"}}
+
+id: 28
+event: tool.end
+data: {"seq":28,"type":"tool.end","ts":1761700002220,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","tool_id":"t_2","data":{"status":"ok","output":"蔚来 2025 年海外交付 2.4 万辆，欧洲占 61%，主要靠 ET5 旅行版；换电网络是差异化优势但扩张慢。","artifacts":[],"truncated":false,"duration_ms":1715}}
+
+id: 29
+event: fanout.progress
+data: {"seq":29,"type":"fanout.progress","ts":1761700002240,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","data":{"total":2,"done":1,"running":1,"failed":0}}
+
+: hb
+
+event: heartbeat
+data: {"type":"heartbeat","ts":1761700015000,"run_id":"run_9Xk2","thread_id":"th_5cQ1","data":{"last_seq":29,"active_scopes":[{"scope_id":"s1","status":"running"},{"scope_id":"s3","status":"running"}],"active_tools":["t_1","t_3"]}}
+
+id: 30
+event: scope.close
+data: {"seq":30,"type":"scope.close","ts":1761700014900,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s3","data":{"status":"ok","usage":{"input_tokens":410,"output_tokens":120},"output":"海关总署口径核对：43.2 万辆与乘联会口径 42.8 万辆的差异来自口岸统计。"}}
+
+id: 31
+event: tool.end
+data: {"seq":31,"type":"tool.end","ts":1761700014920,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s1","tool_id":"t_3","data":{"status":"ok","output":"海关总署口径核对：43.2 万辆与乘联会口径 42.8 万辆的差异来自口岸统计。","duration_ms":14020}}
+
+id: 32
+event: message.end
+data: {"seq":32,"type":"message.end","ts":1761700014980,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s1","message_id":"m_2","data":{"finish_reason":"stop","usage":{"input_tokens":900,"output_tokens":210},"text":"比亚迪 2025 年出口 43.2 万辆，同比 +71%，增量主要来自东南亚与拉美；价格带集中在 1.5–2.5 万美元。"}}
+
+id: 33
+event: scope.close
+data: {"seq":33,"type":"scope.close","ts":1761700015010,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s1","data":{"status":"ok","usage":{"input_tokens":900,"output_tokens":210},"output":"比亚迪 2025 年出口 43.2 万辆，同比 +71%，增量主要来自东南亚与拉美；价格带集中在 1.5–2.5 万美元。"}}
+
+id: 34
+event: tool.end
+data: {"seq":34,"type":"tool.end","ts":1761700015030,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","tool_id":"t_1","data":{"status":"ok","output":"比亚迪 2025 年出口 43.2 万辆，同比 +71%，增量主要来自东南亚与拉美；价格带集中在 1.5–2.5 万美元。","artifacts":[],"truncated":false,"duration_ms":14530}}
+
+id: 35
+event: fanout.progress
+data: {"seq":35,"type":"fanout.progress","ts":1761700015050,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","data":{"total":2,"done":2,"running":0,"failed":0}}
+
+id: 36
+event: message.start
+data: {"seq":36,"type":"message.start","ts":1761700015100,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_4","data":{"role":"assistant","node":"supervisor","model":"gpt-4.1"}}
+
+id: 37
+event: block.start
+data: {"seq":37,"type":"block.start","ts":1761700015120,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_4","block_index":0,"data":{"kind":"text"}}
+
+id: 38
+event: block.delta
+data: {"seq":38,"type":"block.delta","ts":1761700015180,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_4","block_index":0,"data":{"kind":"text","text":"两家都跑完了：比亚迪出口 43.2 万辆"}}
+
+id: 39
+event: block.delta
+data: {"seq":39,"type":"block.delta","ts":1761700015260,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_4","block_index":0,"data":{"kind":"text","text":"（+71%），蔚来海外交付 2.4 万辆、欧洲占 61%。"}}
+
+id: 40
+event: block.delta
+data: {"seq":40,"type":"block.delta","ts":1761700015340,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_4","block_index":0,"data":{"kind":"text","text":"结论：短期看比亚迪的规模优势更确定，蔚来的品牌溢价还没转化为销量。"}}
+
+id: 41
+event: block.end
+data: {"seq":41,"type":"block.end","ts":1761700015380,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_4","block_index":0,"data":{"kind":"text","block":{"type":"text","text":"两家都跑完了：比亚迪出口 43.2 万辆（+71%），蔚来海外交付 2.4 万辆、欧洲占 61%。结论：短期看比亚迪的规模优势更确定，蔚来的品牌溢价还没转化为销量。"}}}
+
+id: 42
+event: message.end
+data: {"seq":42,"type":"message.end","ts":1761700015420,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","message_id":"m_4","data":{"finish_reason":"stop","usage":{"input_tokens":980,"output_tokens":240},"tool_calls":[]}}
+
+id: 43
+event: run.end
+data: {"seq":43,"type":"run.end","ts":1761700015460,"run_id":"run_9Xk2","thread_id":"th_5cQ1","scope_id":"s0","data":{"status":"completed","finish_reason":"stop","usage":{"input_tokens":3570,"output_tokens":798,"total_tokens":4368},"scopes":{"agents":4,"tools":4,"failed":0},"duration_ms":15460}}

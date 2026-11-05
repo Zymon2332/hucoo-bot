@@ -1,0 +1,244 @@
+event: run.start
+data: {"v": 1, "seq": 1, "type": "run.start", "ts": 1793697894939, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "data": {"model": "deepseek:deepseek-flash"}}
+id: 1
+
+event: message.start
+data: {"v": 1, "seq": 2, "type": "message.start", "ts": 1793697895186, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "data": {"message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352"}}
+id: 2
+
+event: block.start
+data: {"v": 1, "seq": 3, "type": "block.start", "ts": 1793697895482, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning"}}
+id: 3
+
+event: block.delta
+data: {"v": 1, "seq": 4, "type": "block.delta", "ts": 1793697895482, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning", "text": "The"}}
+id: 4
+
+event: block.delta
+data: {"v": 1, "seq": 5, "type": "block.delta", "ts": 1793697895983, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning", "text": " user"}}
+id: 5
+
+event: block.delta
+data: {"v": 1, "seq": 6, "type": "block.delta", "ts": 1793697895987, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning", "text": " asks"}}
+id: 6
+
+event: block.delta
+data: {"v": 1, "seq": 7, "type": "block.delta", "ts": 1793697895990, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning", "text": " about"}}
+id: 7
+
+event: block.delta
+data: {"v": 1, "seq": 8, "type": "block.delta", "ts": 1793697895992, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning", "text": " Hang"}}
+id: 8
+
+event: block.delta
+data: {"v": 1, "seq": 9, "type": "block.delta", "ts": 1793697895993, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning", "text": "zhou"}}
+id: 9
+
+event: block.delta
+data: {"v": 1, "seq": 10, "type": "block.delta", "ts": 1793697895995, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning", "text": " weather"}}
+id: 10
+
+event: block.delta
+data: {"v": 1, "seq": 11, "type": "block.delta", "ts": 1793697895997, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning", "text": "."}}
+id: 11
+
+event: block.delta
+data: {"v": 1, "seq": 12, "type": "block.delta", "ts": 1793697895998, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning", "text": " I"}}
+id: 12
+
+event: block.delta
+data: {"v": 1, "seq": 13, "type": "block.delta", "ts": 1793697896000, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning", "text": " should"}}
+id: 13
+
+event: block.delta
+data: {"v": 1, "seq": 14, "type": "block.delta", "ts": 1793697896002, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning", "text": " call"}}
+id: 14
+
+event: block.delta
+data: {"v": 1, "seq": 15, "type": "block.delta", "ts": 1793697896004, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning", "text": " the"}}
+id: 15
+
+event: block.delta
+data: {"v": 1, "seq": 16, "type": "block.delta", "ts": 1793697896006, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning", "text": " weather"}}
+id: 16
+
+event: block.delta
+data: {"v": 1, "seq": 17, "type": "block.delta", "ts": 1793697896007, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning", "text": " tool"}}
+id: 17
+
+event: block.delta
+data: {"v": 1, "seq": 18, "type": "block.delta", "ts": 1793697896008, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning", "text": "."}}
+id: 18
+
+event: block.start
+data: {"v": 1, "seq": 19, "type": "block.start", "ts": 1793697896020, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "tool_call", "name": "get_weather_stream", "tool_id": "call_00_dfxAQr7W3DQNDc9PFqS09019"}}
+id: 19
+
+event: block.delta
+data: {"v": 1, "seq": 20, "type": "block.delta", "ts": 1793697896020, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "tool_call", "args": "{\"", "tool_id": "call_00_dfxAQr7W3DQNDc9PFqS09019"}}
+id: 20
+
+event: block.delta
+data: {"v": 1, "seq": 21, "type": "block.delta", "ts": 1793697896022, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "tool_call", "args": "city", "tool_id": "call_00_dfxAQr7W3DQNDc9PFqS09019"}}
+id: 21
+
+event: block.delta
+data: {"v": 1, "seq": 22, "type": "block.delta", "ts": 1793697896023, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "tool_call", "args": "\"", "tool_id": "call_00_dfxAQr7W3DQNDc9PFqS09019"}}
+id: 22
+
+event: block.delta
+data: {"v": 1, "seq": 23, "type": "block.delta", "ts": 1793697896024, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "tool_call", "args": ": \"", "tool_id": "call_00_dfxAQr7W3DQNDc9PFqS09019"}}
+id: 23
+
+event: block.delta
+data: {"v": 1, "seq": 24, "type": "block.delta", "ts": 1793697896024, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "tool_call", "args": "\u676d\u5dde", "tool_id": "call_00_dfxAQr7W3DQNDc9PFqS09019"}}
+id: 24
+
+event: block.delta
+data: {"v": 1, "seq": 25, "type": "block.delta", "ts": 1793697896034, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "tool_call", "args": "\"", "tool_id": "call_00_dfxAQr7W3DQNDc9PFqS09019"}}
+id: 25
+
+event: block.delta
+data: {"v": 1, "seq": 26, "type": "block.delta", "ts": 1793697896035, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "tool_call", "args": "}", "tool_id": "call_00_dfxAQr7W3DQNDc9PFqS09019"}}
+id: 26
+
+event: block.end
+data: {"v": 1, "seq": 27, "type": "block.end", "ts": 1793697896044, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "reasoning", "block": {"type": "reasoning", "reasoning": "The user asks about Hangzhou weather. I should call the weather tool."}}}
+id: 27
+
+event: block.end
+data: {"v": 1, "seq": 28, "type": "block.end", "ts": 1793697896045, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 0, "message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "data": {"kind": "tool_call", "block": {"type": "tool_call", "name": "get_weather_stream", "args": "{\"city\": \"\u676d\u5dde\"}", "tool_id": "call_00_dfxAQr7W3DQNDc9PFqS09019"}}}
+id: 28
+
+event: message.end
+data: {"v": 1, "seq": 29, "type": "message.end", "ts": 1793697896045, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "data": {"message_id": "lc_run--01a1a0b9-d21f-72c1-aa8c-3462e261b352", "usage": {"input_tokens": 300, "output_tokens": 55, "total_tokens": 355, "input_token_details": {"cache_read": 128}, "output_token_details": {"reasoning": 15}}, "finish_reason": "tool_calls", "tool_calls": [{"name": "get_weather_stream", "args": {"city": "\u676d\u5dde"}, "id": "call_00_dfxAQr7W3DQNDc9PFqS09019", "type": "tool_call"}]}}
+id: 29
+
+event: tool.start
+data: {"v": 1, "seq": 30, "type": "tool.start", "ts": 1793697896048, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "data": {"tool_id": "call_00_dfxAQr7W3DQNDc9PFqS09019", "name": "get_weather_stream", "args": {"city": "\u676d\u5dde"}, "started_at": 1793697896048, "parallel": {"index": 0, "total": 1}}}
+id: 30
+
+event: tool.delta
+data: {"v": 1, "seq": 31, "type": "tool.delta", "ts": 1793697896049, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "data": {"kind": "append", "tool_id": "call_00_dfxAQr7W3DQNDc9PFqS09019", "offset": 0, "text": "It's", "channel": "result"}}
+id: 31
+
+event: tool.delta
+data: {"v": 1, "seq": 32, "type": "tool.delta", "ts": 1793697896049, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "data": {"kind": "append", "tool_id": "call_00_dfxAQr7W3DQNDc9PFqS09019", "offset": 4, "text": "always", "channel": "result"}}
+id: 32
+
+event: tool.delta
+data: {"v": 1, "seq": 33, "type": "tool.delta", "ts": 1793697896049, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "data": {"kind": "append", "tool_id": "call_00_dfxAQr7W3DQNDc9PFqS09019", "offset": 10, "text": "sunny", "channel": "result"}}
+id: 33
+
+event: tool.delta
+data: {"v": 1, "seq": 34, "type": "tool.delta", "ts": 1793697896049, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "data": {"kind": "append", "tool_id": "call_00_dfxAQr7W3DQNDc9PFqS09019", "offset": 15, "text": "in", "channel": "result"}}
+id: 34
+
+event: tool.delta
+data: {"v": 1, "seq": 35, "type": "tool.delta", "ts": 1793697896049, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "data": {"kind": "append", "tool_id": "call_00_dfxAQr7W3DQNDc9PFqS09019", "offset": 17, "text": "\u676d\u5dde", "channel": "result"}}
+id: 35
+
+event: tool.end
+data: {"v": 1, "seq": 36, "type": "tool.end", "ts": 1793697896049, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "data": {"tool_id": "call_00_dfxAQr7W3DQNDc9PFqS09019", "output": "It's always sunny in \u676d\u5dde", "artifacts": [], "truncated": false, "duration_ms": 1}}
+id: 36
+
+event: message.start
+data: {"v": 1, "seq": 37, "type": "message.start", "ts": 1793697896167, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "data": {"message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7"}}
+id: 37
+
+event: block.start
+data: {"v": 1, "seq": 38, "type": "block.start", "ts": 1793697896589, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text"}}
+id: 38
+
+event: block.delta
+data: {"v": 1, "seq": 39, "type": "block.delta", "ts": 1793697896589, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\u676d\u5dde"}}
+id: 39
+
+event: block.delta
+data: {"v": 1, "seq": 40, "type": "block.delta", "ts": 1793697896598, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\u7684"}}
+id: 40
+
+event: block.delta
+data: {"v": 1, "seq": 41, "type": "block.delta", "ts": 1793697896613, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\u5929\u6c14"}}
+id: 41
+
+event: block.delta
+data: {"v": 1, "seq": 42, "type": "block.delta", "ts": 1793697896615, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\u5f88\u4e0d\u9519"}}
+id: 42
+
+event: block.delta
+data: {"v": 1, "seq": 43, "type": "block.delta", "ts": 1793697896616, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\u2014\u2014"}}
+id: 43
+
+event: block.delta
+data: {"v": 1, "seq": 44, "type": "block.delta", "ts": 1793697896637, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\u9633\u5149"}}
+id: 44
+
+event: block.delta
+data: {"v": 1, "seq": 45, "type": "block.delta", "ts": 1793697896640, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\u660e\u5a9a"}}
+id: 45
+
+event: block.delta
+data: {"v": 1, "seq": 46, "type": "block.delta", "ts": 1793697896641, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\uff08"}}
+id: 46
+
+event: block.delta
+data: {"v": 1, "seq": 47, "type": "block.delta", "ts": 1793697896680, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\u6674\u6717"}}
+id: 47
+
+event: block.delta
+data: {"v": 1, "seq": 48, "type": "block.delta", "ts": 1793697896681, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\uff09"}}
+id: 48
+
+event: block.delta
+data: {"v": 1, "seq": 49, "type": "block.delta", "ts": 1793697896683, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\u2600"}}
+id: 49
+
+event: block.delta
+data: {"v": 1, "seq": 50, "type": "block.delta", "ts": 1793697896685, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\ufe0f"}}
+id: 50
+
+event: block.delta
+data: {"v": 1, "seq": 51, "type": "block.delta", "ts": 1793697896687, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\u3002"}}
+id: 51
+
+event: block.delta
+data: {"v": 1, "seq": 52, "type": "block.delta", "ts": 1793697896688, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\u770b\u6765"}}
+id: 52
+
+event: block.delta
+data: {"v": 1, "seq": 53, "type": "block.delta", "ts": 1793697896694, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\u662f\u4e2a"}}
+id: 53
+
+event: block.delta
+data: {"v": 1, "seq": 54, "type": "block.delta", "ts": 1793697896705, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\u9002\u5408"}}
+id: 54
+
+event: block.delta
+data: {"v": 1, "seq": 55, "type": "block.delta", "ts": 1793697896715, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\u51fa\u95e8"}}
+id: 55
+
+event: block.delta
+data: {"v": 1, "seq": 56, "type": "block.delta", "ts": 1793697896716, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\u7684\u597d"}}
+id: 56
+
+event: block.delta
+data: {"v": 1, "seq": 57, "type": "block.delta", "ts": 1793697896718, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\u5929\u6c14"}}
+id: 57
+
+event: block.delta
+data: {"v": 1, "seq": 58, "type": "block.delta", "ts": 1793697896719, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "text": "\uff01"}}
+id: 58
+
+event: block.end
+data: {"v": 1, "seq": 59, "type": "block.end", "ts": 1793697896743, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "block_index": 1, "message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "data": {"kind": "text", "block": {"type": "text", "text": "\u676d\u5dde\u7684\u5929\u6c14\u5f88\u4e0d\u9519\u2014\u2014\u9633\u5149\u660e\u5a9a\uff08\u6674\u6717\uff09\u2600\ufe0f\u3002\u770b\u6765\u662f\u4e2a\u9002\u5408\u51fa\u95e8\u7684\u597d\u5929\u6c14\uff01"}}}
+id: 59
+
+event: message.end
+data: {"v": 1, "seq": 60, "type": "message.end", "ts": 1793697896743, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "data": {"message_id": "lc_run--01a1a0b9-d673-73fe-aeef-3aa2dd31c1a7", "usage": {"input_tokens": 374, "output_tokens": 22, "total_tokens": 396, "input_token_details": {"cache_read": 128}, "output_token_details": {"reasoning": 0}}, "finish_reason": "stop", "tool_calls": []}}
+id: 60
+
+event: run.end
+data: {"v": 1, "seq": 61, "type": "run.end", "ts": 1793697896746, "run_id": "01a1a0b9-d219-73ab-8be7-522101e93dcb", "thread_id": "1", "scope_id": "s0", "data": {"status": "completed", "usage": {"deepseek-flash": {"output_token_details": {"reasoning": 15}, "input_token_details": {"cache_read": 256}, "output_tokens": 77, "input_tokens": 674, "total_tokens": 751}}, "finish_reason": "stop", "duration_ms": 1807}}
+id: 61
+

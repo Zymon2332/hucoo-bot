@@ -1,0 +1,162 @@
+HTTP/1.1 200 OK
+Content-Type: text/event-stream; charset=utf-8
+Cache-Control: no-cache, no-transform
+X-Accel-Buffering: no
+X-Run-Id: run_7Q3mZ
+
+retry: 3000
+
+: connected
+
+id: 1
+event: run.start
+data: {"seq":1,"type":"run.start","ts":1761645000000,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"data":{"v":1,"status":"running","model":"gpt-4.1","features":["tool.output.patch","resync","tool.queued"],"event_log_ttl_ms":600000}}
+
+id: 2
+event: message.start
+data: {"seq":2,"type":"message.start","ts":1761645000018,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","data":{"role":"assistant","node":"agent","model":"gpt-4.1"}}
+
+id: 3
+event: block.start
+data: {"seq":3,"type":"block.start","ts":1761645000090,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","block_index":0,"data":{"kind":"reasoning"}}
+
+id: 4
+event: block.delta
+data: {"seq":4,"type":"block.delta","ts":1761645000120,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","block_index":0,"data":{"kind":"reasoning","text":"用户要对比北京和上海"}}
+
+id: 5
+event: block.delta
+data: {"seq":5,"type":"block.delta","ts":1761645000180,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","block_index":0,"data":{"kind":"reasoning","text":"两地天气，可以并发调用两个 get_weather。"}}
+
+id: 6
+event: block.end
+data: {"seq":6,"type":"block.end","ts":1761645000210,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","block_index":0,"data":{"kind":"reasoning","block":{"type":"reasoning","reasoning":"用户要对比北京和上海两地天气，可以并发调用两个 get_weather。"}}}
+
+id: 7
+event: block.start
+data: {"seq":7,"type":"block.start","ts":1761645000215,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","block_index":1,"data":{"kind":"text"}}
+
+id: 8
+event: block.delta
+data: {"seq":8,"type":"block.delta","ts":1761645000290,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","block_index":1,"data":{"kind":"text","text":"我先并发查一下两地的实时天气。"}}
+
+id: 9
+event: block.end
+data: {"seq":9,"type":"block.end","ts":1761645000330,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","block_index":1,"data":{"kind":"text","block":{"type":"text","text":"我先并发查一下两地的实时天气。"}}}
+
+id: 10
+event: block.start
+data: {"seq":10,"type":"block.start","ts":1761645000340,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","block_index":2,"tool_id":"t_1","data":{"kind":"tool_call","name":"get_weather","provider_tool_call_id":"call_a1x9"}}
+
+id: 11
+event: block.delta
+data: {"seq":11,"type":"block.delta","ts":1761645000365,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","block_index":2,"tool_id":"t_1","data":{"kind":"args","args":"{\"city\":\"Bei"}}
+
+id: 12
+event: block.delta
+data: {"seq":12,"type":"block.delta","ts":1761645000395,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","block_index":2,"tool_id":"t_1","data":{"kind":"args","args":"jing\",\"unit\":\"c\"}"}}
+
+id: 13
+event: block.end
+data: {"seq":13,"type":"block.end","ts":1761645000420,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","block_index":2,"tool_id":"t_1","data":{"kind":"tool_call","block":{"type":"tool_call","name":"get_weather","args":{"city":"Beijing","unit":"c"},"provider_tool_call_id":"call_a1x9"}}}
+
+id: 14
+event: block.start
+data: {"seq":14,"type":"block.start","ts":1761645000428,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","block_index":3,"tool_id":"t_2","data":{"kind":"tool_call","name":"get_weather","provider_tool_call_id":"call_b2y4"}}
+
+id: 15
+event: block.delta
+data: {"seq":15,"type":"block.delta","ts":1761645000450,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","block_index":3,"tool_id":"t_2","data":{"kind":"args","args":"{\"city\":\"Sha"}}
+
+id: 16
+event: block.delta
+data: {"seq":16,"type":"block.delta","ts":1761645000482,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","block_index":3,"tool_id":"t_2","data":{"kind":"args","args":"nghai\",\"unit\":\"c\"}"}}
+
+id: 17
+event: block.end
+data: {"seq":17,"type":"block.end","ts":1761645000505,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","block_index":3,"tool_id":"t_2","data":{"kind":"tool_call","block":{"type":"tool_call","name":"get_weather","args":{"city":"Shanghai","unit":"c"},"provider_tool_call_id":"call_b2y4"}}}
+
+id: 18
+event: message.end
+data: {"seq":18,"type":"message.end","ts":1761645000540,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_1","data":{"finish_reason":"tool_calls","usage":{"input_tokens":312,"output_tokens":96},"tool_calls":[{"tool_id":"t_1","name":"get_weather","args":{"city":"Beijing","unit":"c"}},{"tool_id":"t_2","name":"get_weather","args":{"city":"Shanghai","unit":"c"}}]}}
+
+id: 19
+event: tool.start
+data: {"seq":19,"type":"tool.start","ts":1761645000560,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"tool_id":"t_1","data":{"name":"get_weather","args":{"city":"Beijing","unit":"c"},"args_complete":true,"started_at":1761645000560,"parallel":{"index":0,"total":2}}}
+
+id: 20
+event: tool.start
+data: {"seq":20,"type":"tool.start","ts":1761645000566,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"tool_id":"t_2","data":{"name":"get_weather","args":{"city":"Shanghai","unit":"c"},"args_complete":true,"started_at":1761645000566,"parallel":{"index":1,"total":2}}}
+
+id: 21
+event: tool.output.delta
+data: {"seq":21,"type":"tool.output.delta","ts":1761645000940,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"tool_id":"t_1","data":{"rev":1,"kind":"append","offset":0,"text":"北京：晴，","channel":"result"}}
+
+id: 22
+event: tool.output.delta
+data: {"seq":22,"type":"tool.output.delta","ts":1761645000980,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"tool_id":"t_2","data":{"rev":1,"kind":"append","offset":0,"text":"上海：","channel":"result"}}
+
+id: 23
+event: tool.output.delta
+data: {"seq":23,"type":"tool.output.delta","ts":1761645001210,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"tool_id":"t_1","data":{"rev":2,"kind":"append","offset":5,"text":"26℃","channel":"result"}}
+
+id: 24
+event: tool.output.delta
+data: {"seq":24,"type":"tool.output.delta","ts":1761645001290,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"tool_id":"t_2","data":{"rev":2,"kind":"append","offset":3,"text":"多云","channel":"result"}}
+
+id: 25
+event: tool.output.delta
+data: {"seq":25,"type":"tool.output.delta","ts":1761645001480,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"tool_id":"t_1","data":{"rev":3,"kind":"append","offset":8,"text":"，微风","channel":"result"}}
+
+id: 26
+event: tool.end
+data: {"seq":26,"type":"tool.end","ts":1761645001520,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"tool_id":"t_1","data":{"status":"ok","output":"北京：晴，26℃，微风","artifacts":[],"truncated":false,"duration_ms":960}}
+
+id: 27
+event: tool.output.delta
+data: {"seq":27,"type":"tool.output.delta","ts":1761645001620,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"tool_id":"t_2","data":{"rev":3,"kind":"append","offset":5,"text":"，24℃","channel":"result"}}
+
+: hb
+
+event: heartbeat
+data: {"type":"heartbeat","ts":1761645015000,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","data":{"last_seq":27,"active_tools":["t_2"],"queued":0}}
+
+id: 28
+event: tool.error
+data: {"seq":28,"type":"tool.error","ts":1761645016580,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"tool_id":"t_2","data":{"error":{"code":"tool_error","detail":"upstream_timeout","message":"weather upstream timeout after 16000ms","retryable":true},"partial_output":"上海：多云，24℃","duration_ms":16014}}
+
+id: 29
+event: message.start
+data: {"seq":29,"type":"message.start","ts":1761645016620,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_2","data":{"role":"assistant","node":"agent","model":"gpt-4.1"}}
+
+id: 30
+event: block.start
+data: {"seq":30,"type":"block.start","ts":1761645016680,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_2","block_index":0,"data":{"kind":"text"}}
+
+id: 31
+event: block.delta
+data: {"seq":31,"type":"block.delta","ts":1761645016740,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_2","block_index":0,"data":{"kind":"text","text":"北京今天晴，26℃，"}}
+
+id: 32
+event: block.delta
+data: {"seq":32,"type":"block.delta","ts":1761645016810,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_2","block_index":0,"data":{"kind":"text","text":"适合出行；上海查询超时，"}}
+
+id: 33
+event: block.delta
+data: {"seq":33,"type":"block.delta","ts":1761645016890,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_2","block_index":0,"data":{"kind":"text","text":"已拿到部分数据（多云，24℃），"}}
+
+id: 34
+event: block.delta
+data: {"seq":34,"type":"block.delta","ts":1761645016960,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_2","block_index":0,"data":{"kind":"text","text":"建议按晴好天气准备，并留意上海实时更新。"}}
+
+id: 35
+event: block.end
+data: {"seq":35,"type":"block.end","ts":1761645017010,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_2","block_index":0,"data":{"kind":"text","block":{"type":"text","text":"北京今天晴，26℃，适合出行；上海查询超时，已拿到部分数据（多云，24℃），建议按晴好天气准备，并留意上海实时更新。"}}}
+
+id: 36
+event: message.end
+data: {"seq":36,"type":"message.end","ts":1761645017060,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"message_id":"m_2","data":{"finish_reason":"stop","usage":{"input_tokens":486,"output_tokens":128},"tool_calls":[]}}
+
+id: 37
+event: run.end
+data: {"seq":37,"type":"run.end","ts":1761645017100,"run_id":"run_7Q3mZ","thread_id":"th_2bK9","ns":[],"data":{"status":"completed","finish_reason":"stop","usage":{"input_tokens":798,"output_tokens":224,"total_tokens":1022},"duration_ms":17100,"tool_summary":{"ok":1,"error":1}}}
