@@ -1,15 +1,10 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { Sparkle } from "@phosphor-icons/react";
 import { Switch } from "@hucoo/ui/components/switch";
 import { Card } from "@hucoo/ui/components/card";
 import { BOTS, SKILLS } from "@/fixtures";
-import { BotAvatar } from "@/components/bot-avatar";
-import { SectionHeading } from "@/components/primitives";
-import { useUiStore } from "@/stores/ui-store";
 
 export function SkillsPage({ embedded = false }: { embedded?: boolean }) {
-  const closeModal = useUiStore((state) => state.closeModal);
   const [enabled, setEnabled] = useState<Record<string, boolean>>(
     Object.fromEntries(SKILLS.map((skill) => [skill.id, true])),
   );
@@ -68,22 +63,6 @@ export function SkillsPage({ embedded = false }: { embedded?: boolean }) {
               </Card>
             );
           })}
-        </div>
-
-        <SectionHeading>按 bot 查看</SectionHeading>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {BOTS.map((bot) => (
-            <Link
-              key={bot.id}
-              to="/b/$botId"
-              params={{ botId: bot.id }}
-              onClick={closeModal}
-              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground"
-            >
-              <BotAvatar bot={bot} size="sm" />
-              {bot.name}
-            </Link>
-          ))}
         </div>
       </div>
     </div>
