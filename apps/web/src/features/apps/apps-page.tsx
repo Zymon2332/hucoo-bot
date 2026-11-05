@@ -1,16 +1,12 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { PlugsConnected, Robot, Wrench } from "@phosphor-icons/react";
 import { Button } from "@hucoo/ui/components/button";
 import { Card } from "@hucoo/ui/components/card";
-import { APPS, BOTS } from "@/fixtures";
+import { APPS } from "@/fixtures";
 import type { AppConnection } from "@/fixtures/types";
-import { BotAvatar } from "@/components/bot-avatar";
 import { SectionHeading } from "@/components/primitives";
-import { useUiStore } from "@/stores/ui-store";
 
 export function AppsPage({ embedded = false }: { embedded?: boolean }) {
-  const closeModal = useUiStore((state) => state.closeModal);
   const [connected, setConnected] = useState<Record<string, boolean>>(
     Object.fromEntries(APPS.map((app) => [app.id, app.status === "connected"])),
   );
@@ -48,7 +44,7 @@ export function AppsPage({ embedded = false }: { embedded?: boolean }) {
           <header>
             <h1 className="text-[22px] font-semibold tracking-tight">应用</h1>
             <p className="mt-1 text-[12px] text-muted-foreground">
-              连接外部应用与 Agent，再决定哪些 bot 可以使用。
+              添加外部应用与 Agent，供 bot 使用。
             </p>
           </header>
         )}
@@ -75,9 +71,6 @@ export function AppsPage({ embedded = false }: { embedded?: boolean }) {
                 <div className="mt-2 grid gap-2 lg:grid-cols-2">
                   {apps.map((app) => {
                     const on = connected[app.id] ?? false;
-                    const bots = BOTS.filter((bot) =>
-                      app.assignedBotIds.includes(bot.id),
-                    );
                     return (
                       <Card
                         key={app.id}
@@ -106,27 +99,13 @@ export function AppsPage({ embedded = false }: { embedded?: boolean }) {
                                 {app.status === "error"
                                   ? "错误"
                                   : on
-                                    ? "已连接"
-                                    : "未连接"}
+                                    ? "已添加"
+                                    : "未添加"}
                               </span>
                             </div>
                             <p className="mt-0.5 text-[10.5px] text-muted-foreground">
                               {app.description}
                             </p>
-                            <div className="mt-2 flex flex-wrap items-center gap-1">
-                              {bots.map((bot) => (
-                                <Link
-                                  key={bot.id}
-                                  to="/b/$botId"
-                                  params={{ botId: bot.id }}
-                                  onClick={closeModal}
-                                  className="inline-flex items-center gap-1 rounded-full border border-border px-1.5 py-0.5 text-[9.5px] text-muted-foreground hover:text-foreground"
-                                >
-                                  <BotAvatar bot={bot} size="sm" />
-                                  {bot.name}
-                                </Link>
-                              ))}
-                            </div>
                           </div>
                           <Button
                             type="button"
@@ -139,7 +118,7 @@ export function AppsPage({ embedded = false }: { embedded?: boolean }) {
                               }))
                             }
                           >
-                            {on ? "断开" : "连接"}
+                            {on ? "移除" : "添加"}
                           </Button>
                         </div>
                       </Card>

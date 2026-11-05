@@ -37,13 +37,13 @@ describe("apps page", () => {
 
     const mail = screen.getByText("邮件").closest('[data-slot="card"]');
     expect(mail).not.toBeNull();
-    const connect = screen
-      .getAllByRole("button", { name: /^连接$/ })
+    const add = screen
+      .getAllByRole("button", { name: /^添加$/ })
       .find((button) => mail?.contains(button));
-    expect(connect).toBeDefined();
-    await user.click(connect!);
+    expect(add).toBeDefined();
+    await user.click(add!);
     expect(
-      screen.getAllByRole("button", { name: /^断开$/ }).length,
+      screen.getAllByRole("button", { name: /^移除$/ }).length,
     ).toBeGreaterThan(0);
   });
 });

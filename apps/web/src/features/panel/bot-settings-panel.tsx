@@ -68,10 +68,10 @@ export function BotSettingsPanel({ bot }: { bot: Bot }) {
               <span className="min-w-0 flex-1 truncate">{app.name}</span>
               <span className="text-[9px] text-muted-foreground">
                 {app.status === "connected"
-                  ? "已连接"
+                  ? "已添加"
                   : app.status === "error"
                     ? "错误"
-                    : "可用"}
+                    : "可添加"}
               </span>
             </div>
           ))}
