@@ -50,16 +50,6 @@ export function RightPanel({ botId }: { botId?: string }) {
             </Button>
           );
         })}
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-sm"
-          aria-label="展开面板"
-          onClick={() => setOpen(true)}
-          className="mt-auto text-muted-foreground"
-        >
-          <SidebarSimple size={16} className="rotate-180" />
-        </Button>
       </aside>
     );
   }
@@ -100,7 +90,7 @@ export function RightPanel({ botId }: { botId?: string }) {
             size="icon-xs"
             onClick={() => setOpen(false)}
             aria-label="收起面板"
-            className="ml-auto text-muted-foreground"
+            className="ml-auto text-muted-foreground lg:hidden"
           >
             <SidebarSimple size={13} className="rotate-180" />
           </Button>
