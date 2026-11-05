@@ -21,6 +21,7 @@ interface DemoState {
   answers: Record<string, string>;
   reviews: Record<string, "accepted" | "revision_requested" | "rejected">;
   reviewNotes: Record<string, string>;
+  stopped: Record<string, string>;
   onboardingComplete: boolean;
   updateProfile: (patch: Partial<Profile>) => void;
   answerAttention: (attentionId: string, answer: string) => void;
@@ -33,6 +34,8 @@ interface DemoState {
     candidateId: string,
     status: "accepted" | "ignored" | "snoozed",
   ) => void;
+  stopWorkItem: (workItemId: string, reason: string) => void;
+  batchAccept: (reviewIds: string[]) => void;
   toggleRule: (ruleId: string) => void;
   setRuleMode: (ruleId: string, mode: "observe" | "auto") => void;
   updateMemory: (memoryId: string, patch: Partial<Memory>) => void;
@@ -56,6 +59,7 @@ const initial = () => ({
     "accepted" | "revision_requested" | "rejected"
   >,
   reviewNotes: {} as Record<string, string>,
+  stopped: {} as Record<string, string>,
   onboardingComplete: false,
 });
 
@@ -76,6 +80,17 @@ export const useDemoStore = create<DemoState>((set) => ({
     set((state) => ({
       candidates: state.candidates.map((candidate) =>
         candidate.id === candidateId ? { ...candidate, status } : candidate,
+      ),
+    })),
+  stopWorkItem: (workItemId, reason) =>
+    set((state) => ({
+      stopped: { ...state.stopped, [workItemId]: reason },
+    })),
+  batchAccept: (reviewIds) =>
+    set((state) => ({
+      reviews: reviewIds.reduce(
+        (next, id) => ({ ...next, [id]: "accepted" as const }),
+        { ...state.reviews },
       ),
     })),
   toggleRule: (ruleId) =>

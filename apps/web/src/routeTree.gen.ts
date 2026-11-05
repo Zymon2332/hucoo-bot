@@ -10,16 +10,22 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AgentsRouteImport } from './routes/agents'
 import { Route as MemoryRouteImport } from './routes/memory'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ArtifactArtifactIdRouteImport } from './routes/artifact/$artifactId'
-import { Route as CConversationIdRouteImport } from './routes/c/$conversationId'
 import { Route as DevStatesRouteImport } from './routes/dev/states'
+import { Route as WWorkItemIdRouteImport } from './routes/w/$workItemId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgentsRoute = AgentsRouteImport.update({
+  id: '/agents',
+  path: '/agents',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MemoryRoute = MemoryRouteImport.update({
@@ -42,83 +48,90 @@ const ArtifactArtifactIdRoute = ArtifactArtifactIdRouteImport.update({
   path: '/artifact/$artifactId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CConversationIdRoute = CConversationIdRouteImport.update({
-  id: '/c/$conversationId',
-  path: '/c/$conversationId',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const DevStatesRoute = DevStatesRouteImport.update({
   id: '/dev/states',
   path: '/dev/states',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WWorkItemIdRoute = WWorkItemIdRouteImport.update({
+  id: '/w/$workItemId',
+  path: '/w/$workItemId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/agents': typeof AgentsRoute
   '/memory': typeof MemoryRoute
   '/onboarding': typeof OnboardingRoute
   '/settings': typeof SettingsRoute
   '/artifact/$artifactId': typeof ArtifactArtifactIdRoute
-  '/c/$conversationId': typeof CConversationIdRoute
   '/dev/states': typeof DevStatesRoute
+  '/w/$workItemId': typeof WWorkItemIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/agents': typeof AgentsRoute
   '/memory': typeof MemoryRoute
   '/onboarding': typeof OnboardingRoute
   '/settings': typeof SettingsRoute
   '/artifact/$artifactId': typeof ArtifactArtifactIdRoute
-  '/c/$conversationId': typeof CConversationIdRoute
   '/dev/states': typeof DevStatesRoute
+  '/w/$workItemId': typeof WWorkItemIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/agents': typeof AgentsRoute
   '/memory': typeof MemoryRoute
   '/onboarding': typeof OnboardingRoute
   '/settings': typeof SettingsRoute
   '/artifact/$artifactId': typeof ArtifactArtifactIdRoute
-  '/c/$conversationId': typeof CConversationIdRoute
   '/dev/states': typeof DevStatesRoute
+  '/w/$workItemId': typeof WWorkItemIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/agents'
     | '/memory'
     | '/onboarding'
     | '/settings'
     | '/artifact/$artifactId'
-    | '/c/$conversationId'
     | '/dev/states'
+    | '/w/$workItemId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/agents'
     | '/memory'
     | '/onboarding'
     | '/settings'
     | '/artifact/$artifactId'
-    | '/c/$conversationId'
     | '/dev/states'
+    | '/w/$workItemId'
   id:
     | '__root__'
     | '/'
+    | '/agents'
     | '/memory'
     | '/onboarding'
     | '/settings'
     | '/artifact/$artifactId'
-    | '/c/$conversationId'
     | '/dev/states'
+    | '/w/$workItemId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AgentsRoute: typeof AgentsRoute
   MemoryRoute: typeof MemoryRoute
   OnboardingRoute: typeof OnboardingRoute
   SettingsRoute: typeof SettingsRoute
   ArtifactArtifactIdRoute: typeof ArtifactArtifactIdRoute
-  CConversationIdRoute: typeof CConversationIdRoute
   DevStatesRoute: typeof DevStatesRoute
+  WWorkItemIdRoute: typeof WWorkItemIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -128,6 +141,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agents': {
+      id: '/agents'
+      path: '/agents'
+      fullPath: '/agents'
+      preLoaderRoute: typeof AgentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/memory': {
@@ -158,13 +178,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArtifactArtifactIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/c/$conversationId': {
-      id: '/c/$conversationId'
-      path: '/c/$conversationId'
-      fullPath: '/c/$conversationId'
-      preLoaderRoute: typeof CConversationIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/dev/states': {
       id: '/dev/states'
       path: '/dev/states'
@@ -172,17 +185,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DevStatesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/w/$workItemId': {
+      id: '/w/$workItemId'
+      path: '/w/$workItemId'
+      fullPath: '/w/$workItemId'
+      preLoaderRoute: typeof WWorkItemIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AgentsRoute: AgentsRoute,
   MemoryRoute: MemoryRoute,
   OnboardingRoute: OnboardingRoute,
   SettingsRoute: SettingsRoute,
   ArtifactArtifactIdRoute: ArtifactArtifactIdRoute,
-  CConversationIdRoute: CConversationIdRoute,
   DevStatesRoute: DevStatesRoute,
+  WWorkItemIdRoute: WWorkItemIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

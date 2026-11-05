@@ -18,6 +18,7 @@ import { Switch } from "@hucoo/ui/components/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@hucoo/ui/components/tabs";
 import { toast } from "sonner";
 import type { Tone } from "@/fixtures/types";
+import { SOURCES } from "@/fixtures";
 import { toneLabel } from "@/display/labels";
 import { useDemoStore } from "@/stores/demo-store";
 import { getStoredTheme, setTheme, type Theme } from "@/lib/theme";
@@ -226,6 +227,40 @@ export function SettingsPage() {
                 title="主动规则"
                 description="每条规则都有观察与自动两种模式。默认观察：只记录，不执行。"
               >
+                <div className="mb-4 rounded-[12px] border border-border bg-card/60 px-3 py-2.5">
+                  <p className="text-[12.5px] font-medium">来源</p>
+                  <p className="mt-0.5 text-[10.5px] text-muted-foreground">
+                    只有来源正常时，规则才会产生候选。
+                  </p>
+                  <div className="mt-2 space-y-1">
+                    {SOURCES.map((source) => (
+                      <div
+                        key={source.id}
+                        className="flex items-center gap-2 text-[11px]"
+                      >
+                        <span
+                          className={cn(
+                            "size-1.5 rounded-full",
+                            source.status === "on" && "bg-sage",
+                            source.status === "paused" && "bg-muted-foreground/40",
+                            source.status === "error" && "bg-destructive",
+                          )}
+                        />
+                        <span className="min-w-0 flex-1 truncate">
+                          {source.name}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground">
+                          {source.status === "on"
+                            ? "正常"
+                            : source.status === "paused"
+                              ? "暂停"
+                              : "错误"}
+                          {source.lastSync ? ` · ${source.lastSync}` : ""}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
                 <div className="flex items-center justify-between rounded-[12px] border border-border bg-card/60 px-3 py-2.5">
                   <div>
                     <p className="text-[12.5px] font-medium">默认主动行为</p>
@@ -397,7 +432,7 @@ export function SettingsPage() {
                     这个原型只使用 fixtures 渲染状态，不连接后端，也不发起网络请求。
                   </p>
                   <p>
-                    真实的任务阶段、报告与授权语义由后端定义；前端只做显示映射与兜底。
+                    真实的工作项阶段、报告与授权语义由后端定义；前端只做显示映射与兜底。
                   </p>
                   <div className="flex items-center justify-between rounded-[10px] bg-secondary/60 px-3 py-2">
                     <span>版本</span>

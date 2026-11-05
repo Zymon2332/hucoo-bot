@@ -7,9 +7,10 @@ import {
   SheetTitle,
 } from "@hucoo/ui/components/sheet";
 import { Button } from "@hucoo/ui/components/button";
-import { CONVERSATIONS } from "@/fixtures";
+import { WORK_ITEMS } from "@/fixtures";
 import { useDemoStore } from "@/stores/demo-store";
 import { useUiStore } from "@/stores/ui-store";
+import { needsHuman, projectWorkItem } from "@/lib/work-state";
 import { AssistantAvatar } from "@/components/primitives";
 
 export function MobileRail() {
@@ -17,6 +18,13 @@ export function MobileRail() {
   const setOpen = useUiStore((state) => state.setMobileRailOpen);
   const setCommandOpen = useUiStore((state) => state.setCommandOpen);
   const profile = useDemoStore((state) => state.profile);
+  const answers = useDemoStore((state) => state.answers);
+  const reviews = useDemoStore((state) => state.reviews);
+  const stopped = useDemoStore((state) => state.stopped);
+
+  const items = WORK_ITEMS.map((item) =>
+    projectWorkItem(item, { answers, reviews, stopped }),
+  ).sort((a, b) => Number(needsHuman(b)) - Number(needsHuman(a)));
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -32,7 +40,7 @@ export function MobileRail() {
           <Button asChild className="h-9 w-full justify-start gap-2">
             <Link to="/" onClick={() => setOpen(false)}>
               <Plus size={15} weight="bold" />
-              新对话
+              新的事
             </Link>
           </Button>
           <Button
@@ -45,25 +53,32 @@ export function MobileRail() {
             className="h-9 w-full justify-start gap-2 font-normal text-muted-foreground"
           >
             <MagnifyingGlass size={15} />
-            搜索
+            搜索与跳转
           </Button>
         </div>
 
         <nav className="min-h-0 flex-1 overflow-y-auto px-3 pb-3">
           <h2 className="px-2 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-section-label">
-            最近
+            工作项
           </h2>
           <ul className="space-y-0.5">
-            {CONVERSATIONS.map((conversation) => (
-              <li key={conversation.id}>
+            {items.map((item) => (
+              <li key={item.id}>
                 <Link
-                  to="/c/$conversationId"
-                  params={{ conversationId: conversation.id }}
+                  to="/w/$workItemId"
+                  params={{ workItemId: item.id }}
+                  search={{ tab: "overview" }}
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-2 rounded-[9px] px-2 py-2 text-[13px] text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                 >
-                  <span className="size-1.5 rounded-full bg-border" />
-                  <span className="truncate">{conversation.title}</span>
+                  <span
+                    className={
+                      needsHuman(item)
+                        ? "size-1.5 rounded-full bg-warning"
+                        : "size-1.5 rounded-full bg-border"
+                    }
+                  />
+                  <span className="truncate">{item.title}</span>
                 </Link>
               </li>
             ))}

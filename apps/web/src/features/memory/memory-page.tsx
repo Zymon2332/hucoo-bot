@@ -21,7 +21,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@hucoo/ui/components/dialog";
-import { toast } from "sonner";
 import { MEMORY_CATEGORY_LABEL } from "@/display/labels";
 import type { Memory, MemoryCategory } from "@/fixtures/types";
 import { useDemoStore } from "@/stores/demo-store";
@@ -84,7 +83,6 @@ export function MemoryPage({ focusId }: { focusId?: string }) {
       pinned: editPinned,
     });
     updateCategory(editing.id, editCategory);
-    toast.success("记忆已更新");
     setEditing(null);
   }
 
@@ -107,7 +105,6 @@ export function MemoryPage({ focusId }: { focusId?: string }) {
               aria-label="记忆开关"
               onCheckedChange={(checked) => {
                 updateProfile({ memoryEnabled: checked });
-                toast(checked ? "已开启记忆" : "已关闭记忆");
               }}
             />
           </div>
@@ -126,10 +123,7 @@ export function MemoryPage({ focusId }: { focusId?: string }) {
                   <div className="mt-2.5 flex items-center gap-2">
                     <Button
                       size="xs"
-                      onClick={() => {
-                        acceptSuggestion(memory.id);
-                        toast.success("已记住");
-                      }}
+                      onClick={() => acceptSuggestion(memory.id)}
                     >
                       <Check size={11} />
                       记住
@@ -137,10 +131,7 @@ export function MemoryPage({ focusId }: { focusId?: string }) {
                     <Button
                       size="xs"
                       variant="ghost"
-                      onClick={() => {
-                        dismissSuggestion(memory.id);
-                        toast("已忽略");
-                      }}
+                      onClick={() => dismissSuggestion(memory.id)}
                       className="text-muted-foreground"
                     >
                       <X size={11} />
@@ -249,10 +240,7 @@ export function MemoryPage({ focusId }: { focusId?: string }) {
                         variant="ghost"
                         size="icon-xs"
                         aria-label="删除"
-                        onClick={() => {
-                          removeMemory(memory.id);
-                          toast("已删除这条记忆");
-                        }}
+                        onClick={() => removeMemory(memory.id)}
                         className="text-muted-foreground hover:text-destructive"
                       >
                         <Trash size={12} />

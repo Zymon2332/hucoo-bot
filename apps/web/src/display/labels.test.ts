@@ -1,30 +1,38 @@
 import { describe, expect, it } from "vitest";
 import {
+  agentKindLabel,
+  agentStatusLabel,
   artifactStatusLabel,
+  auditKindLabel,
+  authorityModeLabel,
   capabilityKindLabel,
+  channelLabel,
+  evidenceKindLabel,
   labelFor,
   MEMORY_CATEGORY_LABEL,
+  priorityLabel,
   reportLabel,
   reviewStatusLabel,
   stageLabel,
   stageTone,
   stageWaitingFor,
   stepLabel,
-  subAgentLabel,
   toneLabel,
+  verifiedLabel,
+  waitingOnLabel,
 } from "@/display/labels";
 
 describe("display labels", () => {
-  it("maps every known stage", () => {
+  it("maps every known work stage", () => {
     const expected: Record<string, string> = {
       queued: "排队中",
-      working: "执行中",
-      awaiting_answer: "等待你回答",
-      awaiting_review: "等待你确认",
+      working: "进行中",
+      awaiting_answer: "等你决定",
+      awaiting_review: "等你审阅",
       blocked: "受阻",
       failed: "失败",
-      waiting: "等待触发",
-      done: "完成",
+      waiting: "等待中",
+      done: "已完成",
     };
 
     for (const [value, label] of Object.entries(expected)) {
@@ -32,12 +40,30 @@ describe("display labels", () => {
     }
   });
 
+  it("maps waiting-on, priority and verification values", () => {
+    expect(waitingOnLabel("human")).toBe("等你");
+    expect(waitingOnLabel("agent")).toBe("等 Agent");
+    expect(waitingOnLabel("trigger")).toBe("等触发");
+    expect(priorityLabel("now")).toBe("现在");
+    expect(priorityLabel("later")).toBe("稍后");
+    expect(verifiedLabel("yes")).toBe("已验证");
+    expect(verifiedLabel("partial")).toBe("部分验证");
+    expect(verifiedLabel("no")).toBe("未验证");
+  });
+
   it("falls back to the raw backend value for unknown states", () => {
     expect(stageLabel("archived")).toBe("archived");
     expect(stageWaitingFor("archived")).toBe("archived");
+    expect(waitingOnLabel("robot")).toBe("robot");
     expect(reportLabel("queued_elsewhere")).toBe("queued_elsewhere");
     expect(stepLabel("paused")).toBe("paused");
-    expect(subAgentLabel("waiting")).toBe("waiting");
+    expect(evidenceKindLabel("spreadsheet")).toBe("spreadsheet");
+    expect(agentKindLabel("human")).toBe("human");
+    expect(agentStatusLabel("sleeping")).toBe("sleeping");
+    expect(verifiedLabel("maybe")).toBe("maybe");
+    expect(authorityModeLabel("forced")).toBe("forced");
+    expect(auditKindLabel("retry")).toBe("retry");
+    expect(channelLabel("sms")).toBe("sms");
     expect(artifactStatusLabel("archived")).toBe("archived");
     expect(reviewStatusLabel("pending_owner")).toBe("pending_owner");
     expect(toneLabel("formal")).toBe("formal");

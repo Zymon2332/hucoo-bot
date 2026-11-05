@@ -1,9 +1,22 @@
 export * from "./types";
 export { PROFILE, ARTIFACTS, CAPABILITIES } from "./artifacts";
-export { TASKS, getTask } from "./tasks";
-export { CONVERSATIONS, getConversation } from "./conversations";
+export { WORK_ITEMS, getWorkItem, workItemsByStage } from "./work-items";
+export { AGENTS, getAgent } from "./agents";
+export { EVIDENCE, getEvidence } from "./evidence";
+export {
+  CONVERSATIONS,
+  getConversation,
+  conversationsForWorkItem,
+} from "./conversations";
 export { MEMORIES, getMemory } from "./memories";
-export { RULES, CANDIDATES, getCandidate, getRule } from "./proactive";
+export {
+  RULES,
+  CANDIDATES,
+  SOURCES,
+  getCandidate,
+  getRule,
+} from "./proactive";
+export { METRICS, PORTFOLIO_LANES } from "./metrics";
 
 import { ARTIFACTS } from "./artifacts";
 import type { Artifact } from "./types";

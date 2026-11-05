@@ -1,11 +1,9 @@
 import type { MessageBlock } from "@/fixtures/types";
 import { TextBlock } from "./text-block";
 import { PlanBlock } from "./plan-block";
-import { ResultBlock } from "./result-block";
+import { OutcomeBlock } from "./outcome-block";
 import { AttentionBlock } from "./attention-block";
-import { ReviewBlock } from "./review-block";
 import { ErrorBlock } from "./error-block";
-import { CandidateBlock } from "./candidate-block";
 import { MemoryBlock } from "./memory-block";
 
 export function BlockRenderer({ block }: { block: MessageBlock }) {
@@ -13,28 +11,22 @@ export function BlockRenderer({ block }: { block: MessageBlock }) {
     case "text":
       return <TextBlock text={block.text} />;
     case "plan":
-      return <PlanBlock taskId={block.taskId} />;
-    case "result":
-      return <ResultBlock taskId={block.taskId} summary={block.summary} />;
+      return <PlanBlock workItemId={block.workItemId} />;
+    case "outcome":
+      return <OutcomeBlock workItemId={block.workItemId} />;
     case "attention":
-      return <AttentionBlock taskId={block.taskId} />;
-    case "review":
-      return <ReviewBlock taskId={block.taskId} />;
+      return <AttentionBlock workItemId={block.workItemId} />;
     case "error":
       return (
         <ErrorBlock
-          taskId={block.taskId}
+          workItemId={block.workItemId}
           code={block.code}
           message={block.message}
           retryable={block.retryable}
         />
       );
-    case "candidate":
-      return <CandidateBlock candidateId={block.candidateId} />;
     case "memory":
-      return (
-        <MemoryBlock memoryId={block.memoryId} quote={block.quote} />
-      );
+      return <MemoryBlock memoryId={block.memoryId} quote={block.quote} />;
     default:
       return null;
   }

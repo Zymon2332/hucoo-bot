@@ -19,11 +19,12 @@ export interface Profile {
   proactiveMode: "observe" | "auto";
 }
 
-export type InspectorTab =
+export type WorkTab =
+  | "overview"
+  | "conversation"
+  | "evidence"
   | "execution"
-  | "memory"
-  | "artifacts"
-  | "capabilities";
+  | "authority";
 
 export type Stage =
   | "queued"
@@ -34,6 +35,10 @@ export type Stage =
   | "failed"
   | "waiting"
   | "done";
+
+export type WaitingOn = "human" | "agent" | "external" | "trigger" | "none";
+
+export type Priority = "now" | "today" | "later";
 
 export type ReportKind =
   | "progress"
@@ -49,18 +54,8 @@ export interface PlanStep {
   id: string;
   title: string;
   status: StepStatus;
-  agent?: string;
+  agentId?: string;
   note?: string;
-}
-
-export type SubAgentStatus = "idle" | "running" | "done" | "failed";
-
-export interface SubAgent {
-  id: string;
-  name: string;
-  role: string;
-  status: SubAgentStatus;
-  summary?: string;
 }
 
 export interface Report {
@@ -100,20 +95,113 @@ export interface Review {
   note?: string;
 }
 
-export interface Task {
+export interface Authority {
+  mode: "explicit" | "inferred";
+  scope: string;
+  rules: string[];
+  reversible: boolean;
+  grantedBy: string;
+  grantedAt: string;
+  stopReason?: string;
+}
+
+export type AuditKind = "grant" | "decision" | "handoff" | "action" | "verify" | "stop";
+
+export interface AuditEntry {
+  id: string;
+  at: string;
+  actor: string;
+  action: string;
+  detail?: string;
+  kind: AuditKind;
+}
+
+export interface DecisionRecord {
+  id: string;
+  at: string;
+  question: string;
+  answer: string;
+  by: "human" | "agent";
+  reasoning?: string;
+}
+
+export interface Verification {
+  summary: string;
+  checked: string[];
+  unchecked: string[];
+  needsHuman: string[];
+}
+
+export type AgentKind = "personal" | "subagent" | "code";
+export type AgentStatus = "idle" | "running" | "waiting" | "failed" | "done";
+
+export interface AgentRun {
+  id: string;
+  kind: AgentKind;
+  name: string;
+  role: string;
+  status: AgentStatus;
+  summary?: string;
+  sessionId?: string;
+  repo?: string;
+  branch?: string;
+  lastHandoff?: string;
+  workItemIds: string[];
+}
+
+export type EvidenceKind =
+  | "artifact"
+  | "diff"
+  | "source"
+  | "session"
+  | "log"
+  | "test";
+
+export type Verified = "yes" | "partial" | "no";
+
+export interface Evidence {
+  id: string;
+  kind: EvidenceKind;
+  title: string;
+  summary: string;
+  at: string;
+  artifactId?: string;
+  agentId?: string;
+  sourceLabel?: string;
+  sourceUrl?: string;
+  diff?: {
+    file: string;
+    additions: number;
+    deletions: number;
+    patch: string;
+  };
+  log?: string[];
+  verified: Verified;
+}
+
+export interface WorkItem {
   id: string;
   title: string;
-  goal: string;
+  outcome: string;
   stage: Stage;
-  origin: "explicit" | "inferred";
-  startedAt: string;
+  waitingOn: WaitingOn;
+  priority: Priority;
+  due?: string;
+  createdAt: string;
   updatedAt: string;
+  authority: Authority;
   plan: PlanStep[];
-  subagents: SubAgent[];
   reports: Report[];
+  agentIds: string[];
+  evidenceIds: string[];
+  conversationIds: string[];
   attention?: Attention;
   review?: Review;
   artifactIds: string[];
+  memoryIds: string[];
+  verification: Verification;
+  decisions: DecisionRecord[];
+  audit: AuditEntry[];
 }
 
 export type ArtifactKind = "markdown" | "code" | "table" | "html";
@@ -160,18 +248,20 @@ export interface Candidate {
   title: string;
   action: string;
   reason: string;
+  impact: string;
+  reversible: boolean;
   createdAt: string;
   status: "open" | "accepted" | "ignored" | "snoozed";
 }
 
+export type Channel = "chat" | "email" | "im" | "note";
+
 export type MessageBlock =
   | { kind: "text"; text: string }
-  | { kind: "plan"; taskId: string }
-  | { kind: "result"; taskId: string; summary: string }
-  | { kind: "attention"; taskId: string }
-  | { kind: "review"; taskId: string }
-  | { kind: "error"; taskId: string; code: string; message: string; retryable: boolean }
-  | { kind: "candidate"; candidateId: string }
+  | { kind: "plan"; workItemId: string }
+  | { kind: "outcome"; workItemId: string }
+  | { kind: "attention"; workItemId: string }
+  | { kind: "error"; workItemId: string; code: string; message: string; retryable: boolean }
   | { kind: "memory"; memoryId: string; quote: string };
 
 export interface Message {
@@ -183,12 +273,20 @@ export interface Message {
 
 export interface Conversation {
   id: string;
+  workItemId: string;
   title: string;
+  channel: Channel;
   updatedAt: string;
-  pinned?: boolean;
-  taskId?: string;
-  focus?: InspectorTab;
   messages: Message[];
+}
+
+export interface SourceStatus {
+  id: string;
+  name: string;
+  kind: "connector" | "rule";
+  status: "on" | "paused" | "error";
+  lastSync?: string;
+  detail?: string;
 }
 
 export interface Capability {
@@ -198,4 +296,19 @@ export interface Capability {
   kind: "skill" | "connector" | "tool";
   enabled: boolean;
   lastUsed?: string;
+}
+
+export interface AttentionMetric {
+  workItemId: string;
+  decisions: number;
+  humanMinutes: number;
+  timeToDecision: string;
+  interrupted: boolean;
+}
+
+export interface PortfolioLane {
+  id: string;
+  label: string;
+  waitingOn: WaitingOn;
+  workItemIds: string[];
 }

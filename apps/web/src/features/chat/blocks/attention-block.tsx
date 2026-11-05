@@ -3,23 +3,21 @@ import { CheckCircle, Question } from "@phosphor-icons/react";
 import { cn } from "@hucoo/ui";
 import { Button } from "@hucoo/ui/components/button";
 import { Input } from "@hucoo/ui/components/input";
-import { toast } from "sonner";
-import { getTask } from "@/fixtures";
+import { getWorkItem } from "@/fixtures";
+import { useWorkItemView } from "@/lib/work-state";
 import { useDemoStore } from "@/stores/demo-store";
 
-export function AttentionBlock({ taskId }: { taskId: string }) {
-  const task = getTask(taskId);
-  const attention = task?.attention;
-  const answer = useDemoStore((state) =>
-    attention ? state.answers[attention.id] : undefined,
-  );
+export function AttentionBlock({ workItemId }: { workItemId: string }) {
+  const raw = getWorkItem(workItemId);
+  const item = raw ? useWorkItemView(raw) : undefined;
+  const attention = item?.attention;
   const answerAttention = useDemoStore((state) => state.answerAttention);
   const [selected, setSelected] = useState<string | null>(null);
   const [freeText, setFreeText] = useState("");
 
   if (!attention) return null;
 
-  if (answer) {
+  if (attention.status === "answered" || attention.answer) {
     return (
       <section className="rounded-[var(--radius-card)] border border-border bg-card/60 px-4 py-3">
         <header className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.16em] text-section-label">
@@ -27,7 +25,7 @@ export function AttentionBlock({ taskId }: { taskId: string }) {
           已回答
         </header>
         <p className="mt-2 text-sm text-muted-foreground">{attention.question}</p>
-        <p className="mt-2 text-sm font-medium">{answer}</p>
+        <p className="mt-2 text-sm font-medium">{attention.answer}</p>
       </section>
     );
   }
@@ -112,10 +110,7 @@ export function AttentionBlock({ taskId }: { taskId: string }) {
             type="button"
             size="sm"
             disabled={!value}
-            onClick={() => {
-              answerAttention(attention.id, value);
-              toast.success("已告诉小满");
-            }}
+            onClick={() => answerAttention(attention.id, value)}
           >
             回答
           </Button>

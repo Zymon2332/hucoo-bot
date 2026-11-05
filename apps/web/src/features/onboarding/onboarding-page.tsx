@@ -5,7 +5,6 @@ import { cn } from "@hucoo/ui";
 import { Button } from "@hucoo/ui/components/button";
 import { Input } from "@hucoo/ui/components/input";
 import { Switch } from "@hucoo/ui/components/switch";
-import { toast } from "sonner";
 import type { Tone } from "@/fixtures/types";
 import { toneLabel } from "@/display/labels";
 import { useDemoStore } from "@/stores/demo-store";
@@ -56,7 +55,6 @@ export function OnboardingPage() {
       memoryEnabled,
       proactiveMode: proactive,
     });
-    toast.success("设置好了");
     void navigate({ to: "/" });
   }
 

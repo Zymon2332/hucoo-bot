@@ -4,25 +4,32 @@
  */
 
 import type {
+  AgentKind,
+  AgentStatus,
   ArtifactKind,
   ArtifactStatus,
+  AuditKind,
+  Channel,
+  EvidenceKind,
   MemoryCategory,
+  Priority,
   ReportKind,
   ReviewStatus,
   StepStatus,
-  SubAgentStatus,
   Tone,
+  Verified,
+  WaitingOn,
 } from "@/fixtures/types";
 
 const STAGE_LABEL: Record<string, string> = {
   queued: "排队中",
-  working: "执行中",
-  awaiting_answer: "等待你回答",
-  awaiting_review: "等待你确认",
+  working: "进行中",
+  awaiting_answer: "等你决定",
+  awaiting_review: "等你审阅",
   blocked: "受阻",
   failed: "失败",
-  waiting: "等待触发",
-  done: "完成",
+  waiting: "等待中",
+  done: "已完成",
 };
 
 const STAGE_TONE: Record<string, string> = {
@@ -38,13 +45,27 @@ const STAGE_TONE: Record<string, string> = {
 
 const STAGE_WAITING_FOR: Record<string, string> = {
   queued: "排队中，不需要你",
-  working: "正在执行，不需要你",
-  awaiting_answer: "等你回答一个问题",
+  working: "执行中，不需要你",
+  awaiting_answer: "等你做一个决定",
   awaiting_review: "等你确认结果",
   blocked: "需要你补充信息",
-  failed: "需要你重试或修复连接",
+  failed: "需要你处理失败",
   waiting: "等待下一次触发",
-  done: "已完成",
+  done: "已经完成",
+};
+
+const WAITING_ON_LABEL: Record<WaitingOn, string> = {
+  human: "等你",
+  agent: "等 Agent",
+  external: "等外部",
+  trigger: "等触发",
+  none: "无",
+};
+
+const PRIORITY_LABEL: Record<Priority, string> = {
+  now: "现在",
+  today: "今天",
+  later: "稍后",
 };
 
 const REPORT_LABEL: Record<string, string> = {
@@ -64,11 +85,54 @@ const STEP_LABEL: Record<string, string> = {
   failed: "失败",
 };
 
-const SUBAGENT_LABEL: Record<string, string> = {
+const AGENT_KIND_LABEL: Record<AgentKind, string> = {
+  personal: "个人助理",
+  subagent: "子代理",
+  code: "Code Agent",
+};
+
+const AGENT_STATUS_LABEL: Record<AgentStatus, string> = {
   idle: "空闲",
   running: "执行中",
-  done: "完成",
+  waiting: "等待",
   failed: "失败",
+  done: "完成",
+};
+
+const EVIDENCE_KIND_LABEL: Record<EvidenceKind, string> = {
+  artifact: "产物",
+  diff: "变更",
+  source: "来源",
+  session: "会话",
+  log: "日志",
+  test: "测试",
+};
+
+const VERIFIED_LABEL: Record<Verified, string> = {
+  yes: "已验证",
+  partial: "部分验证",
+  no: "未验证",
+};
+
+const AUTHORITY_MODE_LABEL: Record<string, string> = {
+  explicit: "明确授权",
+  inferred: "规则推断",
+};
+
+const AUDIT_KIND_LABEL: Record<AuditKind, string> = {
+  grant: "授权",
+  decision: "决定",
+  handoff: "交接",
+  action: "动作",
+  verify: "验证",
+  stop: "停止",
+};
+
+const CHANNEL_LABEL: Record<Channel, string> = {
+  chat: "对话",
+  email: "邮件",
+  im: "消息",
+  note: "笔记",
 };
 
 export const MEMORY_CATEGORY_LABEL: Record<MemoryCategory, string> = {
@@ -125,10 +189,23 @@ export const stageLabel = (value: string) => labelFor(STAGE_LABEL, value);
 export const stageTone = (value: string) =>
   STAGE_TONE[value] ?? "text-muted-foreground bg-secondary";
 export const stageWaitingFor = (value: string) =>
-  STAGE_WAITING_FOR[value] ?? value;
+  labelFor(STAGE_WAITING_FOR, value);
+export const waitingOnLabel = (value: string) =>
+  labelFor(WAITING_ON_LABEL, value);
+export const priorityLabel = (value: string) => labelFor(PRIORITY_LABEL, value);
 export const reportLabel = (value: string) => labelFor(REPORT_LABEL, value);
 export const stepLabel = (value: string) => labelFor(STEP_LABEL, value);
-export const subAgentLabel = (value: string) => labelFor(SUBAGENT_LABEL, value);
+export const agentKindLabel = (value: string) =>
+  labelFor(AGENT_KIND_LABEL, value);
+export const agentStatusLabel = (value: string) =>
+  labelFor(AGENT_STATUS_LABEL, value);
+export const evidenceKindLabel = (value: string) =>
+  labelFor(EVIDENCE_KIND_LABEL, value);
+export const verifiedLabel = (value: string) => labelFor(VERIFIED_LABEL, value);
+export const authorityModeLabel = (value: string) =>
+  labelFor(AUTHORITY_MODE_LABEL, value);
+export const auditKindLabel = (value: string) => labelFor(AUDIT_KIND_LABEL, value);
+export const channelLabel = (value: string) => labelFor(CHANNEL_LABEL, value);
 export const artifactStatusLabel = (value: string) =>
   labelFor(ARTIFACT_STATUS_LABEL, value);
 export const reviewStatusLabel = (value: string) =>
@@ -142,13 +219,6 @@ export const STEP_ORDER: StepStatus[] = [
   "running",
   "done",
   "skipped",
-  "failed",
-];
-
-export const SUBAGENT_STATES: SubAgentStatus[] = [
-  "idle",
-  "running",
-  "done",
   "failed",
 ];
 

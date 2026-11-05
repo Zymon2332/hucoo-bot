@@ -1,23 +1,22 @@
 import { ArrowClockwise, ArrowRight, WarningCircle } from "@phosphor-icons/react";
+import { Link } from "@tanstack/react-router";
 import { Button } from "@hucoo/ui/components/button";
-import { toast } from "sonner";
-import { getTask } from "@/fixtures";
-import { useUiStore } from "@/stores/ui-store";
+import { getWorkItem } from "@/fixtures";
+import { useWorkItemView } from "@/lib/work-state";
 
 export function ErrorBlock({
-  taskId,
+  workItemId,
   code,
   message,
   retryable,
 }: {
-  taskId: string;
+  workItemId: string;
   code: string;
   message: string;
   retryable: boolean;
 }) {
-  const task = getTask(taskId);
-  const setTab = useUiStore((state) => state.setInspectorTab);
-  const setOpen = useUiStore((state) => state.setInspectorOpen);
+  const raw = getWorkItem(workItemId);
+  const item = raw ? useWorkItemView(raw) : undefined;
 
   return (
     <section className="rounded-[var(--radius-card)] border border-destructive/25 bg-destructive/[0.045] px-4 py-3.5">
@@ -29,37 +28,35 @@ export function ErrorBlock({
         </span>
       </header>
       <p className="mt-2 text-sm leading-relaxed">{message}</p>
-      {task?.attention?.context && (
-        <p className="mt-1 text-xs text-muted-foreground">
-          {task.attention.context}
-        </p>
-      )}
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
         {retryable && (
-          <Button
-            type="button"
-            size="sm"
-            onClick={() => toast.success("已请求重试")}
-          >
+          <Button type="button" size="sm">
             <ArrowClockwise size={13} />
             重试
           </Button>
         )}
         <Button
-          type="button"
+          asChild
           size="sm"
           variant="ghost"
-          onClick={() => {
-            setOpen(true);
-            setTab("execution");
-          }}
           className="text-muted-foreground"
         >
-          查看详情
-          <ArrowRight size={12} />
+          <Link
+            to="/w/$workItemId"
+            params={{ workItemId }}
+            search={{ tab: "overview" }}
+          >
+            查看详情
+            <ArrowRight size={12} />
+          </Link>
         </Button>
       </div>
+      {item?.verification.summary && (
+        <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
+          {item.verification.summary}
+        </p>
+      )}
     </section>
   );
 }

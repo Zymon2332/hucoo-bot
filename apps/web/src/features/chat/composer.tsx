@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import { ArrowUp, At, Paperclip } from "@phosphor-icons/react";
-import { toast } from "sonner";
 import { cn } from "@hucoo/ui";
 import { Button } from "@hucoo/ui/components/button";
 import { Textarea } from "@hucoo/ui/components/textarea";
@@ -22,7 +21,6 @@ export function Composer({
     if (!value) return;
     onSend?.(value);
     setText("");
-    toast("原型演示：消息已记录（未连接后端）");
   }
 
   return (
@@ -54,7 +52,6 @@ export function Composer({
           type="button"
           variant="ghost"
           size="icon-sm"
-          onClick={() => toast("原型演示：附件入口")}
           aria-label="添加附件"
           className="text-muted-foreground"
         >
@@ -64,7 +61,6 @@ export function Composer({
           type="button"
           variant="ghost"
           size="icon-sm"
-          onClick={() => toast("原型演示：引用记忆")}
           aria-label="引用记忆"
           className="text-muted-foreground"
         >

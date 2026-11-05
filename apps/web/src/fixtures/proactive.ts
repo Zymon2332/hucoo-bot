@@ -1,10 +1,49 @@
-import type { Candidate, Rule } from "./types";
+import type { Candidate, Rule, SourceStatus } from "./types";
+
+export const SOURCES: SourceStatus[] = [
+  {
+    id: "src-calendar",
+    name: "日历",
+    kind: "connector",
+    status: "on",
+    lastSync: "10 分钟前",
+  },
+  {
+    id: "src-mail",
+    name: "邮件",
+    kind: "connector",
+    status: "error",
+    lastSync: "今天 08:41",
+    detail: "授权过期",
+  },
+  {
+    id: "src-im",
+    name: "消息",
+    kind: "connector",
+    status: "on",
+    lastSync: "刚刚",
+  },
+  {
+    id: "src-notes",
+    name: "笔记",
+    kind: "connector",
+    status: "on",
+    lastSync: "昨天",
+  },
+  {
+    id: "src-github",
+    name: "GitHub",
+    kind: "connector",
+    status: "paused",
+    lastSync: "昨天",
+  },
+];
 
 export const RULES: Rule[] = [
   {
     id: "rule-morning",
     name: "早间简报",
-    instruction: "工作日早上 8:30，汇总当天日程、未读邮件与三件最重要的事，发到对话里。",
+    instruction: "工作日早上 8:30，汇总当天日程、未读邮件与三件最重要的事。",
     mode: "observe",
     enabled: true,
     lastTriggered: "今天 08:30",
@@ -20,7 +59,7 @@ export const RULES: Rule[] = [
   {
     id: "rule-mail",
     name: "重要邮件提醒",
-    instruction: "收到来自直属上级或客户的邮件时，先判断是否需要今天回复；需要时提醒我。",
+    instruction: "收到来自直属上级或客户的邮件时，先判断是否需要今天回复。",
     mode: "observe",
     enabled: true,
     lastTriggered: "今天 08:41",
@@ -41,6 +80,8 @@ export const CANDIDATES: Candidate[] = [
     title: "今天的早间简报已经准备好",
     action: "整理今天的 4 个日程、7 封未读邮件，并列出三件最重要的事。",
     reason: "匹配规则「早间简报」，当前为观察模式，所以只记录、不发送。",
+    impact: "只生成一条对话消息，不修改任何外部数据。",
+    reversible: true,
     createdAt: "今天 08:30",
     status: "open",
   },
@@ -50,6 +91,8 @@ export const CANDIDATES: Candidate[] = [
     title: "设计系统有 3 条相关变更",
     action: "汇总 3 条与前端实现相关的变更，并标注影响范围。",
     reason: "匹配规则「设计系统变更跟进」，当前为观察模式。",
+    impact: "只生成一条汇总，不修改文档。",
+    reversible: true,
     createdAt: "周一 10:00",
     status: "open",
   },

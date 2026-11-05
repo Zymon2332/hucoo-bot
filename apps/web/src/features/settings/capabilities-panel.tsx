@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { PlugsConnected, Sparkle, Wrench } from "@phosphor-icons/react";
 import { Switch } from "@hucoo/ui/components/switch";
-import { toast } from "sonner";
 import { CAPABILITIES } from "@/fixtures";
 import { capabilityKindLabel } from "@/display/labels";
 
@@ -68,11 +67,6 @@ export function CapabilitiesPanel() {
                           ...state,
                           [capability.id]: checked,
                         }));
-                        toast(
-                          checked
-                            ? `已开启 ${capability.name}`
-                            : `已关闭 ${capability.name}`,
-                        );
                       }}
                       className="mt-0.5"
                     />

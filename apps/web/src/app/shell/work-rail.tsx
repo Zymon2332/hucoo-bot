@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
-  Bell,
   Compass,
   GearSix,
   MagnifyingGlass,
@@ -10,52 +9,43 @@ import {
 } from "@phosphor-icons/react";
 import { cn } from "@hucoo/ui";
 import { Button } from "@hucoo/ui/components/button";
-import { CONVERSATIONS, getTask } from "@/fixtures";
-import type { Conversation } from "@/fixtures/types";
+import { WORK_ITEMS } from "@/fixtures";
+import type { WorkItem } from "@/fixtures/types";
 import { useDemoStore } from "@/stores/demo-store";
 import { useUiStore } from "@/stores/ui-store";
+import { projectWorkItem, needsHuman } from "@/lib/work-state";
 import { AssistantAvatar, Kbd } from "@/components/primitives";
 
-function groupOf(conversation: Conversation): string {
-  if (conversation.updatedAt.startsWith("今天")) return "今天";
-  if (conversation.updatedAt.startsWith("昨天")) return "昨天";
-  return "更早";
+function groupOf(item: WorkItem): string {
+  if (needsHuman(item)) return "需要你";
+  if (item.stage === "working" || item.stage === "queued") return "进行中";
+  if (item.stage === "waiting") return "等待中";
+  return "已结束";
 }
 
-function needsAttention(conversation: Conversation): boolean {
-  const task = conversation.taskId ? getTask(conversation.taskId) : undefined;
-  return (
-    task?.stage === "awaiting_answer" ||
-    task?.stage === "awaiting_review" ||
-    task?.stage === "blocked" ||
-    task?.stage === "failed"
-  );
-}
-
-export function ConversationRail() {
+export function WorkRail() {
   const profile = useDemoStore((state) => state.profile);
+  const answers = useDemoStore((state) => state.answers);
+  const reviews = useDemoStore((state) => state.reviews);
+  const stopped = useDemoStore((state) => state.stopped);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
-  const activeId = pathname.startsWith("/c/") ? pathname.slice(3) : undefined;
+  const activeId = pathname.startsWith("/w/") ? pathname.slice(3) : undefined;
   const collapsed = useUiStore((state) => state.railCollapsed);
   const toggleRail = useUiStore((state) => state.toggleRail);
   const setCommandOpen = useUiStore((state) => state.setCommandOpen);
-  const setBellOpen = useUiStore((state) => state.setBellOpen);
-  const candidates = useDemoStore((state) => state.candidates);
-  const openCandidates = candidates.filter(
-    (candidate) => candidate.status === "open",
-  ).length;
 
   const groups = useMemo(() => {
-    const order = ["今天", "昨天", "更早"];
+    const order = ["需要你", "进行中", "等待中", "已结束"];
+    const items = WORK_ITEMS.map((item) =>
+      projectWorkItem(item, { answers, reviews, stopped }),
+    );
     return order
       .map((label) => ({
         label,
-        items: CONVERSATIONS.filter(
-          (conversation) => groupOf(conversation) === label,
-        ),
+        items: items.filter((item) => groupOf(item) === label),
       }))
       .filter((group) => group.items.length > 0);
-  }, []);
+  }, [answers, reviews, stopped]);
 
   if (collapsed) {
     return (
@@ -63,7 +53,7 @@ export function ConversationRail() {
         <div className="mb-2">
           <AssistantAvatar profile={profile} size="md" status="online" />
         </div>
-        <Button asChild size="icon-lg" aria-label="新对话">
+        <Button asChild size="icon-lg" aria-label="新的事">
           <Link to="/">
             <Plus size={17} weight="bold" />
           </Link>
@@ -78,26 +68,13 @@ export function ConversationRail() {
         >
           <MagnifyingGlass size={17} />
         </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-lg"
-          onClick={() => setBellOpen(true)}
-          aria-label="通知"
-          className="relative text-muted-foreground"
-        >
-          <Bell size={17} />
-          {openCandidates > 0 && (
-            <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-clay" />
-          )}
-        </Button>
         <div className="mt-auto flex flex-col items-center gap-2">
           <Button
             type="button"
             variant="ghost"
             size="icon-lg"
             onClick={toggleRail}
-            aria-label="展开会话栏"
+            aria-label="展开工作项"
             className="text-muted-foreground"
           >
             <SidebarSimple size={17} />
@@ -119,7 +96,7 @@ export function ConversationRail() {
   }
 
   return (
-    <aside className="hidden w-[264px] shrink-0 flex-col rounded-[22px] border border-sidebar-border bg-sidebar/80 p-3 backdrop-blur md:flex">
+    <aside className="hidden w-[270px] shrink-0 flex-col rounded-[22px] border border-sidebar-border bg-sidebar/80 p-3 backdrop-blur md:flex">
       <header className="flex items-center gap-2.5 px-1 py-1">
         <AssistantAvatar profile={profile} size="md" status="online" />
         <div className="min-w-0 flex-1">
@@ -127,7 +104,7 @@ export function ConversationRail() {
             {profile.name}
           </p>
           <p className="truncate text-[10px] text-muted-foreground">
-            {profile.proactiveMode === "observe" ? "观察模式 · 安静工作" : "自动模式"}
+            决策台 · {profile.proactiveMode === "observe" ? "观察模式" : "自动模式"}
           </p>
         </div>
         <Button
@@ -135,7 +112,7 @@ export function ConversationRail() {
           variant="ghost"
           size="icon-sm"
           onClick={toggleRail}
-          aria-label="收起会话栏"
+          aria-label="收起工作项"
           className="text-muted-foreground"
         >
           <SidebarSimple size={15} />
@@ -146,7 +123,7 @@ export function ConversationRail() {
         <Button asChild className="h-9 w-full justify-start gap-2 rounded-[10px] px-3 text-[13px]">
           <Link to="/">
             <Plus size={15} weight="bold" />
-            新对话
+            新的事
           </Link>
         </Button>
         <Button
@@ -156,22 +133,8 @@ export function ConversationRail() {
           className="h-9 w-full justify-start gap-2 rounded-[10px] px-3 text-[13px] font-normal text-muted-foreground"
         >
           <MagnifyingGlass size={15} />
-          搜索
+          搜索与跳转
           <Kbd>⌘K</Kbd>
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={() => setBellOpen(true)}
-          className="h-9 w-full justify-start gap-2 rounded-[10px] px-3 text-[13px] font-normal text-muted-foreground"
-        >
-          <Bell size={15} />
-          需要你处理
-          {openCandidates > 0 && (
-            <span className="ml-auto rounded-full bg-clay/10 px-1.5 py-0.5 text-[10px] font-medium text-clay">
-              {openCandidates}
-            </span>
-          )}
         </Button>
       </div>
 
@@ -182,14 +145,14 @@ export function ConversationRail() {
               {group.label}
             </h2>
             <ul className="mt-1 space-y-0.5">
-              {group.items.map((conversation) => {
-                const active = conversation.id === activeId;
-                const pending = needsAttention(conversation);
+              {group.items.map((item) => {
+                const active = item.id === activeId;
                 return (
-                  <li key={conversation.id}>
+                  <li key={item.id}>
                     <Link
-                      to="/c/$conversationId"
-                      params={{ conversationId: conversation.id }}
+                      to="/w/$workItemId"
+                      params={{ workItemId: item.id }}
+                      search={{ tab: "overview" }}
                       className={cn(
                         "group flex h-8 items-center gap-2 rounded-[9px] px-2 text-[12.5px] transition-colors",
                         active
@@ -202,12 +165,12 @@ export function ConversationRail() {
                           "size-1.5 shrink-0 rounded-full",
                           active
                             ? "bg-clay"
-                            : pending
-                              ? "bg-warning"
+                            : item.stage === "failed" || item.stage === "blocked"
+                              ? "bg-destructive/50"
                               : "bg-transparent group-hover:bg-muted-foreground/30",
                         )}
                       />
-                      <span className="truncate">{conversation.title}</span>
+                      <span className="truncate">{item.title}</span>
                     </Link>
                   </li>
                 );
