@@ -4,6 +4,14 @@
 
 **当前是静态原型**：所有数据来自 `src/fixtures`，不连接后端，也不发起网络请求。真实的任务状态、授权与事件由后端定义，前端只负责显示映射与兜底。
 
+## 文档
+
+- [docs/architecture.md](./docs/architecture.md)
+- [docs/product-model.md](./docs/product-model.md)
+- [docs/design-system.md](./docs/design-system.md)
+- [docs/backend-contract.md](./docs/backend-contract.md)
+- [docs/development.md](./docs/development.md)
+
 ## 运行
 
 ```bash
