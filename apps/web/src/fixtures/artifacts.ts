@@ -1,5 +1,7 @@
 import type { Artifact, Capability, Profile } from "./types";
 
+type RawArtifact = Omit<Artifact, "botId">;
+
 export const PROFILE: Profile = {
   name: "小满",
   role: "你的个人助理",
@@ -11,7 +13,7 @@ export const PROFILE: Profile = {
   proactiveMode: "observe",
 };
 
-export const ARTIFACTS: Artifact[] = [
+const RAW_ARTIFACTS: RawArtifact[] = [
   {
     id: "a-weekly",
     title: "本周产品周报",
@@ -178,7 +180,36 @@ Notion AI,文档助手,低,中,弱`,
 
 **注意**：这是草稿，不构成法律意见。`,
   },
+  {
+    id: "a-test-report",
+    title: "Web 测试报告",
+    kind: "table",
+    status: "ready",
+    summary: "覆盖率 84%，24 个用例通过，0 失败",
+    updatedAt: "今天 10:20",
+    content: `模块,用例数,通过,覆盖率
+登录,9,9,92%
+权限,7,7,88%
+会话,5,5,81%
+错误处理,3,3,76%
+合计,24,24,84%`,
+  },
 ];
+
+const ARTIFACT_BOT: Record<string, string> = {
+  "a-weekly": "bot-work",
+  "a-competitor": "bot-work",
+  "a-schedule": "bot-life",
+  "a-launch": "bot-work",
+  "a-budget": "bot-work",
+  "a-contract": "bot-work",
+  "a-test-report": "bot-code",
+};
+
+export const ARTIFACTS: Artifact[] = RAW_ARTIFACTS.map((artifact) => ({
+  ...artifact,
+  botId: ARTIFACT_BOT[artifact.id] ?? "bot-work",
+}));
 
 export const CAPABILITIES: Capability[] = [
   {

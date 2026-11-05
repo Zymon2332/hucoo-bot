@@ -24,7 +24,7 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@hucoo/ui/components/dialog";
-import { AGENTS, ARTIFACTS, WORK_ITEMS } from "@/fixtures";
+import { ARTIFACTS, BOTS, WORK_ITEMS } from "@/fixtures";
 import { useDemoStore } from "@/stores/demo-store";
 import { useUiStore } from "@/stores/ui-store";
 import { setTheme, getStoredTheme } from "@/lib/theme";
@@ -32,6 +32,7 @@ import { setTheme, getStoredTheme } from "@/lib/theme";
 export function CommandPalette() {
   const open = useUiStore((state) => state.commandOpen);
   const setOpen = useUiStore((state) => state.setCommandOpen);
+  const openTask = useUiStore((state) => state.openTask);
   const memories = useDemoStore((state) => state.memories);
   const navigate = useNavigate();
 
@@ -48,50 +49,63 @@ export function CommandPalette() {
       >
         <DialogTitle className="sr-only">命令面板</DialogTitle>
         <DialogDescription className="sr-only">
-          搜索工作项、代理、产物与记忆，或执行一个动作
+          搜索 bot、任务、产物与记忆，或执行一个动作
         </DialogDescription>
         <Command>
-          <CommandInput placeholder="搜索工作项、代理、产物…" />
+          <CommandInput placeholder="搜索 bot、任务、产物…" />
           <CommandList>
             <CommandEmpty>没有找到结果。</CommandEmpty>
 
             <CommandGroup heading="动作">
               <CommandItem
-                value="新的事 new work"
-                onSelect={() => run(() => void navigate({ to: "/" }))}
+                value="新建 bot new bot"
+                onSelect={() => run(() => void navigate({ to: "/onboarding" }))}
               >
                 <Plus size={15} />
-                新的事
-                <CommandShortcut>⌘N</CommandShortcut>
+                新建 bot
               </CommandItem>
               <CommandItem
-                value="代理 agents"
-                onSelect={() => run(() => void navigate({ to: "/agents" }))}
+                value="应用 apps"
+                onSelect={() => run(() => void navigate({ to: "/apps" }))}
               >
                 <Robot size={15} />
-                打开代理名册
+                应用与 Agent
               </CommandItem>
               <CommandItem
-                value="记忆中心 memory"
+                value="技能 skills"
+                onSelect={() => run(() => void navigate({ to: "/skills" }))}
+              >
+                <Sparkle size={15} />
+                技能
+              </CommandItem>
+              <CommandItem
+                value="产物 assets"
+                onSelect={() => run(() => void navigate({ to: "/assets" }))}
+              >
+                <Cube size={15} />
+                产物
+              </CommandItem>
+              <CommandItem
+                value="记忆 memory"
                 onSelect={() => run(() => void navigate({ to: "/memory" }))}
               >
                 <Brain size={15} />
-                打开记忆中心
+                记忆
               </CommandItem>
               <CommandItem
                 value="设置 settings"
                 onSelect={() => run(() => void navigate({ to: "/settings" }))}
               >
                 <GearSix size={15} />
-                打开设置
+                设置
                 <CommandShortcut>⌘,</CommandShortcut>
               </CommandItem>
               <CommandItem
                 value="切换主题 theme"
                 onSelect={() =>
-                  run(() => {
-                    setTheme(getStoredTheme() === "dark" ? "light" : "dark");
-                  })
+                  run(() =>
+                    setTheme(getStoredTheme() === "dark" ? "light" : "dark"),
+                  )
                 }
               >
                 <Laptop size={15} />
@@ -99,7 +113,7 @@ export function CommandPalette() {
               </CommandItem>
               {import.meta.env.DEV && (
                 <CommandItem
-                  value="状态画廊 states gallery"
+                  value="状态画廊 states"
                   onSelect={() =>
                     run(() => {
                       window.location.href = "/dev/states";
@@ -107,49 +121,59 @@ export function CommandPalette() {
                   }
                 >
                   <Sparkle size={15} />
-                  打开状态画廊（开发）
+                  状态画廊（开发）
                 </CommandItem>
               )}
             </CommandGroup>
 
             <CommandSeparator />
 
-            <CommandGroup heading="工作项">
-              {WORK_ITEMS.map((item) => (
+            <CommandGroup heading="Bots">
+              {BOTS.map((bot) => (
                 <CommandItem
-                  key={item.id}
-                  value={`${item.title} ${item.outcome} ${item.id}`}
+                  key={bot.id}
+                  value={`${bot.name} ${bot.role} ${bot.description}`}
                   onSelect={() =>
                     run(() =>
                       void navigate({
-                        to: "/w/$workItemId",
-                        params: { workItemId: item.id },
-                        search: { tab: "overview" },
+                        to: "/b/$botId",
+                        params: { botId: bot.id },
                       }),
                     )
                   }
                 >
-                  <Cube size={15} />
-                  {item.title}
-                  <CommandShortcut>{item.updatedAt}</CommandShortcut>
+                  <Robot size={15} />
+                  {bot.name}
+                  <CommandShortcut>{bot.role}</CommandShortcut>
                 </CommandItem>
               ))}
             </CommandGroup>
 
             <CommandSeparator />
 
-            <CommandGroup heading="代理">
-              {AGENTS.map((agent) => (
-                <CommandItem
-                  key={agent.id}
-                  value={`${agent.name} ${agent.role} ${agent.id}`}
-                  onSelect={() => run(() => void navigate({ to: "/agents" }))}
-                >
-                  <Robot size={15} />
-                  {agent.name}
-                  <CommandShortcut>{agent.role}</CommandShortcut>
-                </CommandItem>
-              ))}
+            <CommandGroup heading="任务">
+              {WORK_ITEMS.map((item) => {
+                const bot = BOTS.find((entry) => entry.id === item.botId);
+                return (
+                  <CommandItem
+                    key={item.id}
+                    value={`${item.title} ${item.outcome} ${bot?.name ?? ""}`}
+                    onSelect={() =>
+                      run(() => {
+                        openTask(item.id);
+                        void navigate({
+                          to: "/b/$botId",
+                          params: { botId: item.botId },
+                        });
+                      })
+                    }
+                  >
+                    <Cube size={15} />
+                    {item.title}
+                    <CommandShortcut>{bot?.name}</CommandShortcut>
+                  </CommandItem>
+                );
+              })}
             </CommandGroup>
 
             <CommandSeparator />
@@ -178,9 +202,7 @@ export function CommandPalette() {
                 <CommandItem
                   key={memory.id}
                   value={`${memory.content} ${memory.id}`}
-                  onSelect={() =>
-                    run(() => void navigate({ to: "/memory" }))
-                  }
+                  onSelect={() => run(() => void navigate({ to: "/memory" }))}
                 >
                   <Brain size={15} />
                   <span className="truncate">{memory.content}</span>

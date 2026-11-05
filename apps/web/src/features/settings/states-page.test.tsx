@@ -30,42 +30,35 @@ afterEach(() => {
 });
 
 describe("state gallery", () => {
-  it("renders every stage and the unknown-state fallback", () => {
+  it("renders bots, stages and tasks", () => {
     render(<StatesPage />);
 
     expect(screen.getByText("状态画廊")).toBeInTheDocument();
-    for (const label of [
-      "排队中",
-      "进行中",
-      "等你决定",
-      "等你审阅",
-      "受阻",
-      "失败",
-      "等待中",
-      "已完成",
-    ]) {
-      expect(screen.getAllByText(label).length).toBeGreaterThan(0);
+    expect(screen.getByText("Bots")).toBeInTheDocument();
+    expect(screen.getAllByText("任务").length).toBeGreaterThan(0);
+    for (const name of ["小满", "阿禾", "阿码"]) {
+      expect(screen.getAllByText(new RegExp(name)).length).toBeGreaterThan(0);
     }
+    expect(screen.getAllByText("等你审阅").length).toBeGreaterThan(0);
     expect(screen.getAllByText("archived").length).toBeGreaterThan(0);
   });
 
-  it("renders the work item queue and message blocks", () => {
+  it("renders chat blocks and the right panel", () => {
     render(<StatesPage />);
 
-    expect(screen.getByText("工作项队列")).toBeInTheDocument();
-    expect(screen.getByText("工作项 Tab")).toBeInTheDocument();
-    expect(screen.getAllByText("结构化提问").length).toBeGreaterThan(0);
-    expect(screen.getByText("结果 + 审阅")).toBeInTheDocument();
-    expect(screen.getAllByText("需要你决定").length).toBeGreaterThan(0);
+    expect(screen.getByText("对话块")).toBeInTheDocument();
+    expect(screen.getByText("任务卡")).toBeInTheDocument();
+    expect(screen.getByText("右侧面板")).toBeInTheDocument();
+    expect(screen.getByText("电脑")).toBeInTheDocument();
+    expect(screen.getByText("桌面 / 终端 / 文件 / 进程")).toBeInTheDocument();
   });
 
-  it("renders evidence and attention metrics", () => {
+  it("renders evidence, apps, skills and metrics", () => {
     render(<StatesPage />);
 
-    expect(screen.getAllByText("证据").length).toBeGreaterThan(0);
+    expect(screen.getByText("应用与技能")).toBeInTheDocument();
     expect(screen.getByText("注意力指标")).toBeInTheDocument();
-    expect(
-      screen.getAllByText("docs/weekly/2026-W45.md").length,
-    ).toBeGreaterThan(0);
+    expect(screen.getAllByText("Claude Code").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("长文写作").length).toBeGreaterThan(0);
   });
 });

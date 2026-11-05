@@ -229,6 +229,67 @@ export const EVIDENCE: Evidence[] = [
     sourceLabel: "Local file",
     verified: "partial",
   },
+  {
+    id: "ev-refactor-diff",
+    kind: "diff",
+    title: "apps/web/src/auth/session.ts",
+    summary: "拆分会话与凭据逻辑，新增 35 行，删除 48 行。",
+    at: "今天 10:16",
+    agentId: "code-claude",
+    diff: {
+      file: "apps/web/src/auth/session.ts",
+      additions: 35,
+      deletions: 48,
+      patch: `- export function login(email, password) {
+-   const token = sign({ email })
+-   return { token, user: { email } }
+- }
++ export async function login(email, password) {
++   const session = await createSession(email)
++   return { token: session.token, user: session.user }
++ }
++
++ export async function refresh(sessionId) {
++   return rotateSession(sessionId)
++ }`,
+    },
+    verified: "partial",
+  },
+  {
+    id: "ev-refactor-session",
+    kind: "session",
+    title: "Claude Code · session 6a21",
+    summary: "重构登录模块，等待测试通过。",
+    at: "今天 10:18",
+    agentId: "code-claude",
+    log: [
+      "$ rg \"function login\" apps/web/src",
+      "  found 3 call sites",
+      "$ edit apps/web/src/auth/session.ts",
+      "  split session/credential helpers",
+      "$ bun test auth",
+      "  18 passed, 0 failed",
+    ],
+    verified: "partial",
+  },
+  {
+    id: "ev-refactor-test",
+    kind: "test",
+    title: "auth 测试",
+    summary: "18 个用例通过；E2E 未跑。",
+    at: "今天 10:18",
+    agentId: "code-claude",
+    verified: "partial",
+  },
+  {
+    id: "ev-tests-artifact",
+    kind: "artifact",
+    title: "Web 测试报告",
+    summary: "覆盖率 84%，24 个用例通过。",
+    at: "今天 10:20",
+    artifactId: "a-test-report",
+    verified: "yes",
+  },
 ];
 
 export function getEvidence(id: string): Evidence | undefined {

@@ -7,8 +7,8 @@ import { getWorkItem } from "@/fixtures";
 import { useWorkItemView } from "@/lib/work-state";
 import { useDemoStore } from "@/stores/demo-store";
 
-export function AttentionBlock({ workItemId }: { workItemId: string }) {
-  const raw = getWorkItem(workItemId);
+export function AttentionBlock({ taskId }: { taskId: string }) {
+  const raw = getWorkItem(taskId);
   const item = raw ? useWorkItemView(raw) : undefined;
   const attention = item?.attention;
   const answerAttention = useDemoStore((state) => state.answerAttention);

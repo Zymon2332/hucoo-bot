@@ -10,22 +10,29 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AgentsRouteImport } from './routes/agents'
+import { Route as AppsRouteImport } from './routes/apps'
+import { Route as AssetsRouteImport } from './routes/assets'
 import { Route as MemoryRouteImport } from './routes/memory'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SkillsRouteImport } from './routes/skills'
 import { Route as ArtifactArtifactIdRouteImport } from './routes/artifact/$artifactId'
+import { Route as BBotIdRouteImport } from './routes/b/$botId'
 import { Route as DevStatesRouteImport } from './routes/dev/states'
-import { Route as WWorkItemIdRouteImport } from './routes/w/$workItemId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AgentsRoute = AgentsRouteImport.update({
-  id: '/agents',
-  path: '/agents',
+const AppsRoute = AppsRouteImport.update({
+  id: '/apps',
+  path: '/apps',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssetsRoute = AssetsRouteImport.update({
+  id: '/assets',
+  path: '/assets',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MemoryRoute = MemoryRouteImport.update({
@@ -43,9 +50,19 @@ const SettingsRoute = SettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SkillsRoute = SkillsRouteImport.update({
+  id: '/skills',
+  path: '/skills',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ArtifactArtifactIdRoute = ArtifactArtifactIdRouteImport.update({
   id: '/artifact/$artifactId',
   path: '/artifact/$artifactId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BBotIdRoute = BBotIdRouteImport.update({
+  id: '/b/$botId',
+  path: '/b/$botId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DevStatesRoute = DevStatesRouteImport.update({
@@ -53,85 +70,94 @@ const DevStatesRoute = DevStatesRouteImport.update({
   path: '/dev/states',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WWorkItemIdRoute = WWorkItemIdRouteImport.update({
-  id: '/w/$workItemId',
-  path: '/w/$workItemId',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/agents': typeof AgentsRoute
+  '/apps': typeof AppsRoute
+  '/assets': typeof AssetsRoute
   '/memory': typeof MemoryRoute
   '/onboarding': typeof OnboardingRoute
   '/settings': typeof SettingsRoute
+  '/skills': typeof SkillsRoute
   '/artifact/$artifactId': typeof ArtifactArtifactIdRoute
+  '/b/$botId': typeof BBotIdRoute
   '/dev/states': typeof DevStatesRoute
-  '/w/$workItemId': typeof WWorkItemIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/agents': typeof AgentsRoute
+  '/apps': typeof AppsRoute
+  '/assets': typeof AssetsRoute
   '/memory': typeof MemoryRoute
   '/onboarding': typeof OnboardingRoute
   '/settings': typeof SettingsRoute
+  '/skills': typeof SkillsRoute
   '/artifact/$artifactId': typeof ArtifactArtifactIdRoute
+  '/b/$botId': typeof BBotIdRoute
   '/dev/states': typeof DevStatesRoute
-  '/w/$workItemId': typeof WWorkItemIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/agents': typeof AgentsRoute
+  '/apps': typeof AppsRoute
+  '/assets': typeof AssetsRoute
   '/memory': typeof MemoryRoute
   '/onboarding': typeof OnboardingRoute
   '/settings': typeof SettingsRoute
+  '/skills': typeof SkillsRoute
   '/artifact/$artifactId': typeof ArtifactArtifactIdRoute
+  '/b/$botId': typeof BBotIdRoute
   '/dev/states': typeof DevStatesRoute
-  '/w/$workItemId': typeof WWorkItemIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/agents'
+    | '/apps'
+    | '/assets'
     | '/memory'
     | '/onboarding'
     | '/settings'
+    | '/skills'
     | '/artifact/$artifactId'
+    | '/b/$botId'
     | '/dev/states'
-    | '/w/$workItemId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/agents'
+    | '/apps'
+    | '/assets'
     | '/memory'
     | '/onboarding'
     | '/settings'
+    | '/skills'
     | '/artifact/$artifactId'
+    | '/b/$botId'
     | '/dev/states'
-    | '/w/$workItemId'
   id:
     | '__root__'
     | '/'
-    | '/agents'
+    | '/apps'
+    | '/assets'
     | '/memory'
     | '/onboarding'
     | '/settings'
+    | '/skills'
     | '/artifact/$artifactId'
+    | '/b/$botId'
     | '/dev/states'
-    | '/w/$workItemId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AgentsRoute: typeof AgentsRoute
+  AppsRoute: typeof AppsRoute
+  AssetsRoute: typeof AssetsRoute
   MemoryRoute: typeof MemoryRoute
   OnboardingRoute: typeof OnboardingRoute
   SettingsRoute: typeof SettingsRoute
+  SkillsRoute: typeof SkillsRoute
   ArtifactArtifactIdRoute: typeof ArtifactArtifactIdRoute
+  BBotIdRoute: typeof BBotIdRoute
   DevStatesRoute: typeof DevStatesRoute
-  WWorkItemIdRoute: typeof WWorkItemIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -143,11 +169,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/agents': {
-      id: '/agents'
-      path: '/agents'
-      fullPath: '/agents'
-      preLoaderRoute: typeof AgentsRouteImport
+    '/apps': {
+      id: '/apps'
+      path: '/apps'
+      fullPath: '/apps'
+      preLoaderRoute: typeof AppsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assets': {
+      id: '/assets'
+      path: '/assets'
+      fullPath: '/assets'
+      preLoaderRoute: typeof AssetsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/memory': {
@@ -171,11 +204,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/skills': {
+      id: '/skills'
+      path: '/skills'
+      fullPath: '/skills'
+      preLoaderRoute: typeof SkillsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/artifact/$artifactId': {
       id: '/artifact/$artifactId'
       path: '/artifact/$artifactId'
       fullPath: '/artifact/$artifactId'
       preLoaderRoute: typeof ArtifactArtifactIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/b/$botId': {
+      id: '/b/$botId'
+      path: '/b/$botId'
+      fullPath: '/b/$botId'
+      preLoaderRoute: typeof BBotIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dev/states': {
@@ -185,25 +232,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DevStatesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/w/$workItemId': {
-      id: '/w/$workItemId'
-      path: '/w/$workItemId'
-      fullPath: '/w/$workItemId'
-      preLoaderRoute: typeof WWorkItemIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AgentsRoute: AgentsRoute,
+  AppsRoute: AppsRoute,
+  AssetsRoute: AssetsRoute,
   MemoryRoute: MemoryRoute,
   OnboardingRoute: OnboardingRoute,
   SettingsRoute: SettingsRoute,
+  SkillsRoute: SkillsRoute,
   ArtifactArtifactIdRoute: ArtifactArtifactIdRoute,
+  BBotIdRoute: BBotIdRoute,
   DevStatesRoute: DevStatesRoute,
-  WWorkItemIdRoute: WWorkItemIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,22 +1,23 @@
 import { ArrowClockwise, ArrowRight, WarningCircle } from "@phosphor-icons/react";
-import { Link } from "@tanstack/react-router";
 import { Button } from "@hucoo/ui/components/button";
 import { getWorkItem } from "@/fixtures";
 import { useWorkItemView } from "@/lib/work-state";
+import { useUiStore } from "@/stores/ui-store";
 
 export function ErrorBlock({
-  workItemId,
+  taskId,
   code,
   message,
   retryable,
 }: {
-  workItemId: string;
+  taskId: string;
   code: string;
   message: string;
   retryable: boolean;
 }) {
-  const raw = getWorkItem(workItemId);
+  const raw = getWorkItem(taskId);
   const item = raw ? useWorkItemView(raw) : undefined;
+  const openTask = useUiStore((state) => state.openTask);
 
   return (
     <section className="rounded-[var(--radius-card)] border border-destructive/25 bg-destructive/[0.045] px-4 py-3.5">
@@ -37,19 +38,14 @@ export function ErrorBlock({
           </Button>
         )}
         <Button
-          asChild
+          type="button"
           size="sm"
           variant="ghost"
+          onClick={() => openTask(taskId)}
           className="text-muted-foreground"
         >
-          <Link
-            to="/w/$workItemId"
-            params={{ workItemId }}
-            search={{ tab: "overview" }}
-          >
-            查看详情
-            <ArrowRight size={12} />
-          </Link>
+          查看详情
+          <ArrowRight size={12} />
         </Button>
       </div>
       {item?.verification.summary && (

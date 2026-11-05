@@ -1,27 +1,30 @@
 import { useState } from "react";
 import { Check, Copy, Robot } from "@phosphor-icons/react";
-import { cn } from "@hucoo/ui";
 import { Button } from "@hucoo/ui/components/button";
-import type { Message, Profile } from "@/fixtures/types";
+import type { Message } from "@/fixtures/types";
 import { BlockRenderer } from "./blocks/block-renderer";
+
+export interface ChatIdentity {
+  name: string;
+  initials: string;
+  accent: string;
+}
 
 export function MessageItem({
   message,
-  profile,
+  identity,
 }: {
   message: Message;
-  profile: Profile;
+  identity: ChatIdentity;
 }) {
   const [copied, setCopied] = useState(false);
 
   if (message.role === "user") {
     return (
-      <article className="flex flex-col items-end gap-1.5">
-        <div className="max-w-[84%] whitespace-pre-wrap rounded-[16px] rounded-br-[6px] border border-border bg-secondary/80 px-4 py-2.5 text-[14px] leading-relaxed">
+      <article className="flex flex-col items-end gap-1">
+        <div className="max-w-[84%] whitespace-pre-wrap rounded-[16px] rounded-br-[6px] bg-secondary px-3.5 py-2 text-[13.5px] leading-relaxed">
           {message.blocks.map((block, index) =>
-            block.kind === "text" ? (
-              <span key={index}>{block.text}</span>
-            ) : null,
+            block.kind === "text" ? <span key={index}>{block.text}</span> : null,
           )}
         </div>
         <span className="pr-1 text-[10px] text-muted-foreground/60">
@@ -47,16 +50,16 @@ export function MessageItem({
   }
 
   return (
-    <article className="group/message animate-rise">
+    <article className="group/message">
       <header className="flex items-center gap-2">
         <span
           aria-hidden
           className="grid size-6 place-items-center rounded-[8px] text-[10px] font-semibold text-white"
-          style={{ backgroundColor: profile.accent }}
+          style={{ backgroundColor: identity.accent }}
         >
-          {profile.initials}
+          {identity.initials}
         </span>
-        <span className="text-[12px] font-medium">{profile.name}</span>
+        <span className="text-[12px] font-medium">{identity.name}</span>
         <span className="text-[10px] text-muted-foreground/60">
           {message.at}
         </span>
@@ -74,7 +77,7 @@ export function MessageItem({
         )}
       </header>
 
-      <div className="mt-2 space-y-3 pl-8">
+      <div className="mt-1.5 space-y-2.5 pl-8">
         {message.blocks.map((block, index) => (
           <BlockRenderer key={index} block={block} />
         ))}
@@ -83,19 +86,19 @@ export function MessageItem({
   );
 }
 
-export function ChatPlaceholder({ profile }: { profile: Profile }) {
+export function ChatPlaceholder({ identity }: { identity: ChatIdentity }) {
   return (
     <div className="flex items-start gap-2 text-sm text-muted-foreground">
       <span
         aria-hidden
         className="grid size-6 place-items-center rounded-[8px] text-[10px] font-semibold text-white"
-        style={{ backgroundColor: profile.accent }}
+        style={{ backgroundColor: identity.accent }}
       >
-        {profile.initials}
+        {identity.initials}
       </span>
       <span className="inline-flex items-center gap-1.5 pt-1">
         <Robot size={13} />
-        小满会在这里出现
+        {identity.name} 会在这里出现
       </span>
     </div>
   );

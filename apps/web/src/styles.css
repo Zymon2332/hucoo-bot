@@ -1,102 +1,97 @@
 @import "@fontsource-variable/inter";
-@import "@fontsource-variable/fraunces";
 @import "@hucoo/ui/globals.css";
 
 @theme inline {
   --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui,
     -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
     sans-serif;
-  --font-display: "Fraunces Variable", "Iowan Old Style", "Songti SC",
-    "Noto Serif SC", Georgia, serif;
+  --font-display: "Inter Variable", "Inter", ui-sans-serif, system-ui,
+    sans-serif;
 
   --color-paper: var(--paper);
   --color-ink: var(--ink);
-  --color-clay: var(--clay);
-  --color-sage: var(--sage);
+  --color-clay: var(--accent-strong);
+  --color-sage: var(--success);
 }
 
 :root {
-  --background: #f6f2ea;
-  --foreground: #211e19;
-  --card: #fffcf6;
-  --card-foreground: #211e19;
-  --popover: #fffcf6;
-  --popover-foreground: #211e19;
-  --primary: #a64b2a;
-  --primary-foreground: #fff8f2;
-  --secondary: #efe9de;
-  --secondary-foreground: #211e19;
-  --muted: #efe9de;
-  --muted-foreground: #7a7367;
-  --accent: #f3e4da;
-  --accent-foreground: #6f2f17;
-  --destructive: #b3261e;
-  --destructive-foreground: #fff8f2;
-  --border: #e3dbce;
-  --input: #e3dbce;
-  --ring: #b4552d;
-  --brand: #a64b2a;
-  --warning: #a97619;
-  --section-label: #9a9183;
-  --paper: #fffcf6;
-  --ink: #211e19;
-  --clay: #a64b2a;
-  --sage: #66735a;
-  --radius: 0.6875rem;
-  --radius-card: 1.125rem;
-  --shadow-card: 0 1px 2px rgba(60, 45, 25, 0.04),
-    0 10px 30px -22px rgba(60, 45, 25, 0.35);
-  --shadow-float: 0 2px 6px rgba(60, 45, 25, 0.06),
-    0 24px 60px -28px rgba(60, 45, 25, 0.4);
-  --sidebar: #f1ece2;
-  --sidebar-foreground: #211e19;
-  --sidebar-primary: #a64b2a;
-  --sidebar-primary-foreground: #fff8f2;
-  --sidebar-accent: #e7ded0;
-  --sidebar-accent-foreground: #211e19;
-  --sidebar-border: #e3dbce;
-  --sidebar-ring: #b4552d;
+  --background: #f5f6f7;
+  --foreground: #171a1f;
+  --card: #ffffff;
+  --card-foreground: #171a1f;
+  --popover: #ffffff;
+  --popover-foreground: #171a1f;
+  --primary: #2e5aac;
+  --primary-foreground: #ffffff;
+  --secondary: #f0f2f5;
+  --secondary-foreground: #171a1f;
+  --muted: #f0f2f5;
+  --muted-foreground: #6b7280;
+  --accent: #edf2fb;
+  --accent-foreground: #1e3f7a;
+  --accent-strong: #2e5aac;
+  --success: #2f7d5b;
+  --destructive: #c0392b;
+  --destructive-foreground: #ffffff;
+  --border: #e3e6ea;
+  --input: #e3e6ea;
+  --ring: #2e5aac;
+  --brand: #2e5aac;
+  --warning: #a86312;
+  --section-label: #98a1ad;
+  --paper: #ffffff;
+  --ink: #171a1f;
+  --radius: 0.5rem;
+  --radius-card: 0.75rem;
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-float: 0 8px 24px -12px rgba(16, 24, 40, 0.25);
+  --sidebar: #f0f2f5;
+  --sidebar-foreground: #171a1f;
+  --sidebar-primary: #2e5aac;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e4e8ee;
+  --sidebar-accent-foreground: #171a1f;
+  --sidebar-border: #e3e6ea;
+  --sidebar-ring: #2e5aac;
 }
 
 .dark {
-  --background: #16130f;
-  --foreground: #f1e9dd;
-  --card: #1e1a15;
-  --card-foreground: #f1e9dd;
-  --popover: #1e1a15;
-  --popover-foreground: #f1e9dd;
-  --primary: #e08a5f;
-  --primary-foreground: #241109;
-  --secondary: #262019;
-  --secondary-foreground: #f1e9dd;
-  --muted: #262019;
-  --muted-foreground: #a79c8b;
-  --accent: #2e2118;
-  --accent-foreground: #f1c6a8;
+  --background: #0f1115;
+  --foreground: #e8ebef;
+  --card: #151820;
+  --card-foreground: #e8ebef;
+  --popover: #151820;
+  --popover-foreground: #e8ebef;
+  --primary: #6e9be8;
+  --primary-foreground: #0d1524;
+  --secondary: #1c2029;
+  --secondary-foreground: #e8ebef;
+  --muted: #1c2029;
+  --muted-foreground: #9aa3b2;
+  --accent: #1b2433;
+  --accent-foreground: #b9cff0;
+  --accent-strong: #6e9be8;
+  --success: #5fb98c;
   --destructive: #e4695e;
-  --destructive-foreground: #241109;
-  --border: #332b22;
-  --input: #332b22;
-  --ring: #e08a5f;
-  --brand: #e08a5f;
+  --destructive-foreground: #1a0b0a;
+  --border: #262b36;
+  --input: #262b36;
+  --ring: #6e9be8;
+  --brand: #6e9be8;
   --warning: #d6a44a;
-  --section-label: #776c5d;
-  --paper: #1e1a15;
-  --ink: #f1e9dd;
-  --clay: #e08a5f;
-  --sage: #97a487;
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.35),
-    0 10px 30px -22px rgba(0, 0, 0, 0.8);
-  --shadow-float: 0 2px 6px rgba(0, 0, 0, 0.4),
-    0 24px 60px -28px rgba(0, 0, 0, 0.9);
-  --sidebar: #191510;
-  --sidebar-foreground: #f1e9dd;
-  --sidebar-primary: #e08a5f;
-  --sidebar-primary-foreground: #241109;
-  --sidebar-accent: #2a231b;
-  --sidebar-accent-foreground: #f1e9dd;
-  --sidebar-border: #332b22;
-  --sidebar-ring: #e08a5f;
+  --section-label: #6b7280;
+  --paper: #151820;
+  --ink: #e8ebef;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-float: 0 12px 32px -16px rgba(0, 0, 0, 0.8);
+  --sidebar: #12151b;
+  --sidebar-foreground: #e8ebef;
+  --sidebar-primary: #6e9be8;
+  --sidebar-primary-foreground: #0d1524;
+  --sidebar-accent: #1f2530;
+  --sidebar-accent-foreground: #e8ebef;
+  --sidebar-border: #262b36;
+  --sidebar-ring: #6e9be8;
 }
 
 @layer base {
@@ -108,21 +103,15 @@
 
   body {
     background-color: var(--background);
-    background-image: radial-gradient(
-      120% 90% at 50% -20%,
-      color-mix(in oklab, var(--clay) 7%, transparent),
-      transparent 60%
-    );
-    background-attachment: fixed;
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--clay) 22%, transparent);
+    background: color-mix(in oklab, var(--primary) 18%, transparent);
   }
 
   * {
     scrollbar-width: thin;
-    scrollbar-color: color-mix(in oklab, var(--muted-foreground) 28%, transparent)
+    scrollbar-color: color-mix(in oklab, var(--muted-foreground) 24%, transparent)
       transparent;
   }
 
@@ -133,7 +122,7 @@
 
   *::-webkit-scrollbar-thumb {
     border-radius: 999px;
-    background: color-mix(in oklab, var(--muted-foreground) 24%, transparent);
+    background: color-mix(in oklab, var(--muted-foreground) 22%, transparent);
   }
 
   *::-webkit-scrollbar-track {
@@ -141,22 +130,18 @@
   }
 }
 
-@utility hairline {
-  border-color: color-mix(in oklab, var(--border) 80%, transparent);
-}
-
 @utility text-balance {
   text-wrap: balance;
 }
 
 @utility animate-rise {
-  animation: rise 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: rise 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(4px);
   }
   to {
     opacity: 1;
@@ -190,7 +175,7 @@
 .prose {
   --tw-prose-body: var(--foreground);
   --tw-prose-headings: var(--foreground);
-  --tw-prose-links: var(--clay);
+  --tw-prose-links: var(--primary);
   --tw-prose-bold: var(--foreground);
   --tw-prose-counters: var(--muted-foreground);
   --tw-prose-bullets: var(--muted-foreground);

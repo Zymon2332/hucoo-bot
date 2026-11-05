@@ -1,8 +1,8 @@
 # @hucoo/web · Personal Agent
 
-一个以**工作项**为中心的注意力路由台：决策台只回答“现在需要你做什么”，工作项详情承载对话、证据、执行与授权。
+一个 **bot 中心**的个人助理原型：左侧是 bot，中间是 IM 风格对话，右侧是可收起的任务 / 电脑 / 资产 / 设置面板。
 
-**当前是静态原型**：所有数据来自 `src/fixtures`，不连接后端，也不发起网络请求。真实的工作项阶段、报告与授权语义由后端定义，前端只负责显示映射与兜底。
+**当前是静态原型**：所有数据来自 `src/fixtures`，不连接后端，也不发起网络请求。真实的任务状态、授权与事件由后端定义，前端只负责显示映射与兜底。
 
 ## 运行
 
@@ -18,72 +18,76 @@ pnpm --filter @hucoo/web build
 
 | 路由 | 页面 |
 | --- | --- |
-| `/` | 决策台：需要你、正在推进、观察记录、新的事 |
-| `/w/$workItemId` | 工作项详情：`?tab=overview / conversation / evidence / execution / authority` |
-| `/agents` | 代理名册：个人助理、子代理、Code Agents |
-| `/memory` | 记忆中心（支持 `?focus=<memoryId>`） |
-| `/artifact/$artifactId` | 产物全屏预览 |
-| `/onboarding` | 三步人格设置 |
-| `/settings` | 人格、外观、主动规则与来源、数据 |
+| `/` | 重定向到默认 bot |
+| `/b/$botId` | Bot 对话：即时确认、任务卡、结果、提问、失败 |
+| `/apps` | 外部应用（MCP）与 Agent（opencode / Claude Code / Codex） |
+| `/skills` | 技能目录 |
+| `/assets` | 所有 bot 的产物 |
+| `/memory` | 记忆中心 |
+| `/settings` | 全局设置：模型 / 记忆 / 用量 / 通用 / 外观 |
+| `/onboarding` | 新建 bot |
+| `/artifact/$artifactId` | 资产预览 |
 | `/dev/states` | 状态画廊（仅开发） |
 
 ## 核心模型
 
-`WorkItem` 是界面的一等对象，`Conversation` 只是它的一个渠道：
-
 ```
-WorkItem
-├── outcome / stage / waitingOn / priority
-├── authority    授权范围、可逆性、规则
-├── plan / reports / agents
-├── evidence     产物、diff、来源、session、日志
-├── conversations[]  对话 / 邮件 / 消息
-├── review / attention
-├── decisions
-├── audit
-└── verification 已验证 / 未验证 / 需要你判断
+Bot
+├── 主 Agent（只路由、即时确认、不执行）
+├── 独立人格 / 记忆 / 应用 / Agent / 技能
+├── 任务队列
+├── 资产
+└── 通知圆点
+
+Task
+├── botId / 验收标准 / 状态 / 等待对象
+├── 子代理 / 报告 / 证据 / 资产 / 授权
+└── 停止与审计
 ```
 
-## 产品原则
+全局共享：模型凭证、用量、应用连接池、技能目录、外观与通知设置。
 
-- **默认缺席**：一切正常时，界面几乎为空。
-- **决策队列唯一入口**：需要你处理的事项只在一个主位置出现。
-- **健康状态不占空间**：进行中默认折叠，不展示子代理数量与进度条。
-- **结果与证据优先**：摘要之外必须能下钻到 artifact、diff、来源与 Code Agent session。
-- **可逆性决定自治**：可逆操作才允许批量；不可逆操作必须逐个确认。
-- **主动默认观察**：候选只进“观察记录”，不进主队列。
-- **显示层不推导**：阶段与等待对象来自 fixtures（未来来自后端），前端只做 `display/labels.ts` 映射，未知值保留原值。
+## 交互契约
+
+- 主 Agent 只输出：即时确认、任务卡、结果就绪、结构化提问、失败。
+- 执行细节（步骤、工具、日志、diff）只进右侧面板，不进对话。
+- Composer 始终可用；任务运行时用户可以继续补充要求。
+- 全局只有一个通知入口；每个 bot 只用一个小圆点提示。
+- 右侧面板默认收起，四个 Tab：任务 / 电脑 / 资产 / 设置。
+- 电脑 Tab 展示容器桌面、终端、文件与进程。
+- 头像菜单（右下角）：技能 / 产物 / 应用。
 
 ## 结构
 
 ```
 src/
-├── app/shell/       # AppShell、工作项导航、顶栏、需要你抽屉
+├── app/shell/       # AppShell、bot 导航、顶栏、全局通知
 ├── features/
-│   ├── work-desk/   # 决策台
-│   ├── work-item/   # 工作项详情 + 五个 Tab
-│   ├── evidence/    # 证据卡、diff、session
-│   ├── agents/      # 代理名册
-│   ├── chat/        # 消息块、Composer、对话 Tab
+│   ├── chat/        # bot 对话、消息块、Composer
+│   ├── panel/       # 右侧任务 / 电脑 / 资产 / bot 设置
+│   ├── apps/        # 外部应用与 Agent
+│   ├── skills/      # 技能
+│   ├── assets/      # 产物
+│   ├── menu/        # 右下角头像菜单
 │   ├── memory/
 │   ├── settings/
 │   └── onboarding/
 ├── fixtures/        # 静态渲染数据（不是领域模型）
 ├── display/         # 后端状态 → 中文显示映射 + 兜底
-├── lib/             # work-state 投影、主题、高亮
+├── lib/             # 任务投影、主题、高亮
 ├── stores/          # ui-store（纯 UI）、demo-store（演示交互）
 └── routes/          # TanStack Router 文件路由
 ```
 
-## 组件约定
+## 视觉
 
-- 基础交互控件使用 `@hucoo/ui` 的 shadcn 组件（Button、Input、Textarea、Switch、Dialog、Sheet、Tabs、Command、ScrollArea 等）。
-- 产品特有展示（工作项卡、计划卡、结果卡、AttentionCard、证据卡、代理卡、阶段徽章）保持自定义，只组合 shadcn 控件。
-- 视觉 token 在 `src/styles.css` 覆盖，`@hucoo/ui` 包保持通用。
+- 全站无衬线（Inter），移除衬线字体。
+- 中性功能性配色，紧凑密度。
+- 基础控件使用 `@hucoo/ui` 的 shadcn 组件；产品特有卡片保持自定义。
 
 ## 对接后端时
 
-1. 保留 `display/labels.ts` 的映射与兜底，替换 `fixtures` 数据源。
+1. 保留 `display/labels.ts` 的映射与兜底，替换 `fixtures`。
 2. 将 `demo-store` 的本地演示交互替换为命令 + 后端事件。
-3. 工作项阶段、`waitingOn`、`verification`、`authority` 由后端下发，前端不推导。
-4. 对话、证据、代理会话按工作项聚合，不把会话当容器。
+3. Bot、Task、通知、授权、验证结果都由后端下发，前端不推导。
+4. 对话只接收高层事件；执行细节通过右侧面板读取。

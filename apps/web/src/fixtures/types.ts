@@ -19,6 +19,53 @@ export interface Profile {
   proactiveMode: "observe" | "auto";
 }
 
+export interface Bot {
+  id: string;
+  name: string;
+  role: string;
+  initials: string;
+  accent: string;
+  persona: string;
+  description: string;
+  addressAs: string;
+  tone: Tone;
+  memoryScope: "bot" | "global";
+  appIds: string[];
+  agentIds: string[];
+  skillIds: string[];
+  lastActiveAt: string;
+  greeting: string;
+}
+
+export type AppKind = "mcp" | "agent";
+
+export interface AppConnection {
+  id: string;
+  kind: AppKind;
+  name: string;
+  description: string;
+  status: "connected" | "available" | "error";
+  assignedBotIds: string[];
+}
+
+export interface SourceStatus {
+  id: string;
+  name: string;
+  kind: "connector" | "rule";
+  status: "on" | "paused" | "error";
+  lastSync?: string;
+  detail?: string;
+}
+
+export interface UsageSummary {
+  botId: string;
+  tokens: number;
+  cost: number;
+  tasks: number;
+}
+
+export type PanelTab = "tasks" | "computer" | "assets" | "settings";
+
 export type WorkTab =
   | "overview"
   | "conversation"
@@ -181,8 +228,10 @@ export interface Evidence {
 
 export interface WorkItem {
   id: string;
+  botId: string;
   title: string;
   outcome: string;
+  acceptance: string[];
   stage: Stage;
   waitingOn: WaitingOn;
   priority: Priority;
@@ -194,7 +243,7 @@ export interface WorkItem {
   reports: Report[];
   agentIds: string[];
   evidenceIds: string[];
-  conversationIds: string[];
+  conversationIds?: string[];
   attention?: Attention;
   review?: Review;
   artifactIds: string[];
@@ -209,6 +258,7 @@ export type ArtifactStatus = "draft" | "ready" | "accepted";
 
 export interface Artifact {
   id: string;
+  botId: string;
   title: string;
   kind: ArtifactKind;
   status: ArtifactStatus;
@@ -258,10 +308,10 @@ export type Channel = "chat" | "email" | "im" | "note";
 
 export type MessageBlock =
   | { kind: "text"; text: string }
-  | { kind: "plan"; workItemId: string }
-  | { kind: "outcome"; workItemId: string }
-  | { kind: "attention"; workItemId: string }
-  | { kind: "error"; workItemId: string; code: string; message: string; retryable: boolean }
+  | { kind: "task"; taskId: string }
+  | { kind: "outcome"; taskId: string }
+  | { kind: "attention"; taskId: string }
+  | { kind: "error"; taskId: string; code: string; message: string; retryable: boolean }
   | { kind: "memory"; memoryId: string; quote: string };
 
 export interface Message {
@@ -273,20 +323,11 @@ export interface Message {
 
 export interface Conversation {
   id: string;
-  workItemId: string;
+  botId: string;
   title: string;
   channel: Channel;
   updatedAt: string;
   messages: Message[];
-}
-
-export interface SourceStatus {
-  id: string;
-  name: string;
-  kind: "connector" | "rule";
-  status: "on" | "paused" | "error";
-  lastSync?: string;
-  detail?: string;
 }
 
 export interface Capability {

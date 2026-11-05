@@ -1,6 +1,6 @@
 import type { WorkItem } from "./types";
 
-export const WORK_ITEMS: WorkItem[] = [
+const RAW_WORK_ITEMS: Array<Omit<WorkItem, "botId" | "acceptance">> = [
   {
     id: "wi-weekly",
     title: "本周产品周报",
@@ -497,7 +497,135 @@ export const WORK_ITEMS: WorkItem[] = [
       { id: "a3", at: "昨天 14:30", actor: "小满", action: "报告结果就绪", kind: "action" },
     ],
   },
+  {
+    id: "wi-refactor",
+    title: "重构登录模块",
+    outcome: "拆分登录逻辑，保持 API 兼容并补齐测试",
+    stage: "working",
+    waitingOn: "agent",
+    priority: "today",
+    createdAt: "今天 10:02",
+    updatedAt: "今天 10:18",
+    authority: {
+      mode: "explicit",
+      scope: "修改登录模块与测试；不部署、不改环境变量",
+      rules: ["保持 API 兼容", "测试通过", "diff 可审阅"],
+      reversible: true,
+      grantedBy: "你",
+      grantedAt: "今天 10:02",
+    },
+    plan: [
+      { id: "s1", title: "读取登录模块与调用方", status: "done", agentId: "agent-opencode" },
+      { id: "s2", title: "拆分会话与凭据逻辑", status: "running", agentId: "code-claude" },
+      { id: "s3", title: "补齐单元测试", status: "pending", agentId: "code-claude" },
+      { id: "s4", title: "生成 diff 与验证摘要", status: "pending" },
+    ],
+    reports: [
+      { id: "r1", kind: "progress", summary: "已定位 6 个调用点，开始拆分", at: "今天 10:10" },
+      { id: "r2", kind: "progress", summary: "会话逻辑已抽离，正在补测试", at: "今天 10:18" },
+    ],
+    agentIds: ["agent-personal", "agent-opencode", "code-claude"],
+    evidenceIds: ["ev-refactor-diff", "ev-refactor-session", "ev-refactor-test"],
+    artifactIds: [],
+    memoryIds: ["m-project"],
+    verification: {
+      summary: "结构拆分进行中；测试尚未跑完。",
+      checked: ["6 个调用点已定位"],
+      unchecked: ["全量测试", "登录流程回归"],
+      needsHuman: [],
+    },
+    decisions: [],
+    audit: [
+      { id: "a1", at: "今天 10:02", actor: "你", action: "明确授权", detail: "重构登录，不部署", kind: "grant" },
+      { id: "a2", at: "今天 10:06", actor: "阿码", action: "交给 opencode 与 Claude Code", kind: "handoff" },
+      { id: "a3", at: "今天 10:14", actor: "Claude Code", action: "抽离会话逻辑", kind: "action" },
+    ],
+  },
+  {
+    id: "wi-tests",
+    title: "补齐 web 端测试",
+    outcome: "为登录与权限模块补齐单元测试，覆盖率超过 80%",
+    stage: "awaiting_review",
+    waitingOn: "human",
+    priority: "now",
+    createdAt: "今天 09:40",
+    updatedAt: "今天 10:20",
+    authority: {
+      mode: "explicit",
+      scope: "新增测试文件；不修改业务行为",
+      rules: ["覆盖率 > 80%", "不改变业务行为"],
+      reversible: true,
+      grantedBy: "你",
+      grantedAt: "今天 09:40",
+    },
+    plan: [
+      { id: "s1", title: "读取现有测试与覆盖率", status: "done", agentId: "agent-opencode" },
+      { id: "s2", title: "补登录与权限用例", status: "done", agentId: "code-codex" },
+      { id: "s3", title: "运行测试并生成报告", status: "done" },
+    ],
+    reports: [
+      {
+        id: "r1",
+        kind: "ready",
+        summary: "测试补齐，覆盖率 84%，等待你确认",
+        at: "今天 10:20",
+      },
+    ],
+    agentIds: ["agent-personal", "agent-opencode", "code-codex"],
+    evidenceIds: ["ev-tests-artifact", "ev-refactor-test"],
+    review: { id: "rv-tests", artifactId: "a-test-report", status: "pending" },
+    artifactIds: ["a-test-report"],
+    memoryIds: ["m-project"],
+    verification: {
+      summary: "覆盖率达标；未做端到端回归。",
+      checked: ["登录与权限单元测试", "覆盖率 84%"],
+      unchecked: ["端到端登录流程"],
+      needsHuman: ["是否接受测试报告", "是否继续跑 E2E"],
+    },
+    decisions: [],
+    audit: [
+      { id: "a1", at: "今天 09:40", actor: "你", action: "明确授权", detail: "只加测试", kind: "grant" },
+      { id: "a2", at: "今天 10:05", actor: "阿码", action: "交给 Codex", kind: "handoff" },
+      { id: "a3", at: "今天 10:20", actor: "阿码", action: "报告结果就绪", kind: "action" },
+    ],
+  },
 ];
+
+const BOT_BY_TASK: Record<string, string> = {
+  "wi-weekly": "bot-work",
+  "wi-competitor": "bot-work",
+  "wi-budget": "bot-work",
+  "wi-inbox": "bot-work",
+  "wi-pricing": "bot-work",
+  "wi-contract": "bot-work",
+  "wi-design": "bot-work",
+  "wi-schedule": "bot-life",
+  "wi-trip": "bot-life",
+  "wi-weekend": "bot-life",
+  "wi-refactor": "bot-code",
+  "wi-tests": "bot-code",
+};
+
+const ACCEPTANCE: Record<string, string[]> = {
+  "wi-weekly": ["按「进展 / 风险 / 下周计划」三段式", "1500 字以内", "数据与来源可核对"],
+  "wi-competitor": ["覆盖 6 个竞品 × 5 个维度", "争议项标注来源", "输出三条结论"],
+  "wi-schedule": ["不冲突", "保留深度工作块", "不直接修改已有日程"],
+  "wi-budget": ["四个团队执行率", "偏离 15% 标红", "异常项有说明"],
+  "wi-inbox": ["分类 47 封未读", "列出今天必须回复的 3 封", "不自动发送"],
+  "wi-trip": ["三日步行路线", "安静、不赶景点", "不预订、不付款"],
+  "wi-design": ["只汇总前端相关变更", "附来源链接", "不修改文档"],
+  "wi-weekend": ["两个步行地点", "留出空白", "不需要预订"],
+  "wi-pricing": ["一页发布介绍", "暖色编辑风格", "600 字以内", "不发布"],
+  "wi-contract": ["提取 12 条条款", "标出风险", "不修改、不发送、不签署"],
+  "wi-refactor": ["保持 API 兼容", "登录流程测试通过", "diff 可审阅"],
+  "wi-tests": ["覆盖率 > 80%", "不改变业务行为", "测试报告附失败项"],
+};
+
+export const WORK_ITEMS: WorkItem[] = RAW_WORK_ITEMS.map((item) => ({
+  ...item,
+  botId: BOT_BY_TASK[item.id] ?? "bot-work",
+  acceptance: ACCEPTANCE[item.id] ?? [item.outcome],
+}));
 
 export function getWorkItem(id: string): WorkItem | undefined {
   return WORK_ITEMS.find((item) => item.id === id);
@@ -505,4 +633,8 @@ export function getWorkItem(id: string): WorkItem | undefined {
 
 export function workItemsByStage(stages: WorkItem["stage"][]): WorkItem[] {
   return WORK_ITEMS.filter((item) => stages.includes(item.stage));
+}
+
+export function workItemsForBot(botId: string): WorkItem[] {
+  return WORK_ITEMS.filter((item) => item.botId === botId);
 }

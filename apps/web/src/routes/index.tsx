@@ -1,6 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { DecisionDesk } from "@/features/work-desk/decision-desk";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { DEFAULT_BOT_ID } from "@/fixtures";
 
 export const Route = createFileRoute("/")({
-  component: DecisionDesk,
+  beforeLoad: () => {
+    throw redirect({
+      to: "/b/$botId",
+      params: { botId: DEFAULT_BOT_ID },
+    });
+  },
 });

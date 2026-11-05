@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
-import type { Conversation, Profile } from "@/fixtures/types";
-import { MessageItem } from "./message-item";
+import type { Conversation } from "@/fixtures/types";
+import { MessageItem, type ChatIdentity } from "./message-item";
 
 export function MessageList({
   conversation,
-  profile,
+  identity,
 }: {
   conversation: Conversation;
-  profile: Profile;
+  identity: ChatIdentity;
 }) {
   const endRef = useRef<HTMLDivElement>(null);
 
@@ -16,9 +16,9 @@ export function MessageList({
   }, [conversation.id, conversation.messages.length]);
 
   return (
-    <div className="mx-auto w-full max-w-[760px] space-y-8 px-1 pb-10 pt-6 sm:px-2">
+    <div className="mx-auto w-full max-w-[760px] space-y-6 px-3 pb-8 pt-5 sm:px-4">
       {conversation.messages.map((message) => (
-        <MessageItem key={message.id} message={message} profile={profile} />
+        <MessageItem key={message.id} message={message} identity={identity} />
       ))}
       <div ref={endRef} />
     </div>

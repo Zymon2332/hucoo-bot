@@ -19,11 +19,11 @@ import { ArtifactTile } from "@/features/artifacts/artifact-preview";
 
 type Decision = "accepted" | "revision_requested" | "rejected";
 
-export function OutcomeBlock({ workItemId }: { workItemId: string }) {
-  const raw = getWorkItem(workItemId);
+export function OutcomeBlock({ taskId }: { taskId: string }) {
+  const raw = getWorkItem(taskId);
   const item = raw ? useWorkItemView(raw) : undefined;
   const resolveReview = useDemoStore((state) => state.resolveReview);
-  const setBellOpen = useUiStore((state) => state.setBellOpen);
+  const openTask = useUiStore((state) => state.openTask);
 
   const [mode, setMode] = useState<Decision | null>(null);
   const [note, setNote] = useState("");
@@ -166,10 +166,10 @@ export function OutcomeBlock({ workItemId }: { workItemId: string }) {
           type="button"
           variant="link"
           size="sm"
-          onClick={() => setBellOpen(true)}
+          onClick={() => openTask(taskId)}
           className="mt-2 h-auto px-0 text-[11px]"
         >
-          查看相关工作项
+          在右侧查看任务
           <ArrowRight size={11} />
         </Button>
       )}

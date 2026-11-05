@@ -1,64 +1,65 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import {
   ArrowSquareOut,
+  Brain,
+  ChartLineUp,
   DownloadSimple,
-  Eye,
   GearSix,
-  Lightning,
+  Laptop,
   PaintBrush,
-  ShieldCheck,
   Sparkle,
   Trash,
-  UserCircle,
 } from "@phosphor-icons/react";
 import { cn } from "@hucoo/ui";
 import { Button } from "@hucoo/ui/components/button";
 import { Input } from "@hucoo/ui/components/input";
 import { Switch } from "@hucoo/ui/components/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@hucoo/ui/components/tabs";
-import { toast } from "sonner";
-import type { Tone } from "@/fixtures/types";
-import { SOURCES } from "@/fixtures";
-import { toneLabel } from "@/display/labels";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@hucoo/ui/components/tabs";
+import { BOTS, USAGE } from "@/fixtures";
 import { useDemoStore } from "@/stores/demo-store";
 import { getStoredTheme, setTheme, type Theme } from "@/lib/theme";
-
-const COLORS = ["#A64B2A", "#66735A", "#3F5D7A", "#8A5A83", "#8A6A2F"];
-const TONES: Tone[] = ["concise", "warm", "direct", "playful"];
+import { BotAvatar } from "@/components/bot-avatar";
 
 const TABS = [
-  { id: "persona", label: "人格", icon: UserCircle },
+  { id: "model", label: "模型", icon: Sparkle },
+  { id: "memory", label: "记忆", icon: Brain },
+  { id: "usage", label: "用量", icon: ChartLineUp },
+  { id: "general", label: "通用", icon: GearSix },
   { id: "appearance", label: "外观", icon: PaintBrush },
-  { id: "proactive", label: "主动规则", icon: Sparkle },
-  { id: "data", label: "记忆与数据", icon: ShieldCheck },
-  { id: "about", label: "关于", icon: GearSix },
 ] as const;
 
 export function SettingsPage() {
+  const memories = useDemoStore((state) => state.memories);
   const profile = useDemoStore((state) => state.profile);
   const updateProfile = useDemoStore((state) => state.updateProfile);
-  const rules = useDemoStore((state) => state.rules);
-  const toggleRule = useDemoStore((state) => state.toggleRule);
-  const setRuleMode = useDemoStore((state) => state.setRuleMode);
-  const memories = useDemoStore((state) => state.memories);
   const reset = useDemoStore((state) => state.reset);
   const [theme, setThemeState] = useState<Theme | "system">(getStoredTheme());
+  const [density, setDensity] = useState<"comfortable" | "compact">("compact");
   const [reduceMotion, setReduceMotion] = useState(false);
+
+  const totalTokens = USAGE.reduce((sum, entry) => sum + entry.tokens, 0);
+  const totalCost = USAGE.reduce((sum, entry) => sum + entry.cost, 0);
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="mx-auto w-full max-w-[1020px] px-4 pb-16 pt-6 sm:px-6">
+      <div className="mx-auto w-full max-w-[980px] px-4 pb-16 pt-6 sm:px-6">
         <header>
-          <h1 className="font-display text-[26px] tracking-tight">设置</h1>
-          <p className="mt-1 text-[12.5px] text-muted-foreground">
-            只放必要的东西。健康状态不占空间。
+          <h1 className="text-[22px] font-semibold tracking-tight">设置</h1>
+          <p className="mt-1 text-[12px] text-muted-foreground">
+            模型、记忆、用量与通用配置。bot 级设置在右侧面板。
           </p>
         </header>
 
         <Tabs
           orientation="vertical"
-          defaultValue="persona"
-          className="mt-6 grid gap-6 lg:grid-cols-[180px_minmax(0,1fr)]"
+          defaultValue="model"
+          className="mt-6 grid gap-6 lg:grid-cols-[160px_minmax(0,1fr)]"
         >
           <TabsList className="h-fit flex-col items-stretch bg-transparent p-0">
             {TABS.map((item) => {
@@ -67,9 +68,9 @@ export function SettingsPage() {
                 <TabsTrigger
                   key={item.id}
                   value={item.id}
-                  className="h-8 w-full justify-start gap-2 rounded-[9px] px-2 text-[12.5px] data-active:bg-secondary data-active:shadow-none"
+                  className="h-8 w-full justify-start gap-2 rounded-[7px] px-2 text-[12px] data-active:bg-secondary data-active:shadow-none"
                 >
-                  <Icon size={15} />
+                  <Icon size={14} />
                   {item.label}
                 </TabsTrigger>
               );
@@ -77,84 +78,169 @@ export function SettingsPage() {
           </TabsList>
 
           <div className="min-w-0">
-            <TabsContent value="persona">
+            <TabsContent value="model">
               <SettingsBlock
-                title="人格"
-                description="名称、称呼与语气会出现在所有对话和主动消息里。"
+                title="模型"
+                description="全局默认模型。bot 可以单独覆盖，但共用这里的凭证。"
               >
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-3 sm:grid-cols-2">
                   <label className="block">
-                    <span className="mb-1.5 block text-[11px] text-muted-foreground">
-                      助理名称
+                    <span className="mb-1 block text-[10.5px] text-muted-foreground">
+                      默认模型
                     </span>
-                    <Input
-                      value={profile.name}
-                      onChange={(event) =>
-                        updateProfile({
-                          name: event.target.value,
-                          initials:
-                            event.target.value.slice(0, 1) || profile.initials,
-                        })
-                      }
-                    />
+                    <Input defaultValue="deepseek-v4" />
                   </label>
                   <label className="block">
-                    <span className="mb-1.5 block text-[11px] text-muted-foreground">
-                      怎么称呼你
+                    <span className="mb-1 block text-[10.5px] text-muted-foreground">
+                      Provider
                     </span>
-                    <Input
-                      value={profile.addressAs}
-                      onChange={(event) =>
-                        updateProfile({ addressAs: event.target.value })
-                      }
-                    />
+                    <Input defaultValue="OpenAI Compatible" />
+                  </label>
+                  <label className="block sm:col-span-2">
+                    <span className="mb-1 block text-[10.5px] text-muted-foreground">
+                      Base URL
+                    </span>
+                    <Input defaultValue="https://api.example.com/v1" />
+                  </label>
+                  <label className="block sm:col-span-2">
+                    <span className="mb-1 block text-[10.5px] text-muted-foreground">
+                      API Key
+                    </span>
+                    <Input type="password" defaultValue="sk-••••••••••••" />
                   </label>
                 </div>
+                <p className="mt-3 text-[10px] text-muted-foreground/70">
+                  凭证只存储在本地；原型不发起真实请求。
+                </p>
+              </SettingsBlock>
+            </TabsContent>
 
-                <div className="mt-4">
-                  <span className="mb-1.5 block text-[11px] text-muted-foreground">
-                    颜色
-                  </span>
-                  <div className="flex gap-2">
-                    {COLORS.map((color) => (
-                      <button
-                        key={color}
-                        type="button"
-                        aria-label={`选择颜色 ${color}`}
-                        onClick={() => updateProfile({ accent: color })}
-                        className={cn(
-                          "size-7 rounded-full transition-transform",
-                          profile.accent === color && "ring-2 ring-offset-2 ring-offset-background",
-                        )}
-                        style={{
-                          backgroundColor: color,
-                          boxShadow:
-                            profile.accent === color
-                              ? `0 0 0 2px ${color}`
-                              : undefined,
-                        }}
-                      />
-                    ))}
+            <TabsContent value="memory">
+              <SettingsBlock
+                title="记忆"
+                description="记忆是决策上下文，不是聊天历史。可以按 bot 隔离。"
+              >
+                <div className="flex items-center justify-between rounded-[10px] border border-border px-3 py-2.5">
+                  <div>
+                    <p className="text-[12px] font-medium">允许记忆</p>
+                    <p className="mt-0.5 text-[10px] text-muted-foreground">
+                      关闭后，新对话不会再积累记忆。
+                    </p>
+                  </div>
+                  <Switch
+                    checked={profile.memoryEnabled}
+                    aria-label="允许记忆"
+                    onCheckedChange={(checked) =>
+                      updateProfile({ memoryEnabled: checked })
+                    }
+                  />
+                </div>
+                <div className="mt-2 flex items-center justify-between rounded-[10px] border border-border px-3 py-2.5">
+                  <div>
+                    <p className="text-[12px] font-medium">已保存的记忆</p>
+                    <p className="mt-0.5 text-[10px] text-muted-foreground">
+                      {memories.length} 条 · 按 bot 隔离
+                    </p>
+                  </div>
+                  <Button asChild size="xs" variant="outline">
+                    <Link to="/memory">
+                      查看
+                      <ArrowSquareOut size={10} />
+                    </Link>
+                  </Button>
+                </div>
+              </SettingsBlock>
+            </TabsContent>
+
+            <TabsContent value="usage">
+              <SettingsBlock
+                title="用量"
+                description="按 bot 汇总。只统计已发生的模型调用。"
+              >
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <div className="rounded-[10px] border border-border px-3 py-2.5">
+                    <p className="text-[10px] text-muted-foreground">总 Token</p>
+                    <p className="mt-0.5 text-[18px] font-semibold tabular-nums">
+                      {(totalTokens / 1000).toFixed(0)}k
+                    </p>
+                  </div>
+                  <div className="rounded-[10px] border border-border px-3 py-2.5">
+                    <p className="text-[10px] text-muted-foreground">总成本</p>
+                    <p className="mt-0.5 text-[18px] font-semibold tabular-nums">
+                      ${totalCost.toFixed(2)}
+                    </p>
                   </div>
                 </div>
-
-                <div className="mt-4">
-                  <span className="mb-1.5 block text-[11px] text-muted-foreground">
-                    语气
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {TONES.map((tone) => (
-                      <Button
-                        key={tone}
-                        type="button"
-                        size="sm"
-                        variant={profile.tone === tone ? "secondary" : "outline"}
-                        onClick={() => updateProfile({ tone })}
+                <div className="mt-3 space-y-1.5">
+                  {USAGE.map((entry) => {
+                    const bot = BOTS.find((item) => item.id === entry.botId);
+                    return (
+                      <div
+                        key={entry.botId}
+                        className="flex items-center gap-2 rounded-[10px] border border-border px-2.5 py-2"
                       >
-                        {toneLabel(tone)}
-                      </Button>
-                    ))}
+                        {bot && <BotAvatar bot={bot} size="sm" />}
+                        <span className="min-w-0 flex-1 truncate text-[11.5px]">
+                          {bot?.name} · {bot?.role}
+                        </span>
+                        <span className="text-[10px] tabular-nums text-muted-foreground">
+                          {(entry.tokens / 1000).toFixed(0)}k · $
+                          {entry.cost.toFixed(2)} · {entry.tasks} 个任务
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </SettingsBlock>
+            </TabsContent>
+
+            <TabsContent value="general">
+              <SettingsBlock
+                title="通用"
+                description="通知、数据与快捷键。"
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between rounded-[10px] border border-border px-3 py-2.5">
+                    <div>
+                      <p className="text-[12px] font-medium">全局通知</p>
+                      <p className="mt-0.5 text-[10px] text-muted-foreground">
+                        所有 bot 的通知只出现在一个地方。
+                      </p>
+                    </div>
+                    <Switch defaultChecked aria-label="全局通知" />
                   </div>
+                  <div className="flex items-center justify-between rounded-[10px] border border-border px-3 py-2.5">
+                    <div>
+                      <p className="text-[12px] font-medium">bot 圆点</p>
+                      <p className="mt-0.5 text-[10px] text-muted-foreground">
+                        有需要你的事时，在 bot 行显示一个小圆点。
+                      </p>
+                    </div>
+                    <Switch defaultChecked aria-label="bot 圆点" />
+                  </div>
+                </div>
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      /* prototype only */
+                    }}
+                  >
+                    <DownloadSimple size={13} />
+                    导出数据
+                  </Button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => reset()}
+                  >
+                    <Trash size={13} />
+                    重置演示数据
+                  </Button>
                 </div>
               </SettingsBlock>
             </TabsContent>
@@ -162,7 +248,7 @@ export function SettingsPage() {
             <TabsContent value="appearance">
               <SettingsBlock
                 title="外观"
-                description="暖色主题，亮暗跟随你的环境。"
+                description="中性、功能性视觉。没有衬线字体。"
               >
                 <div className="grid gap-1.5 sm:grid-cols-3">
                   {(
@@ -180,30 +266,37 @@ export function SettingsPage() {
                         setThemeState(item.id);
                       }}
                       className={cn(
-                        "rounded-[12px] border px-3 py-3 text-left transition-colors",
+                        "rounded-[10px] border px-3 py-2.5 text-left text-[11.5px] transition-colors",
                         theme === item.id
-                          ? "border-clay/40 bg-accent/45"
+                          ? "border-clay/40 bg-accent/40"
                           : "border-border bg-card/60 hover:bg-secondary/60",
                       )}
                     >
-                      <span className="block text-[12.5px] font-medium">
-                        {item.label}
-                      </span>
-                      <span className="mt-0.5 block text-[10.5px] text-muted-foreground">
-                        {item.id === "system"
-                          ? "睡前自动变暗"
-                          : item.id === "light"
-                            ? "米白纸面"
-                            : "暖炭背景"}
-                      </span>
+                      {item.label}
                     </button>
                   ))}
                 </div>
 
-                <div className="mt-4 flex items-center justify-between rounded-[12px] border border-border px-3 py-2.5">
+                <div className="mt-3 flex items-center justify-between rounded-[10px] border border-border px-3 py-2.5">
                   <div>
-                    <p className="text-[12.5px] font-medium">减少动效</p>
-                    <p className="mt-0.5 text-[10.5px] text-muted-foreground">
+                    <p className="text-[12px] font-medium">紧凑密度</p>
+                    <p className="mt-0.5 text-[10px] text-muted-foreground">
+                      减少行高与留白，适合每天使用。
+                    </p>
+                  </div>
+                  <Switch
+                    checked={density === "compact"}
+                    aria-label="紧凑密度"
+                    onCheckedChange={(checked) =>
+                      setDensity(checked ? "compact" : "comfortable")
+                    }
+                  />
+                </div>
+
+                <div className="mt-2 flex items-center justify-between rounded-[10px] border border-border px-3 py-2.5">
+                  <div>
+                    <p className="text-[12px] font-medium">减少动效</p>
+                    <p className="mt-0.5 text-[10px] text-muted-foreground">
                       关闭过渡与上浮动画。
                     </p>
                   </div>
@@ -218,226 +311,6 @@ export function SettingsPage() {
                       );
                     }}
                   />
-                </div>
-              </SettingsBlock>
-            </TabsContent>
-
-            <TabsContent value="proactive">
-              <SettingsBlock
-                title="主动规则"
-                description="每条规则都有观察与自动两种模式。默认观察：只记录，不执行。"
-              >
-                <div className="mb-4 rounded-[12px] border border-border bg-card/60 px-3 py-2.5">
-                  <p className="text-[12.5px] font-medium">来源</p>
-                  <p className="mt-0.5 text-[10.5px] text-muted-foreground">
-                    只有来源正常时，规则才会产生候选。
-                  </p>
-                  <div className="mt-2 space-y-1">
-                    {SOURCES.map((source) => (
-                      <div
-                        key={source.id}
-                        className="flex items-center gap-2 text-[11px]"
-                      >
-                        <span
-                          className={cn(
-                            "size-1.5 rounded-full",
-                            source.status === "on" && "bg-sage",
-                            source.status === "paused" && "bg-muted-foreground/40",
-                            source.status === "error" && "bg-destructive",
-                          )}
-                        />
-                        <span className="min-w-0 flex-1 truncate">
-                          {source.name}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground">
-                          {source.status === "on"
-                            ? "正常"
-                            : source.status === "paused"
-                              ? "暂停"
-                              : "错误"}
-                          {source.lastSync ? ` · ${source.lastSync}` : ""}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex items-center justify-between rounded-[12px] border border-border bg-card/60 px-3 py-2.5">
-                  <div>
-                    <p className="text-[12.5px] font-medium">默认主动行为</p>
-                    <p className="mt-0.5 text-[10.5px] text-muted-foreground">
-                      新规则默认继承这个模式。
-                    </p>
-                  </div>
-                  <div className="flex gap-1">
-                    <Button
-                      type="button"
-                      size="xs"
-                      variant={
-                        profile.proactiveMode === "observe"
-                          ? "secondary"
-                          : "outline"
-                      }
-                      onClick={() => updateProfile({ proactiveMode: "observe" })}
-                    >
-                      <Eye size={11} />
-                      观察
-                    </Button>
-                    <Button
-                      type="button"
-                      size="xs"
-                      variant={
-                        profile.proactiveMode === "auto"
-                          ? "secondary"
-                          : "outline"
-                      }
-                      onClick={() => updateProfile({ proactiveMode: "auto" })}
-                    >
-                      <Lightning size={11} />
-                      自动
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="mt-3 space-y-1.5">
-                  {rules.map((rule) => (
-                    <div
-                      key={rule.id}
-                      className="rounded-[12px] border border-border bg-card/60 px-3 py-2.5"
-                    >
-                      <div className="flex items-start gap-2">
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-2">
-                            <span className="text-[12.5px] font-medium">
-                              {rule.name}
-                            </span>
-                            <span className="text-[10px] text-muted-foreground">
-                              {rule.lastTriggered
-                                ? `上次触发 ${rule.lastTriggered}`
-                                : "尚未触发"}
-                            </span>
-                          </div>
-                          <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
-                            {rule.instruction}
-                          </p>
-                        </div>
-                        <Switch
-                          checked={rule.enabled}
-                          aria-label={`${rule.name}启用`}
-                          onCheckedChange={() => toggleRule(rule.id)}
-                        />
-                      </div>
-                      <div className="mt-2 flex items-center gap-1">
-                        <Button
-                          type="button"
-                          size="xs"
-                          variant={rule.mode === "observe" ? "secondary" : "ghost"}
-                          onClick={() => setRuleMode(rule.id, "observe")}
-                          className="text-muted-foreground"
-                        >
-                          <Eye size={11} />
-                          观察
-                        </Button>
-                        <Button
-                          type="button"
-                          size="xs"
-                          variant={rule.mode === "auto" ? "secondary" : "ghost"}
-                          onClick={() => setRuleMode(rule.id, "auto")}
-                          className="text-muted-foreground"
-                        >
-                          <Lightning size={11} />
-                          自动
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </SettingsBlock>
-            </TabsContent>
-
-            <TabsContent value="data">
-              <SettingsBlock
-                title="记忆与数据"
-                description="记忆只存在本地原型里。导出与清空都是演示动作。"
-              >
-                <div className="flex items-center justify-between rounded-[12px] border border-border px-3 py-2.5">
-                  <div>
-                    <p className="text-[12.5px] font-medium">允许记忆</p>
-                    <p className="mt-0.5 text-[10.5px] text-muted-foreground">
-                      关闭后，新对话不会再积累记忆。
-                    </p>
-                  </div>
-                  <Switch
-                    checked={profile.memoryEnabled}
-                    aria-label="允许记忆"
-                    onCheckedChange={(checked) =>
-                      updateProfile({ memoryEnabled: checked })
-                    }
-                  />
-                </div>
-
-                <div className="mt-3 rounded-[12px] border border-border px-3 py-2.5">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-[12.5px] font-medium">已保存的记忆</p>
-                      <p className="mt-0.5 text-[10.5px] text-muted-foreground">
-                        {memories.length} 条
-                      </p>
-                    </div>
-                    <Button
-                      asChild
-                      size="xs"
-                      variant="outline"
-                    >
-                      <a href="/memory">
-                        查看
-                        <ArrowSquareOut size={11} />
-                      </a>
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    onClick={() => toast("原型演示：导出记忆（JSON）")}
-                  >
-                    <DownloadSimple size={13} />
-                    导出数据
-                  </Button>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => {
-                      reset();
-                      toast("已重置演示数据");
-                    }}
-                  >
-                    <Trash size={13} />
-                    重置演示数据
-                  </Button>
-                </div>
-              </SettingsBlock>
-            </TabsContent>
-
-            <TabsContent value="about">
-              <SettingsBlock
-                title="关于"
-                description="Hucoo 个人助理 · 前端静态原型。"
-              >
-                <div className="space-y-2 text-[12px] text-muted-foreground">
-                  <p>
-                    这个原型只使用 fixtures 渲染状态，不连接后端，也不发起网络请求。
-                  </p>
-                  <p>
-                    真实的工作项阶段、报告与授权语义由后端定义；前端只做显示映射与兜底。
-                  </p>
-                  <div className="flex items-center justify-between rounded-[10px] bg-secondary/60 px-3 py-2">
-                    <span>版本</span>
-                    <span className="font-mono text-[11px]">0.1.0-prototype</span>
-                  </div>
                 </div>
               </SettingsBlock>
             </TabsContent>
@@ -458,10 +331,10 @@ function SettingsBlock({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-[16px] border border-border bg-card/70 p-4 sm:p-5">
-      <header className="mb-4">
-        <h2 className="text-[14px] font-medium">{title}</h2>
-        <p className="mt-1 text-[11.5px] leading-relaxed text-muted-foreground">
+    <section className="rounded-[14px] border border-border bg-card/70 p-4">
+      <header className="mb-3">
+        <h2 className="text-[13px] font-medium">{title}</h2>
+        <p className="mt-0.5 text-[11px] leading-relaxed text-muted-foreground">
           {description}
         </p>
       </header>
