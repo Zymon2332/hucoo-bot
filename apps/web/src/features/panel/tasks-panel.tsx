@@ -77,14 +77,16 @@ function TaskDetail({ item }: { item: WorkItem }) {
 
   return (
     <div className="space-y-4 px-3 py-3">
-      <button
+      <Button
         type="button"
+        variant="ghost"
+        size="xs"
         onClick={closeTask}
-        className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground"
+        className="h-auto px-0 text-[11px] text-muted-foreground"
       >
         <ArrowLeft size={11} />
         任务列表
-      </button>
+      </Button>
 
       <section>
         <div className="flex flex-wrap items-center gap-1.5">

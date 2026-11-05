@@ -15,6 +15,12 @@ import {
 } from "@phosphor-icons/react";
 import { cn } from "@hucoo/ui";
 import {
+  Avatar,
+  AvatarBadge,
+  AvatarFallback,
+} from "@hucoo/ui/components/avatar";
+import { Badge } from "@hucoo/ui/components/badge";
+import {
   ARTIFACT_KIND_LABEL,
   stageLabel,
   stageTone,
@@ -31,35 +37,32 @@ export function AssistantAvatar({
   status?: "online" | "thinking" | "idle";
 }) {
   const sizes = {
-    sm: "size-7 text-[11px] rounded-[9px]",
-    md: "size-8 text-xs rounded-[10px]",
-    lg: "size-11 text-sm rounded-[14px]",
-    xl: "size-14 text-lg rounded-[18px]",
+    sm: { avatar: "size-7 rounded-[9px]", fallback: "rounded-[9px] text-[10px]" },
+    md: { avatar: "size-8 rounded-[10px]", fallback: "rounded-[10px] text-[11px]" },
+    lg: { avatar: "size-11 rounded-[13px]", fallback: "rounded-[13px] text-[13px]" },
+    xl: { avatar: "size-14 rounded-[16px]", fallback: "rounded-[16px] text-[16px]" },
   } as const;
+  const item = sizes[size];
 
   return (
-    <span className="relative inline-flex shrink-0">
-      <span
-        aria-hidden
-        className={cn(
-          "grid place-items-center font-display font-semibold tracking-tight text-white shadow-[var(--shadow-card)]",
-          sizes[size],
-        )}
+    <Avatar aria-hidden className={cn(item.avatar, "after:hidden")}>
+      <AvatarFallback
+        className={cn("font-semibold tracking-tight text-white", item.fallback)}
         style={{ backgroundColor: profile.accent }}
       >
         {profile.initials}
-      </span>
+      </AvatarFallback>
       {status && (
-        <span
+        <AvatarBadge
           className={cn(
-            "absolute -bottom-0.5 -right-0.5 size-2.5 rounded-full border-2 border-background",
+            "border-2 border-background ring-0",
             status === "online" && "bg-sage",
             status === "thinking" && "animate-soft-pulse bg-warning",
             status === "idle" && "bg-muted-foreground/50",
           )}
         />
       )}
-    </span>
+    </Avatar>
   );
 }
 
@@ -71,26 +74,30 @@ export function StageBadge({
   className?: string;
 }) {
   return (
-    <span
+    <Badge
+      variant="secondary"
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium",
+        "h-auto gap-1.5 rounded-full border-0 px-2 py-0.5 text-[11px] font-medium",
         stageTone(stage),
         className,
       )}
     >
       <span className="size-1.5 rounded-full bg-current opacity-70" />
       {stageLabel(stage)}
-    </span>
+    </Badge>
   );
 }
 
 export function ModeBadge({ mode }: { mode: "observe" | "auto" }) {
   const Icon = mode === "observe" ? Eye : Lightning;
   return (
-    <span className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-[11px] text-muted-foreground">
+    <Badge
+      variant="outline"
+      className="h-auto gap-1 rounded-full px-2 py-0.5 text-[11px] font-normal text-muted-foreground"
+    >
       <Icon size={12} weight={mode === "auto" ? "fill" : "regular"} />
       {mode === "observe" ? "观察" : "自动"}
-    </span>
+    </Badge>
   );
 }
 
@@ -110,10 +117,13 @@ export function ArtifactKindBadge({
 }) {
   const Icon = ARTIFACT_ICON[kind];
   return (
-    <span className="inline-flex items-center gap-1 rounded-md bg-secondary px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+    <Badge
+      variant="secondary"
+      className="h-auto gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground"
+    >
       <Icon size={11} />
       {withLabel && ARTIFACT_KIND_LABEL[kind]}
-    </span>
+    </Badge>
   );
 }
 

@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "@phosphor-icons/react";
+import { Card } from "@hucoo/ui/components/card";
 import { ARTIFACTS, BOTS } from "@/fixtures";
 import { ArtifactKindBadge } from "@/components/primitives";
 import { useUiStore } from "@/stores/ui-store";
@@ -7,7 +8,7 @@ import { useUiStore } from "@/stores/ui-store";
 export function AssetsPage({ embedded = false }: { embedded?: boolean }) {
   const closeModal = useUiStore((state) => state.closeModal);
   return (
-    <div className={embedded ? "" : "h-full overflow-y-auto"}>
+    <div className={embedded ? "h-full overflow-y-auto p-3" : "h-full overflow-y-auto"}>
       <div
         className={
           embedded
@@ -40,24 +41,29 @@ export function AssetsPage({ embedded = false }: { embedded?: boolean }) {
                       to="/artifact/$artifactId"
                       params={{ artifactId: artifact.id }}
                       onClick={closeModal}
-                      className="group rounded-[12px] border border-border bg-card/70 px-3.5 py-3 transition-colors hover:border-clay/25 hover:bg-card"
+                      className="group block"
                     >
-                      <div className="flex items-center gap-2">
-                        <ArtifactKindBadge kind={artifact.kind} />
-                        <span className="text-[9.5px] text-muted-foreground">
-                          {artifact.updatedAt}
-                        </span>
-                        <ArrowUpRight
-                          size={12}
-                          className="ml-auto text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
-                        />
-                      </div>
-                      <p className="mt-1.5 text-[12.5px] font-medium">
-                        {artifact.title}
-                      </p>
-                      <p className="mt-0.5 text-[10.5px] text-muted-foreground">
-                        {artifact.summary}
-                      </p>
+                      <Card
+                        size="sm"
+                        className="gap-0 border border-border bg-card p-3.5 ring-0 transition-colors group-hover:border-primary/30"
+                      >
+                        <div className="flex items-center gap-2">
+                          <ArtifactKindBadge kind={artifact.kind} />
+                          <span className="text-[9.5px] text-muted-foreground">
+                            {artifact.updatedAt}
+                          </span>
+                          <ArrowUpRight
+                            size={12}
+                            className="ml-auto text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
+                          />
+                        </div>
+                        <p className="mt-1.5 text-[12.5px] font-medium">
+                          {artifact.title}
+                        </p>
+                        <p className="mt-0.5 text-[10.5px] text-muted-foreground">
+                          {artifact.summary}
+                        </p>
+                      </Card>
                     </Link>
                   ))}
                 </div>

@@ -1,5 +1,13 @@
-import type { Bot } from "@/fixtures/types";
+import { Avatar, AvatarBadge, AvatarFallback } from "@hucoo/ui/components/avatar";
 import { cn } from "@hucoo/ui";
+import type { Bot } from "@/fixtures/types";
+
+const SIZES = {
+  sm: { avatar: "size-7 rounded-[9px]", fallback: "rounded-[9px] text-[10px]" },
+  md: { avatar: "size-8 rounded-[10px]", fallback: "rounded-[10px] text-[11px]" },
+  lg: { avatar: "size-11 rounded-[13px]", fallback: "rounded-[13px] text-[13px]" },
+  xl: { avatar: "size-14 rounded-[16px]", fallback: "rounded-[16px] text-[16px]" },
+} as const;
 
 export function BotAvatar({
   bot,
@@ -7,36 +15,32 @@ export function BotAvatar({
   status,
 }: {
   bot: Bot;
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: keyof typeof SIZES;
   status?: "online" | "idle";
 }) {
-  const sizes = {
-    sm: "size-7 text-[11px] rounded-[9px]",
-    md: "size-8 text-xs rounded-[10px]",
-    lg: "size-11 text-sm rounded-[14px]",
-    xl: "size-14 text-lg rounded-[18px]",
-  } as const;
-
+  const sizes = SIZES[size];
   return (
-    <span className="relative inline-flex shrink-0">
-      <span
-        aria-hidden
+    <Avatar
+      aria-hidden
+      className={cn(sizes.avatar, "after:hidden")}
+    >
+      <AvatarFallback
         className={cn(
-          "grid place-items-center font-semibold tracking-tight text-white",
-          sizes[size],
+          "font-semibold tracking-tight text-white",
+          sizes.fallback,
         )}
         style={{ backgroundColor: bot.accent }}
       >
         {bot.initials}
-      </span>
+      </AvatarFallback>
       {status && (
-        <span
+        <AvatarBadge
           className={cn(
-            "absolute -bottom-0.5 -right-0.5 size-2.5 rounded-full border-2 border-background",
+            "border-2 border-background ring-0",
             status === "online" ? "bg-sage" : "bg-muted-foreground/50",
           )}
         />
       )}
-    </span>
+    </Avatar>
   );
 }

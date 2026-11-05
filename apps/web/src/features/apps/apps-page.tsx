@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { PlugsConnected, Robot, Wrench } from "@phosphor-icons/react";
 import { Button } from "@hucoo/ui/components/button";
+import { Card } from "@hucoo/ui/components/card";
 import { APPS, BOTS } from "@/fixtures";
 import type { AppConnection } from "@/fixtures/types";
 import { BotAvatar } from "@/components/bot-avatar";
@@ -35,7 +36,7 @@ export function AppsPage({ embedded = false }: { embedded?: boolean }) {
   ];
 
   return (
-    <div className={embedded ? "" : "h-full overflow-y-auto"}>
+    <div className={embedded ? "h-full overflow-y-auto p-3" : "h-full overflow-y-auto"}>
       <div
         className={
           embedded
@@ -52,7 +53,7 @@ export function AppsPage({ embedded = false }: { embedded?: boolean }) {
           </header>
         )}
 
-        <div className={embedded ? "space-y-7" : "mt-6 space-y-7"}>
+        <div className={embedded ? "space-y-6" : "mt-6 space-y-7"}>
           {groups.map((group) => {
             const apps = APPS.filter((app) => app.kind === group.kind);
             const Icon = group.icon;
@@ -78,9 +79,10 @@ export function AppsPage({ embedded = false }: { embedded?: boolean }) {
                       app.assignedBotIds.includes(bot.id),
                     );
                     return (
-                      <article
+                      <Card
                         key={app.id}
-                        className="rounded-[12px] border border-border bg-card/70 px-3.5 py-3"
+                        size="sm"
+                        className="gap-0 border border-border bg-card p-3.5 ring-0"
                       >
                         <div className="flex items-start gap-2">
                           <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-[8px] bg-secondary text-muted-foreground">
@@ -140,7 +142,7 @@ export function AppsPage({ embedded = false }: { embedded?: boolean }) {
                             {on ? "断开" : "连接"}
                           </Button>
                         </div>
-                      </article>
+                      </Card>
                     );
                   })}
                 </div>

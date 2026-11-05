@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Sparkle } from "@phosphor-icons/react";
 import { Switch } from "@hucoo/ui/components/switch";
+import { Card } from "@hucoo/ui/components/card";
 import { BOTS, SKILLS } from "@/fixtures";
 import { BotAvatar } from "@/components/bot-avatar";
 import { SectionHeading } from "@/components/primitives";
@@ -14,7 +15,7 @@ export function SkillsPage({ embedded = false }: { embedded?: boolean }) {
   );
 
   return (
-    <div className={embedded ? "" : "h-full overflow-y-auto"}>
+    <div className={embedded ? "h-full overflow-y-auto p-3" : "h-full overflow-y-auto"}>
       <div
         className={
           embedded
@@ -36,9 +37,10 @@ export function SkillsPage({ embedded = false }: { embedded?: boolean }) {
             const on = enabled[skill.id] ?? true;
             const bots = BOTS.filter((bot) => skill.assignedBotIds.includes(bot.id));
             return (
-              <article
+              <Card
                 key={skill.id}
-                className="flex items-start gap-2 rounded-[12px] border border-border bg-card/70 px-3.5 py-3"
+                size="sm"
+                className="flex-row items-start gap-2 border border-border bg-card p-3.5 ring-0"
               >
                 <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-[8px] bg-secondary text-clay">
                   <Sparkle size={14} />
@@ -63,7 +65,7 @@ export function SkillsPage({ embedded = false }: { embedded?: boolean }) {
                     setEnabled((state) => ({ ...state, [skill.id]: checked }))
                   }
                 />
-              </article>
+              </Card>
             );
           })}
         </div>

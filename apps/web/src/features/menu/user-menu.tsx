@@ -12,6 +12,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@hucoo/ui/components/dropdown-menu";
+import { Button } from "@hucoo/ui/components/button";
+import { cn } from "@hucoo/ui";
 import { useUiStore } from "@/stores/ui-store";
 
 const USER = { name: "WZM", initials: "WZ", accent: "#475569" };
@@ -22,15 +24,17 @@ export function UserMenu({ collapsed = false }: { collapsed?: boolean }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size={collapsed ? "icon-lg" : "default"}
           aria-label={`${USER.initials} 用户菜单`}
-          className={
+          className={cn(
+            "font-normal",
             collapsed
-              ? "grid size-9 place-items-center rounded-full text-[11px] font-semibold text-white"
-              : "flex h-9 w-full items-center gap-2 rounded-[9px] px-2 text-left transition-colors hover:bg-sidebar-accent"
-          }
-          style={collapsed ? { backgroundColor: USER.accent } : undefined}
+              ? "rounded-full p-0"
+              : "h-9 w-full justify-start gap-2 rounded-[9px] px-2",
+          )}
         >
           <span
             className="grid size-7 shrink-0 place-items-center rounded-full text-[10px] font-semibold text-white"
@@ -39,7 +43,7 @@ export function UserMenu({ collapsed = false }: { collapsed?: boolean }) {
             {USER.initials}
           </span>
           {!collapsed && (
-            <span className="min-w-0 flex-1">
+            <span className="min-w-0 flex-1 text-left">
               <span className="block truncate text-[12px] font-medium text-foreground">
                 {USER.name}
               </span>
@@ -48,7 +52,7 @@ export function UserMenu({ collapsed = false }: { collapsed?: boolean }) {
               </span>
             </span>
           )}
-        </button>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="top" align="start" className="w-44">
         <DropdownMenuLabel>{USER.name}</DropdownMenuLabel>

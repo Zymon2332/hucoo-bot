@@ -35,7 +35,7 @@ describe("apps page", () => {
     const user = userEvent.setup();
     render(<AppsPage />);
 
-    const mail = screen.getByText("邮件").closest("article");
+    const mail = screen.getByText("邮件").closest('[data-slot="card"]');
     expect(mail).not.toBeNull();
     const connect = screen
       .getAllByRole("button", { name: /^连接$/ })

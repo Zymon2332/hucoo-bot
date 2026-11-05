@@ -2,7 +2,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader,
   DialogTitle,
 } from "@hucoo/ui/components/dialog";
 import { cn } from "@hucoo/ui";
@@ -14,31 +13,36 @@ import { AppsPage } from "@/features/apps/apps-page";
 
 const CONFIG: Record<
   AppModal,
-  { title: string; description: string; width: string; content: React.ReactNode }
+  {
+    title: string;
+    description: string;
+    size: string;
+    content: React.ReactNode;
+  }
 > = {
   settings: {
     title: "设置",
-    description: "模型、记忆、用量与通用配置。bot 级设置在右侧面板。",
-    width: "sm:max-w-3xl",
+    description: "模型、记忆、用量与通用配置。",
+    size: "h-[min(640px,calc(100vh-2rem))] w-[min(920px,calc(100vw-2rem))]",
     content: <SettingsPage embedded />,
+  },
+  apps: {
+    title: "应用",
+    description: "连接外部应用与 Agent。",
+    size: "h-[min(640px,calc(100vh-2rem))] w-[min(920px,calc(100vw-2rem))]",
+    content: <AppsPage embedded />,
   },
   skills: {
     title: "技能",
-    description: "bot 可以按需加载的技能。技能只影响能力，不改变授权。",
-    width: "sm:max-w-2xl",
+    description: "bot 可以按需加载的技能。",
+    size: "h-[min(560px,calc(100vh-2rem))] w-[min(760px,calc(100vw-2rem))]",
     content: <SkillsPage embedded />,
   },
   assets: {
     title: "产物",
-    description: "所有 bot 产出的文档、表格、网页与代码。",
-    width: "sm:max-w-2xl",
+    description: "所有 bot 产出的资产。",
+    size: "h-[min(560px,calc(100vh-2rem))] w-[min(760px,calc(100vw-2rem))]",
     content: <AssetsPage embedded />,
-  },
-  apps: {
-    title: "应用",
-    description: "连接外部应用（MCP）与 Agent（opencode / Claude Code / Codex）。",
-    width: "sm:max-w-3xl",
-    content: <AppsPage embedded />,
   },
 };
 
@@ -57,17 +61,15 @@ export function AppModals() {
       {config && (
         <DialogContent
           className={cn(
-            "max-h-[86vh] gap-0 overflow-hidden p-0",
-            config.width,
+            "flex max-w-none flex-col gap-0 overflow-hidden p-0 sm:max-w-none",
+            config.size,
           )}
         >
-          <DialogHeader className="border-b border-border/70 px-4 py-3">
-            <DialogTitle className="text-[14px]">{config.title}</DialogTitle>
-            <DialogDescription className="text-[11px]">
-              {config.description}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="max-h-[calc(86vh-5rem)] overflow-y-auto p-4">
+          <DialogTitle className="sr-only">{config.title}</DialogTitle>
+          <DialogDescription className="sr-only">
+            {config.description}
+          </DialogDescription>
+          <div className="min-h-0 flex-1 overflow-hidden pt-9">
             {config.content}
           </div>
         </DialogContent>
