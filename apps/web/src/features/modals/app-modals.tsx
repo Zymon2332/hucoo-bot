@@ -75,7 +75,7 @@ export function AppModals() {
               <DialogTitle className="text-[22px] font-semibold tracking-tight">
                 {config.title}
               </DialogTitle>
-              <DialogDescription className="mt-1 text-[12px] text-muted-foreground">
+              <DialogDescription className="sr-only">
                 {config.description}
               </DialogDescription>
             </div>
