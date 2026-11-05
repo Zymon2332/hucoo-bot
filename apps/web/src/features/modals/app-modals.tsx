@@ -23,25 +23,25 @@ const CONFIG: Record<
   settings: {
     title: "设置",
     description: "模型、记忆、用量与通用配置。",
-    size: "h-[min(640px,calc(100vh-2rem))] w-[min(920px,calc(100vw-2rem))]",
+    size: "h-[min(780px,calc(100vh-2rem))] w-[min(1120px,calc(100vw-2rem))]",
     content: <SettingsPage embedded />,
   },
   apps: {
     title: "应用",
     description: "连接外部应用与 Agent。",
-    size: "h-[min(640px,calc(100vh-2rem))] w-[min(920px,calc(100vw-2rem))]",
+    size: "h-[min(780px,calc(100vh-2rem))] w-[min(1120px,calc(100vw-2rem))]",
     content: <AppsPage embedded />,
   },
   skills: {
     title: "技能",
     description: "bot 可以按需加载的技能。",
-    size: "h-[min(560px,calc(100vh-2rem))] w-[min(760px,calc(100vw-2rem))]",
+    size: "h-[min(680px,calc(100vh-2rem))] w-[min(920px,calc(100vw-2rem))]",
     content: <SkillsPage embedded />,
   },
   assets: {
     title: "产物",
     description: "所有 bot 产出的资产。",
-    size: "h-[min(560px,calc(100vh-2rem))] w-[min(760px,calc(100vw-2rem))]",
+    size: "h-[min(680px,calc(100vh-2rem))] w-[min(920px,calc(100vw-2rem))]",
     content: <AssetsPage embedded />,
   },
 };
