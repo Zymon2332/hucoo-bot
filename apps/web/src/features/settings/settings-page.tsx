@@ -54,7 +54,7 @@ export function SettingsPage({ embedded = false }: { embedded?: boolean }) {
       <Tabs
         orientation="vertical"
         defaultValue="model"
-        className="grid h-full min-h-0 w-full grid-cols-1 gap-0 sm:grid-cols-[176px_minmax(0,1fr)]"
+        className="grid h-full min-h-0 w-full grid-cols-1 gap-0 sm:grid-cols-[184px_minmax(0,1fr)]"
       >
         <div className="min-h-0 border-b border-border/70 bg-secondary/20 sm:border-b-0 sm:border-r">
           <TabsList className="flex h-auto w-full flex-row items-center justify-start gap-1 overflow-x-auto bg-transparent p-2 sm:h-auto sm:flex-col sm:items-stretch sm:overflow-visible sm:p-3">
@@ -64,11 +64,11 @@ export function SettingsPage({ embedded = false }: { embedded?: boolean }) {
                 <TabsTrigger
                   key={item.id}
                   value={item.id}
-                  className="group relative h-8 w-auto flex-none shrink-0 justify-start gap-2 rounded-[7px] px-2 text-[12px] data-[state=active]:bg-secondary data-[state=active]:text-foreground data-[state=active]:shadow-none sm:w-full"
+                  className="group relative h-9 w-auto flex-none shrink-0 justify-start gap-2.5 rounded-[8px] px-2.5 text-[13.5px] data-[state=active]:bg-secondary data-[state=active]:text-foreground data-[state=active]:shadow-none sm:w-full"
                 >
-                  <span className="absolute left-0 top-1.5 hidden h-5 w-0.5 rounded-full bg-primary group-data-[state=active]:block sm:block sm:opacity-0 sm:group-data-[state=active]:opacity-100" />
-                  <span className="grid size-6 shrink-0 place-items-center rounded-[6px] bg-background/60 text-muted-foreground group-data-[state=active]:text-primary">
-                    <Icon size={13} />
+                  <span className="absolute left-0 top-2 hidden h-5 w-0.5 rounded-full bg-primary group-data-[state=active]:block sm:block sm:opacity-0 sm:group-data-[state=active]:opacity-100" />
+                  <span className="grid size-7 shrink-0 place-items-center rounded-[7px] bg-background/60 text-muted-foreground group-data-[state=active]:text-primary">
+                    <Icon size={15} />
                   </span>
                   {item.label}
                 </TabsTrigger>
