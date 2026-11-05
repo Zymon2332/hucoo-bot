@@ -19,7 +19,6 @@ from exception.definition import ServiceError
 from harness.runtime.checkpointer import build_checkpointer
 from harness.runtime.store import build_store
 from routers.agent import agent_router
-from routers.agent_v2 import agent_router_v2
 
 load_dotenv()
 
@@ -63,7 +62,6 @@ async def lifespan(app: FastAPI):
 
 def include_routers(app: FastAPI):
     app.include_router(agent_router)
-    app.include_router(agent_router_v2)
 
 
 def create_app():

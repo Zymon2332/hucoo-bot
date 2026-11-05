@@ -1,103 +1,219 @@
 import itertools
 import time
-from dataclasses import dataclass
-from typing import Literal, Any
+from typing import Any, Literal, Annotated, TypeVar, Union
 
 from fastapi.sse import ServerSentEvent
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, TypeAdapter
+
+from harness.sse.payloads import Payload, RunStartData, RunResumeData, RunErrorData, RunEndData, InterruptData, \
+    ScopeCloseData, ScopeOpenData, MessageStartData, MessageEndData, BlockStartData, BlockDeltaData, \
+    BlockEndData, ToolStartData, ToolDeltaData, ToolEndData, ToolErrorData
 
 
 class BaseEvent(BaseModel):
     v: Literal[1] = 1
-    """协议版本"""
-
-    type: str
-    """事件类型"""
-
     seq: int
-    """Run 内严格递增，从 1 开始；用于去重、排序、续传"""
-
+    type: str
     ts: int
-    """服务端毫秒时间戳；只用于展示和排查，不用于排序"""
-
     run_id: str
-    """每次运行的唯一 id"""
+    thread_id: str
+    scope_id: str
+    """标记当前 agent 运行的作用域，用于多智能体"""
+    block_index: int | None = None
+    """消息内内容块序号（文本/推理/工具调用各占一块）"""
 
 
-class ReasoningEvent(BaseEvent):
-    type: Literal["reasoning.start", "reasoning.end", "reasoning.delta"]
+class RunStart(BaseEvent):
+    type: Literal["run.start"] = "run.start"
+    data: RunStartData
+
+
+class RunResumed(BaseEvent):
+    type: Literal["run.resume"] = "run.resume"
+    data: RunResumeData
+
+
+class RunEnd(BaseEvent):
+    type: Literal["run.end"] = "run.end"
+    data: RunEndData
+
+
+class RunError(BaseEvent):
+    """只用于根致命错误，子代理失败走 scope.close(status:'failed')，工具失败走 tool.error，都不会触发此事件"""
+    type: Literal["run.error"] = "run.error"
+    data: RunErrorData
+
+
+class Interrupt(BaseEvent):
+    type: Literal["interrupt"] = "interrupt"
+    data: InterruptData
+
+
+class ScopeOpen(BaseEvent):
+    type: Literal["scope.open"] = "scope.open"
+    data: ScopeOpenData
+
+
+class ScopeClose(BaseEvent):
+    type: Literal["scope.close"] = "scope.close"
+    data: ScopeCloseData
+
+
+class MessageStart(BaseEvent):
+    type: Literal["message.start"] = "message.start"
+    data: MessageStartData
+
+
+class MessageEnd(BaseEvent):
+    type: Literal["message.end"] = "message.end"
+    data: MessageEndData
+
+
+class BlockStart(BaseEvent):
+    type: Literal["block.start"] = "block.start"
     message_id: str
-    delta: str | None = None
+    block_index: int
+    data: BlockStartData
 
 
-class TextEvent(BaseEvent):
-    type: Literal["text.start", "text.end", "text.delta"]
+class BlockDelta(BaseEvent):
+    type: Literal["block.delta"] = "block.delta"
     message_id: str
-    delta: str | None = None
+    block_index: int
+    data: BlockDeltaData
 
 
-@dataclass
-class CallState:
-    index: int | None = None
-    name: str | None = None
-    tool_call_id: str | None = None
-    started: bool = False
-
-
-class ToolCallEvent(BaseEvent):
-    type: Literal["tool_call.start", "tool_call.end", "tool_call.delta"]
+class BlockEnd(BaseEvent):
+    type: Literal["block.end"] = "block.end"
     message_id: str
-    tool_call_id: str
-    tool_name: str | None = None
-    delta: str | None = None
+    block_index: int
+    data: BlockEndData
 
 
-class ToolResultEvent(BaseEvent):
-    type: Literal["tool_result"] = "tool_result"
-    tool_call_id: str
-    tool_name: str
-    output: str
-    is_error: bool = False
-    duration_ms: int | None = None
+class ToolStart(BaseEvent):
+    type: Literal["tool.start"] = "tool.start"
+    data: ToolStartData
 
 
-class ToolResultDeltaEvent(BaseEvent):
-    """流式工具调用结果"""
-    type: Literal["tool_result.delta"] = "tool_result.delta"
-    tool_call_id: str
-    delta: str
+class ToolDelta(BaseEvent):
+    type: Literal["tool.delta"] = "tool.delta"
+    data: ToolDeltaData
 
 
-class DoneEvent(BaseEvent):
-    type: Literal["done"] = "done"
-    usage: dict[str, Any] | None = None
-    duration_ms: int | None = None
+class ToolEnd(BaseEvent):
+    type: Literal["tool.end"] = "tool.end"
+    data: ToolEndData
 
 
-class ErrorEvent(BaseEvent):
-    type: Literal["error"] = "error"
-    display_message: str
-    # TODO details 暂且搁置，未来可以构建一个结构，比如是否重试等字段让前端判断，或者一些具体原因方便审计
-    # details: dict[str, Any] | None = None
+class ToolError(BaseEvent):
+    type: Literal["tool.error"] = "tool.error"
+    data: ToolErrorData
+
+
+ProtocolEvent = Annotated[
+    Union[
+        RunStart, RunResumed, RunEnd, RunError,
+        ScopeOpen, ScopeClose, Interrupt,
+        MessageStart, MessageEnd, BlockStart, BlockDelta, BlockEnd,
+        ToolStart, ToolDelta, ToolEnd, ToolError,
+    ],
+    Field(discriminator="type"),
+]
+
+EVENT_ADAPTER: TypeAdapter[ProtocolEvent] = TypeAdapter(ProtocolEvent)
+
+
+EventT = TypeVar("EventT", bound=BaseEvent)
 
 
 class EventFactory:
+    """v2 协议事件的统一信封工厂。
 
-    def __init__(self, run_id: str) -> None:
+    同一个 run 必须共享一个实例，保证 `seq` 在 run 内全局单调递增；
+    子 agent / 子图通过 `scoped()` 拿到绑定 `scope_id` 的发射器，
+    避免在每个调用点重复传 scope。
+
+    非线程安全：seq 基于 `itertools.count`，请在单个事件循环 / 线程内使用。
+    """
+
+    def __init__(self, *, run_id: str, thread_id: str) -> None:
         self.run_id = run_id
+        self.thread_id = thread_id
         self._seq = itertools.count(1)
 
-    def emit(self, cls: type[BaseEvent], **fields: object):
-        return cls(
-            run_id=self.run_id,
-            seq=next(self._seq),
-            ts=int(time.time() * 1000),
-            **fields,
+    def emit(
+        self,
+        cls: type[EventT],
+        *,
+        data: Payload,
+        scope_id: str,
+        message_id: str | None = None,
+        block_index: int | None = None,
+        **extra: Any,
+    ) -> EventT:
+        """填充信封字段并校验为具体的 v2 事件。
+
+        `message_id` / `block_index` 仅在非 None 时写入，避免给
+        RunStart 等不包含这些字段的事件塞入多余属性。
+        """
+        envelope: dict[str, Any] = {
+            "seq": next(self._seq),
+            "ts": int(time.time() * 1000),
+            "run_id": self.run_id,
+            "thread_id": self.thread_id,
+            "scope_id": scope_id,
+            "data": data,
+        }
+        if message_id is not None:
+            envelope["message_id"] = message_id
+        if block_index is not None:
+            envelope["block_index"] = block_index
+        envelope.update(extra)
+        return cls.model_validate(envelope)
+
+    def scoped(self, scope_id: str) -> "ScopedEmitter":
+        return ScopedEmitter(self, scope_id)
+
+
+class ScopedEmitter:
+    """绑定 `scope_id` 的轻量发射器，等价于 `factory.emit(scope_id=...)`。"""
+
+    def __init__(self, factory: EventFactory, scope_id: str) -> None:
+        self._factory = factory
+        self.scope_id = scope_id
+
+    @property
+    def run_id(self) -> str:
+        return self._factory.run_id
+
+    @property
+    def thread_id(self) -> str:
+        return self._factory.thread_id
+
+    def emit(
+        self,
+        cls: type[EventT],
+        *,
+        data: Payload,
+        message_id: str | None = None,
+        block_index: int | None = None,
+        **extra: Any,
+    ) -> EventT:
+        return self._factory.emit(
+            cls,
+            data=data,
+            scope_id=self.scope_id,
+            message_id=message_id,
+            block_index=block_index,
+            **extra,
         )
 
 
 def to_sse_event(event: BaseEvent) -> ServerSentEvent:
-    return ServerSentEvent(event=event.type,
-                           data=event.model_dump(exclude_none=True),
-                           id=str(event.seq),
-                           retry=None)
+    """把 v2 事件序列化为 SSE 帧，`id` 直接复用 ms 内的全局序 `seq`。"""
+    return ServerSentEvent(
+        event=event.type,
+        data=event.model_dump(exclude_none=True, mode="json"),
+        id=str(event.seq),
+        retry=None,
+    )

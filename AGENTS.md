@@ -172,7 +172,7 @@ pnpm --filter @hucoo/web build
 - 入口：`core/agent/main.py`
 - 路由：`routers/agent.py`（v1）、`routers/agent_v2.py`（v2）
 - Agent 组装：`harness/agent.py`
-- SSE 协议：`harness/sse/events.py`、`events_v2.py`、`payloads.py`
+- SSE 协议：`harness/sse/events.py`、`events.py`、`payloads.py`
 - 配置：`config/`
 - 设计文档：`core/agent/doc/design/`
 
