@@ -10,128 +10,115 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AgentsRouteImport } from './routes/agents'
-import { Route as CanvasRouteImport } from './routes/canvas'
-import { Route as InboxRouteImport } from './routes/inbox'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as ArtifactsArtifactIdRouteImport } from './routes/artifacts/$artifactId'
-import { Route as ProjectsProjectIdRouteImport } from './routes/projects/$projectId'
-import { Route as TThreadIdRouteImport } from './routes/t/$threadId'
+import { Route as MemoryRouteImport } from './routes/memory'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as ArtifactArtifactIdRouteImport } from './routes/artifact/$artifactId'
+import { Route as CConversationIdRouteImport } from './routes/c/$conversationId'
+import { Route as DevStatesRouteImport } from './routes/dev/states'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AgentsRoute = AgentsRouteImport.update({
-  id: '/agents',
-  path: '/agents',
+const MemoryRoute = MemoryRouteImport.update({
+  id: '/memory',
+  path: '/memory',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CanvasRoute = CanvasRouteImport.update({
-  id: '/canvas',
-  path: '/canvas',
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
-const InboxRoute = InboxRouteImport.update({
-  id: '/inbox',
-  path: '/inbox',
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
+const ArtifactArtifactIdRoute = ArtifactArtifactIdRouteImport.update({
+  id: '/artifact/$artifactId',
+  path: '/artifact/$artifactId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ArtifactsArtifactIdRoute = ArtifactsArtifactIdRouteImport.update({
-  id: '/artifacts/$artifactId',
-  path: '/artifacts/$artifactId',
+const CConversationIdRoute = CConversationIdRouteImport.update({
+  id: '/c/$conversationId',
+  path: '/c/$conversationId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProjectsProjectIdRoute = ProjectsProjectIdRouteImport.update({
-  id: '/projects/$projectId',
-  path: '/projects/$projectId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TThreadIdRoute = TThreadIdRouteImport.update({
-  id: '/t/$threadId',
-  path: '/t/$threadId',
+const DevStatesRoute = DevStatesRouteImport.update({
+  id: '/dev/states',
+  path: '/dev/states',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/agents': typeof AgentsRoute
-  '/canvas': typeof CanvasRoute
-  '/inbox': typeof InboxRoute
-  '/login': typeof LoginRoute
-  '/artifacts/$artifactId': typeof ArtifactsArtifactIdRoute
-  '/projects/$projectId': typeof ProjectsProjectIdRoute
-  '/t/$threadId': typeof TThreadIdRoute
+  '/memory': typeof MemoryRoute
+  '/onboarding': typeof OnboardingRoute
+  '/settings': typeof SettingsRoute
+  '/artifact/$artifactId': typeof ArtifactArtifactIdRoute
+  '/c/$conversationId': typeof CConversationIdRoute
+  '/dev/states': typeof DevStatesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/agents': typeof AgentsRoute
-  '/canvas': typeof CanvasRoute
-  '/inbox': typeof InboxRoute
-  '/login': typeof LoginRoute
-  '/artifacts/$artifactId': typeof ArtifactsArtifactIdRoute
-  '/projects/$projectId': typeof ProjectsProjectIdRoute
-  '/t/$threadId': typeof TThreadIdRoute
+  '/memory': typeof MemoryRoute
+  '/onboarding': typeof OnboardingRoute
+  '/settings': typeof SettingsRoute
+  '/artifact/$artifactId': typeof ArtifactArtifactIdRoute
+  '/c/$conversationId': typeof CConversationIdRoute
+  '/dev/states': typeof DevStatesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/agents': typeof AgentsRoute
-  '/canvas': typeof CanvasRoute
-  '/inbox': typeof InboxRoute
-  '/login': typeof LoginRoute
-  '/artifacts/$artifactId': typeof ArtifactsArtifactIdRoute
-  '/projects/$projectId': typeof ProjectsProjectIdRoute
-  '/t/$threadId': typeof TThreadIdRoute
+  '/memory': typeof MemoryRoute
+  '/onboarding': typeof OnboardingRoute
+  '/settings': typeof SettingsRoute
+  '/artifact/$artifactId': typeof ArtifactArtifactIdRoute
+  '/c/$conversationId': typeof CConversationIdRoute
+  '/dev/states': typeof DevStatesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/agents'
-    | '/canvas'
-    | '/inbox'
-    | '/login'
-    | '/artifacts/$artifactId'
-    | '/projects/$projectId'
-    | '/t/$threadId'
+    | '/memory'
+    | '/onboarding'
+    | '/settings'
+    | '/artifact/$artifactId'
+    | '/c/$conversationId'
+    | '/dev/states'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/agents'
-    | '/canvas'
-    | '/inbox'
-    | '/login'
-    | '/artifacts/$artifactId'
-    | '/projects/$projectId'
-    | '/t/$threadId'
+    | '/memory'
+    | '/onboarding'
+    | '/settings'
+    | '/artifact/$artifactId'
+    | '/c/$conversationId'
+    | '/dev/states'
   id:
     | '__root__'
     | '/'
-    | '/agents'
-    | '/canvas'
-    | '/inbox'
-    | '/login'
-    | '/artifacts/$artifactId'
-    | '/projects/$projectId'
-    | '/t/$threadId'
+    | '/memory'
+    | '/onboarding'
+    | '/settings'
+    | '/artifact/$artifactId'
+    | '/c/$conversationId'
+    | '/dev/states'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AgentsRoute: typeof AgentsRoute
-  CanvasRoute: typeof CanvasRoute
-  InboxRoute: typeof InboxRoute
-  LoginRoute: typeof LoginRoute
-  ArtifactsArtifactIdRoute: typeof ArtifactsArtifactIdRoute
-  ProjectsProjectIdRoute: typeof ProjectsProjectIdRoute
-  TThreadIdRoute: typeof TThreadIdRoute
+  MemoryRoute: typeof MemoryRoute
+  OnboardingRoute: typeof OnboardingRoute
+  SettingsRoute: typeof SettingsRoute
+  ArtifactArtifactIdRoute: typeof ArtifactArtifactIdRoute
+  CConversationIdRoute: typeof CConversationIdRoute
+  DevStatesRoute: typeof DevStatesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -143,53 +130,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/agents': {
-      id: '/agents'
-      path: '/agents'
-      fullPath: '/agents'
-      preLoaderRoute: typeof AgentsRouteImport
+    '/memory': {
+      id: '/memory'
+      path: '/memory'
+      fullPath: '/memory'
+      preLoaderRoute: typeof MemoryRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/canvas': {
-      id: '/canvas'
-      path: '/canvas'
-      fullPath: '/canvas'
-      preLoaderRoute: typeof CanvasRouteImport
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/inbox': {
-      id: '/inbox'
-      path: '/inbox'
-      fullPath: '/inbox'
-      preLoaderRoute: typeof InboxRouteImport
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
+    '/artifact/$artifactId': {
+      id: '/artifact/$artifactId'
+      path: '/artifact/$artifactId'
+      fullPath: '/artifact/$artifactId'
+      preLoaderRoute: typeof ArtifactArtifactIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/artifacts/$artifactId': {
-      id: '/artifacts/$artifactId'
-      path: '/artifacts/$artifactId'
-      fullPath: '/artifacts/$artifactId'
-      preLoaderRoute: typeof ArtifactsArtifactIdRouteImport
+    '/c/$conversationId': {
+      id: '/c/$conversationId'
+      path: '/c/$conversationId'
+      fullPath: '/c/$conversationId'
+      preLoaderRoute: typeof CConversationIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/projects/$projectId': {
-      id: '/projects/$projectId'
-      path: '/projects/$projectId'
-      fullPath: '/projects/$projectId'
-      preLoaderRoute: typeof ProjectsProjectIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/t/$threadId': {
-      id: '/t/$threadId'
-      path: '/t/$threadId'
-      fullPath: '/t/$threadId'
-      preLoaderRoute: typeof TThreadIdRouteImport
+    '/dev/states': {
+      id: '/dev/states'
+      path: '/dev/states'
+      fullPath: '/dev/states'
+      preLoaderRoute: typeof DevStatesRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -197,13 +177,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AgentsRoute: AgentsRoute,
-  CanvasRoute: CanvasRoute,
-  InboxRoute: InboxRoute,
-  LoginRoute: LoginRoute,
-  ArtifactsArtifactIdRoute: ArtifactsArtifactIdRoute,
-  ProjectsProjectIdRoute: ProjectsProjectIdRoute,
-  TThreadIdRoute: TThreadIdRoute,
+  MemoryRoute: MemoryRoute,
+  OnboardingRoute: OnboardingRoute,
+  SettingsRoute: SettingsRoute,
+  ArtifactArtifactIdRoute: ArtifactArtifactIdRoute,
+  CConversationIdRoute: CConversationIdRoute,
+  DevStatesRoute: DevStatesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

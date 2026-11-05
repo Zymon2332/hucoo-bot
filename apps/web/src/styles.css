@@ -1,1 +1,203 @@
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/fraunces";
 @import "@hucoo/ui/globals.css";
+
+@theme inline {
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui,
+    -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    sans-serif;
+  --font-display: "Fraunces Variable", "Iowan Old Style", "Songti SC",
+    "Noto Serif SC", Georgia, serif;
+
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-clay: var(--clay);
+  --color-sage: var(--sage);
+}
+
+:root {
+  --background: #f6f2ea;
+  --foreground: #211e19;
+  --card: #fffcf6;
+  --card-foreground: #211e19;
+  --popover: #fffcf6;
+  --popover-foreground: #211e19;
+  --primary: #a64b2a;
+  --primary-foreground: #fff8f2;
+  --secondary: #efe9de;
+  --secondary-foreground: #211e19;
+  --muted: #efe9de;
+  --muted-foreground: #7a7367;
+  --accent: #f3e4da;
+  --accent-foreground: #6f2f17;
+  --destructive: #b3261e;
+  --destructive-foreground: #fff8f2;
+  --border: #e3dbce;
+  --input: #e3dbce;
+  --ring: #b4552d;
+  --brand: #a64b2a;
+  --warning: #a97619;
+  --section-label: #9a9183;
+  --paper: #fffcf6;
+  --ink: #211e19;
+  --clay: #a64b2a;
+  --sage: #66735a;
+  --radius: 0.6875rem;
+  --radius-card: 1.125rem;
+  --shadow-card: 0 1px 2px rgba(60, 45, 25, 0.04),
+    0 10px 30px -22px rgba(60, 45, 25, 0.35);
+  --shadow-float: 0 2px 6px rgba(60, 45, 25, 0.06),
+    0 24px 60px -28px rgba(60, 45, 25, 0.4);
+  --sidebar: #f1ece2;
+  --sidebar-foreground: #211e19;
+  --sidebar-primary: #a64b2a;
+  --sidebar-primary-foreground: #fff8f2;
+  --sidebar-accent: #e7ded0;
+  --sidebar-accent-foreground: #211e19;
+  --sidebar-border: #e3dbce;
+  --sidebar-ring: #b4552d;
+}
+
+.dark {
+  --background: #16130f;
+  --foreground: #f1e9dd;
+  --card: #1e1a15;
+  --card-foreground: #f1e9dd;
+  --popover: #1e1a15;
+  --popover-foreground: #f1e9dd;
+  --primary: #e08a5f;
+  --primary-foreground: #241109;
+  --secondary: #262019;
+  --secondary-foreground: #f1e9dd;
+  --muted: #262019;
+  --muted-foreground: #a79c8b;
+  --accent: #2e2118;
+  --accent-foreground: #f1c6a8;
+  --destructive: #e4695e;
+  --destructive-foreground: #241109;
+  --border: #332b22;
+  --input: #332b22;
+  --ring: #e08a5f;
+  --brand: #e08a5f;
+  --warning: #d6a44a;
+  --section-label: #776c5d;
+  --paper: #1e1a15;
+  --ink: #f1e9dd;
+  --clay: #e08a5f;
+  --sage: #97a487;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.35),
+    0 10px 30px -22px rgba(0, 0, 0, 0.8);
+  --shadow-float: 0 2px 6px rgba(0, 0, 0, 0.4),
+    0 24px 60px -28px rgba(0, 0, 0, 0.9);
+  --sidebar: #191510;
+  --sidebar-foreground: #f1e9dd;
+  --sidebar-primary: #e08a5f;
+  --sidebar-primary-foreground: #241109;
+  --sidebar-accent: #2a231b;
+  --sidebar-accent-foreground: #f1e9dd;
+  --sidebar-border: #332b22;
+  --sidebar-ring: #e08a5f;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background-color: var(--background);
+    background-image: radial-gradient(
+      120% 90% at 50% -20%,
+      color-mix(in oklab, var(--clay) 7%, transparent),
+      transparent 60%
+    );
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--clay) 22%, transparent);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklab, var(--muted-foreground) 28%, transparent)
+      transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--muted-foreground) 24%, transparent);
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@utility hairline {
+  border-color: color-mix(in oklab, var(--border) 80%, transparent);
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility animate-rise {
+  animation: rise 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes soft-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@utility animate-soft-pulse {
+  animation: soft-pulse 1.6s ease-in-out infinite;
+}
+
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+.prose {
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-links: var(--clay);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-counters: var(--muted-foreground);
+  --tw-prose-bullets: var(--muted-foreground);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--muted-foreground);
+  --tw-prose-quote-borders: var(--border);
+  --tw-prose-code: var(--foreground);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+}

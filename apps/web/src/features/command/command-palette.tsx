@@ -1,10 +1,13 @@
-import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@hucoo/ui/components/dialog";
+  Brain,
+  Cube,
+  GearSix,
+  Laptop,
+  MagnifyingGlass,
+  Plus,
+  Sparkle,
+} from "@phosphor-icons/react";
 import {
   Command,
   CommandEmpty,
@@ -12,195 +15,154 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
+  CommandSeparator,
   CommandShortcut,
 } from "@hucoo/ui/components/command";
-import { setTheme } from "@/lib/theme";
-import { useThreadsStore } from "@/features/threads/threads-store";
-import type { Thread } from "@/features/threads/types";
-import { searchCommands, type Command as CommandDef } from "./registry";
-import { useCommandStore } from "./command-store";
-
-const MAX_SESSION_RESULTS = 5;
-const MAX_MESSAGE_RESULTS = 5;
-
-function snippet(text: string, query: string): string {
-  const index = text.toLowerCase().indexOf(query.toLowerCase());
-  const start = Math.max(0, index - 16);
-  const slice = text.slice(start, start + 60).replace(/\s+/g, " ").trim();
-  return `${start > 0 ? "…" : ""}${slice}${text.length > start + 60 ? "…" : ""}`;
-}
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@hucoo/ui/components/dialog";
+import { ARTIFACTS, CONVERSATIONS } from "@/fixtures";
+import { useDemoStore } from "@/stores/demo-store";
+import { useUiStore } from "@/stores/ui-store";
+import { setTheme, getStoredTheme } from "@/lib/theme";
 
 export function CommandPalette() {
-  const open = useCommandStore((s) => s.open);
-  const setOpen = useCommandStore((s) => s.setOpen);
-  const toggle = useCommandStore((s) => s.toggle);
+  const open = useUiStore((state) => state.commandOpen);
+  const setOpen = useUiStore((state) => state.setCommandOpen);
+  const memories = useDemoStore((state) => state.memories);
   const navigate = useNavigate();
-  const threads = useThreadsStore((s) => s.threads);
-  const [query, setQuery] = useState("");
 
-  const staticCommands = useMemo<CommandDef[]>(
-    () => [
-      {
-        id: "nav.dashboard",
-        title: "前往 首页",
-        group: "导航",
-        keywords: ["home", "dashboard", "首页"],
-        run: () => navigate({ to: "/" }),
-      },
-      {
-        id: "nav.inbox",
-        title: "前往 收件箱",
-        group: "导航",
-        keywords: ["inbox", "通知", "待处理"],
-        run: () => navigate({ to: "/inbox" }),
-      },
-      {
-        id: "nav.canvas",
-        title: "前往 画布",
-        group: "导航",
-        keywords: ["canvas", "画布", "全景"],
-        run: () => navigate({ to: "/canvas" }),
-      },
-      {
-        id: "nav.agents",
-        title: "前往 场景目录",
-        group: "导航",
-        keywords: ["agents", "场景", "市场"],
-        run: () => navigate({ to: "/agents" }),
-      },
-      {
-        id: "nav.new",
-        title: "新建会话",
-        group: "操作",
-        keywords: ["new", "chat", "会话"],
-        shortcut: "⌘N",
-        run: () => navigate({ to: "/t/$threadId", params: { threadId: "new" } }),
-      },
-      {
-        id: "theme.toggle",
-        title: "切换主题",
-        group: "操作",
-        keywords: ["theme", "dark", "light", "暗色", "亮色"],
-        run: () => {
-          const isDark = document.documentElement.classList.contains("dark");
-          setTheme(isDark ? "light" : "dark");
-        },
-      },
-    ],
-    [navigate],
-  );
-
-  const dynamicCommands = useMemo<CommandDef[]>(() => {
-    const q = query.trim().toLowerCase();
-    const openThread = (id: string) => () =>
-      navigate({ to: "/t/$threadId", params: { threadId: id } });
-
-    if (!q) {
-      return threads
-        .slice(0, MAX_SESSION_RESULTS)
-        .map((thread) => ({
-          id: `session:${thread.id}`,
-          title: thread.title,
-          group: "最近会话",
-          run: openThread(thread.id),
-        }));
-    }
-
-    const sessions = threads
-      .filter((t) => t.title.toLowerCase().includes(q))
-      .slice(0, MAX_SESSION_RESULTS)
-      .map((thread) => ({
-        id: `session:${thread.id}`,
-        title: thread.title,
-        group: "会话",
-        run: openThread(thread.id),
-      }));
-
-    const messages: CommandDef[] = [];
-    for (const thread of threads) {
-      for (const message of thread.messages) {
-        if (messages.length >= MAX_MESSAGE_RESULTS) break;
-        if (message.text && message.text.toLowerCase().includes(q)) {
-          messages.push({
-            id: `message:${message.id}`,
-            title: `${thread.title} · ${snippet(message.text, q)}`,
-            group: "消息",
-            run: openThread(thread.id),
-          });
-        }
-      }
-      if (messages.length >= MAX_MESSAGE_RESULTS) break;
-    }
-
-    return [...sessions, ...messages];
-  }, [threads, query, navigate]);
-
-  const results = useMemo(
-    () => searchCommands([...dynamicCommands, ...staticCommands], query),
-    [dynamicCommands, staticCommands, query],
-  );
-
-  useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        toggle();
-      }
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [toggle]);
-
-  useEffect(() => {
-    if (open) setQuery("");
-  }, [open]);
-
-  const groups: { label: string; items: CommandDef[] }[] = [];
-  for (const command of results) {
-    let group = groups.find((g) => g.label === command.group);
-    if (!group) {
-      group = { label: command.group, items: [] };
-      groups.push(group);
-    }
-    group.items.push(command);
-  }
-
-  function runCommand(command: CommandDef) {
+  function run(action: () => void) {
     setOpen(false);
-    command.run();
+    action();
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
-        className="top-[12%] translate-y-0 gap-0 overflow-hidden p-0 sm:max-w-xl"
         showCloseButton={false}
+        className="top-1/3 translate-y-0 gap-0 overflow-hidden rounded-xl p-0 sm:max-w-xl"
       >
         <DialogTitle className="sr-only">命令面板</DialogTitle>
-        <Command shouldFilter={false} loop>
-          <CommandInput
-            placeholder="搜索命令、会话、消息…"
-            value={query}
-            onValueChange={setQuery}
-          />
+        <DialogDescription className="sr-only">
+          搜索会话、记忆、产物，或执行一个动作
+        </DialogDescription>
+        <Command>
+          <CommandInput placeholder="搜索会话、记忆、产物…" />
           <CommandList>
-            <CommandEmpty>没有结果</CommandEmpty>
-            {groups.map((group) => (
-              <CommandGroup key={group.label} heading={group.label}>
-                {group.items.map((command) => (
-                  <CommandItem
-                    key={command.id}
-                    value={command.id}
-                    onSelect={() => runCommand(command)}
-                  >
-                    {command.title}
-                    {command.shortcut && (
-                      <CommandShortcut>{command.shortcut}</CommandShortcut>
-                    )}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            ))}
+        <CommandEmpty>没有找到结果。</CommandEmpty>
+
+        <CommandGroup heading="动作">
+          <CommandItem
+            value="新对话 new conversation"
+            onSelect={() => run(() => void navigate({ to: "/" }))}
+          >
+            <Plus size={15} />
+            新对话
+            <CommandShortcut>⌘N</CommandShortcut>
+          </CommandItem>
+          <CommandItem
+            value="记忆中心 memory"
+            onSelect={() => run(() => void navigate({ to: "/memory" }))}
+          >
+            <Brain size={15} />
+            打开记忆中心
+          </CommandItem>
+          <CommandItem
+            value="设置 settings"
+            onSelect={() => run(() => void navigate({ to: "/settings" }))}
+          >
+            <GearSix size={15} />
+            打开设置
+            <CommandShortcut>⌘,</CommandShortcut>
+          </CommandItem>
+          <CommandItem
+            value="切换主题 theme"
+            onSelect={() =>
+              run(() => {
+                const next =
+                  getStoredTheme() === "dark" ? "light" : "dark";
+                setTheme(next);
+              })
+            }
+          >
+            <Laptop size={15} />
+            切换亮色 / 暗色
+          </CommandItem>
+          {import.meta.env.DEV && (
+            <CommandItem
+              value="状态画廊 states gallery"
+              onSelect={() =>
+                run(() => {
+                  window.location.href = "/dev/states";
+                })
+              }
+            >
+              <Sparkle size={15} />
+              打开状态画廊（开发）
+            </CommandItem>
+          )}
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="会话">
+          {CONVERSATIONS.map((conversation) => (
+            <CommandItem
+              key={conversation.id}
+              value={`${conversation.title} ${conversation.id}`}
+              onSelect={() =>
+                run(() =>
+                  void navigate({
+                    to: "/c/$conversationId",
+                    params: { conversationId: conversation.id },
+                  }),
+                )
+              }
+            >
+              <MagnifyingGlass size={15} />
+              {conversation.title}
+              <CommandShortcut>{conversation.updatedAt}</CommandShortcut>
+            </CommandItem>
+          ))}
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="记忆">
+          {memories.slice(0, 6).map((memory) => (
+            <CommandItem
+              key={memory.id}
+              value={`${memory.content} ${memory.id}`}
+              onSelect={() => run(() => void navigate({ to: "/memory" }))}
+            >
+              <Brain size={15} />
+              <span className="truncate">{memory.content}</span>
+            </CommandItem>
+          ))}
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="产物">
+          {ARTIFACTS.map((artifact) => (
+            <CommandItem
+              key={artifact.id}
+              value={`${artifact.title} ${artifact.id}`}
+              onSelect={() =>
+                run(() => {
+                  window.location.href = `/artifact/${artifact.id}`;
+                })
+              }
+            >
+              <Cube size={15} />
+              {artifact.title}
+            </CommandItem>
+          ))}
+        </CommandGroup>
           </CommandList>
         </Command>
       </DialogContent>
