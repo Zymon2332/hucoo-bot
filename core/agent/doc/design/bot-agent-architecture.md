@@ -94,10 +94,12 @@ Incoming Event
 确定性 Gate（Policy / 来源 / 身份）
       ↓
 Router
-      ├── ignore
-      ├── stop
-      ├── attach
-      ├── unavailable
+      ├── reply      社交 / 简单对话
+      ├── status     任务 / worker 状态查询
+      ├── ignore     噪音
+      ├── stop       停止已有 Ticket
+      ├── attach     追加到已有 Ticket
+      ├── unavailable 无法判断
       └── accept → Ticket
                       ↓
                    Worker
@@ -114,6 +116,7 @@ Router
 - Gate 在模型之前执行。
 - Router 只处理通过 Gate 的事件。
 - Router 不执行工作。
+- 寒暄与状态查询不创建 Ticket。
 - Worker 的细节不进入对话。
 - 结果由 Router 或通知层回到用户。
 
